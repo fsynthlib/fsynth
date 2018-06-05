@@ -1,5 +1,6 @@
 package it.krzeminski
 
+import java.io.PrintStream
 import java.lang.Math.pow
 
 fun normalizedWaveValueToCharacter(value: Float): Char =
@@ -15,6 +16,8 @@ fun playNote(index: Int) {
 }
 
 fun main(args: Array<String>) {
+    System.setOut(PrintStream(System.out, true, "ISO8859_1"))
+
     playNote(60)
     playNote(62)
     playNote(64)
