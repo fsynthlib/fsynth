@@ -1,15 +1,14 @@
 package it.krzeminski
 
 import java.io.PrintStream
-import java.lang.Math.pow
+
+import it.krzeminski.MusicNote.*
 
 fun normalizedWaveValueToCharacter(value: Float): Char =
         (((value + 1.0f)/2.0f)*255.0f).toChar()
 
-fun noteIndexToFrequency(index: Int) = pow(2.0, (index - 9).toDouble()/12.0).toFloat()*440.0f/32.0f
-
-fun playNote(index: Int, samples: Int) {
-    val sineWaveForFrequency = sineWave(noteIndexToFrequency(index))
+fun playNote(note: MusicNote, samples: Int) {
+    val sineWaveForFrequency = sineWave(note.frequency)
     for (t in 0..samples) {
         print(normalizedWaveValueToCharacter(sineWaveForFrequency(t.toFloat()/8000.0f)))
     }
@@ -24,13 +23,12 @@ fun silence(samples: Int) {
 fun main(args: Array<String>) {
     System.setOut(PrintStream(System.out, true, "ISO8859_1"))
 
-    playNote(62, 2000)
-    playNote(61, 1000)
-    playNote(62, 1000)
-    playNote(64, 2000)
-    playNote(62, 2000)
+    playNote(D4, 2000)
+    playNote(Csharp4, 1000)
+    playNote(D4, 1000)
+    playNote(E4, 2000)
+    playNote(D4, 2000)
     silence(2000)
-    playNote(66, 2000)
-    playNote(67, 4000)
+    playNote(Fsharp4, 2000)
+    playNote(G4, 4000)
 }
-
