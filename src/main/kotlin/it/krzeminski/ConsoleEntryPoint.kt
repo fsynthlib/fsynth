@@ -1,34 +1,25 @@
 package it.krzeminski
 
-import java.io.PrintStream
-
 import it.krzeminski.MusicNote.*
 
-fun normalizedWaveValueToCharacter(value: Float): Char =
-        (((value + 1.0f)/2.0f)*255.0f).toChar()
-
-fun playNote(note: MusicNote, samples: Int) {
+fun playNote(note: MusicNote, length: Float) {
     val sineWaveForFrequency = sineWave(note.frequency)
-    for (t in 0..samples) {
-        print(normalizedWaveValueToCharacter(sineWaveForFrequency(t.toFloat()/8000.0f)))
-    }
+    render8bit(wave = sineWaveForFrequency, length = length, sampleRate = 8000)
 }
 
-fun silence(samples: Int) {
-    for (t in 0..samples) {
-        print(normalizedWaveValueToCharacter(0.0f))
-    }
+fun silence(length: Float) {
+    render8bit(wave = { _ -> 0.0f }, length = length, sampleRate = 8000)
 }
 
 fun main(args: Array<String>) {
-    System.setOut(PrintStream(System.out, true, "ISO8859_1"))
+    configureOutputFormat()
 
-    playNote(D4, 2000)
-    playNote(Csharp4, 1000)
-    playNote(D4, 1000)
-    playNote(E4, 2000)
-    playNote(D4, 2000)
-    silence(2000)
-    playNote(Fsharp4, 2000)
-    playNote(G4, 4000)
+    playNote(D4, 0.25f)
+    playNote(Csharp4, 0.125f)
+    playNote(D4, 0.125f)
+    playNote(E4, 0.25f)
+    playNote(D4, 0.25f)
+    silence(0.25f)
+    playNote(Fsharp4, 0.25f)
+    playNote(G4, 0.5f)
 }
