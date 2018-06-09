@@ -2,24 +2,25 @@ package it.krzeminski
 
 import it.krzeminski.MusicNote.*
 
-fun playNote(note: MusicNote, length: Float) {
-    val sineWaveForFrequency = sineWave(note.frequency)
-    render8bit(wave = sineWaveForFrequency, length = length, sampleRate = 8000)
-}
+fun sineWaveForNote(note: MusicNote) = sineWave(note.frequency)
 
-fun silence(length: Float) {
-    render8bit(wave = { _ -> 0.0f }, length = length, sampleRate = 8000)
+val silence = { _: Float -> 0.0f }
+
+val demoSong: (Float) -> Float = { time ->
+    when (time) {
+        in 0.0f..0.25f -> sineWaveForNote(D4)
+        in 0.25f..0.375f -> sineWaveForNote(Csharp4)
+        in 0.375f..0.5f -> sineWaveForNote(D4)
+        in 0.5f..0.75f -> sineWaveForNote(E4)
+        in 0.75f..1.0f -> sineWaveForNote(D4)
+        in 1.25f..1.5f -> sineWaveForNote(Fsharp4)
+        in 1.5f..2.0f -> sineWaveForNote(G4)
+        else -> silence
+    }(time)
 }
 
 fun main(args: Array<String>) {
     configureOutputFormat()
 
-    playNote(D4, 0.25f)
-    playNote(Csharp4, 0.125f)
-    playNote(D4, 0.125f)
-    playNote(E4, 0.25f)
-    playNote(D4, 0.25f)
-    silence(0.25f)
-    playNote(Fsharp4, 0.25f)
-    playNote(G4, 0.5f)
+    render8bit(wave = demoSong, length = 2.0f, sampleRate = 8000)
 }
