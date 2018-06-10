@@ -1,6 +1,6 @@
 package it.krzeminski.fsynth
 
-import java.lang.Math.pow
+import kotlin.math.pow
 
 enum class MusicNote(private val midiNoteNumber: Int) {
     A0     (21),
@@ -94,8 +94,7 @@ enum class MusicNote(private val midiNoteNumber: Int) {
 
     val frequency: Float
         get() =
-            pow(2.0, (midiNoteNumber - CONCERT_A_NOTE_MIDI_NOTE_NUMBER).toDouble()/SEMITONES_IN_OCTAVE)
-                    .toFloat()*CONCERT_A_NOTE_FREQUENCY
+            2.0f.pow((midiNoteNumber - CONCERT_A_NOTE_MIDI_NOTE_NUMBER)/SEMITONES_IN_OCTAVE)*CONCERT_A_NOTE_FREQUENCY
 
     companion object {
         const val CONCERT_A_NOTE_MIDI_NOTE_NUMBER = 69
