@@ -1,7 +1,10 @@
 package it.krzeminski.fsynth.songs
 
+import it.krzeminski.fsynth.MusicNote
 import it.krzeminski.fsynth.MusicNote.*
-import it.krzeminski.fsynth.sineWaveForNote
+import it.krzeminski.fsynth.sineWave
+
+fun sineWaveForNote(note: MusicNote) = sineWave(note.frequency)
 
 val silence = { _: Float -> 0.0f }
 

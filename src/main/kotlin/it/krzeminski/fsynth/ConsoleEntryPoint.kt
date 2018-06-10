@@ -2,8 +2,6 @@ package it.krzeminski.fsynth
 
 import it.krzeminski.fsynth.songs.simpleDemoSong
 
-fun sineWaveForNote(note: MusicNote) = sineWave(note.frequency)
-
 fun main(args: Array<String>) {
     configureOutputFormat()
 
