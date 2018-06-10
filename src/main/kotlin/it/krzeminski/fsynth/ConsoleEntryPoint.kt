@@ -1,6 +1,6 @@
-package it.krzeminski
+package it.krzeminski.fsynth
 
-import it.krzeminski.MusicNote.*
+import it.krzeminski.fsynth.MusicNote.*
 
 fun sineWaveForNote(note: MusicNote) = sineWave(note.frequency)
 

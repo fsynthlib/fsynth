@@ -1,4 +1,4 @@
-package it.krzeminski
+package it.krzeminski.fsynth
 
 import kotlin.math.PI
 import kotlin.math.sin

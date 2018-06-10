@@ -1,4 +1,4 @@
-package it.krzeminski
+package it.krzeminski.fsynth
 
 import java.io.PrintStream
 
