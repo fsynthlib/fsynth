@@ -11,7 +11,7 @@ buildscript {
 
 apply plugin: 'kotlin-platform-jvm'
 
-sourceSets.main.kotlin.srcDirs = [ "src/main/kotlin/" ]
+sourceSets.main.kotlin.srcDirs = [ "src/" ]
 
 repositories {
     mavenCentral()
