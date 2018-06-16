@@ -1,0 +1,36 @@
+apply plugin: 'kotlin-platform-js'
+
+sourceSets.main.kotlin.srcDirs = [ "src/" ]
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
+    expectedBy project(":core")
+}
+
+def webFilesDestination = "${buildDir}/web"
+
+// Copy Kotlin standard library (kotlin.js file) and any other dependencies from the JAR.
+// Taken from https://github.com/JetBrains/kotlin-web-site/blob/ad3921db5277a071882f9b2802ed2ba9657388c7/pages/docs/tutorials/javascript/getting-started-gradle/getting-started-with-gradle.md
+task assembleWeb(type: Sync) {
+    configurations.compile.each { File file ->
+        from(zipTree(file.absolutePath), {
+            includeEmptyDirs = false
+            include { fileTreeElement ->
+                def path = fileTreeElement.path
+                path.endsWith(".js") && (path.startsWith("META-INF/resources/") || !path.startsWith("META-INF/"))
+            }
+        })
+    }
+    from compileKotlin2Js.destinationDir
+    into webFilesDestination
+
+    dependsOn classes
+}
+
+task copyIndexHtml(type: Copy) {
+    from file("src/index.html")
+    into file(webFilesDestination)
+}
+
+assemble.dependsOn assembleWeb
+assemble.dependsOn copyIndexHtml
