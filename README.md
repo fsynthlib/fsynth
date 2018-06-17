@@ -1,4 +1,8 @@
-# Usage
+# Online Web demo
+
+http://krzeminski.it/fsynth/
+
+# CLI
 
 Pipe the output from the command to `aplay` and enjoy!
 
