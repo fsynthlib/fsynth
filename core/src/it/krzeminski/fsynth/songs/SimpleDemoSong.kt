@@ -1,7 +1,7 @@
 package it.krzeminski.fsynth.songs
 
-import it.krzeminski.fsynth.MusicNote
-import it.krzeminski.fsynth.MusicNote.*
+import it.krzeminski.fsynth.types.MusicNote
+import it.krzeminski.fsynth.types.MusicNote.*
 import it.krzeminski.fsynth.sineWave
 import it.krzeminski.fsynth.types.Waveform
 

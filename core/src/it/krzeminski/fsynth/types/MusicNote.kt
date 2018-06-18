@@ -1,4 +1,4 @@
-package it.krzeminski.fsynth
+package it.krzeminski.fsynth.types
 
 import kotlin.math.pow
 
