@@ -1,13 +1,12 @@
 package it.krzeminski.fsynth.songs
 
+import it.krzeminski.fsynth.silence
 import it.krzeminski.fsynth.types.MusicNote
 import it.krzeminski.fsynth.types.MusicNote.*
 import it.krzeminski.fsynth.sineWave
 import it.krzeminski.fsynth.types.Waveform
 
 fun sineWaveForNote(note: MusicNote) = sineWave(note.frequency)
-
-val silence = { _: Float -> 0.0f }
 
 val simpleDemoSong: Waveform = { time ->
     when (time) {
