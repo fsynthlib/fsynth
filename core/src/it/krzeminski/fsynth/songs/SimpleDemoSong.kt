@@ -15,7 +15,7 @@ private val melody: Waveform = { time ->
         in 0.5f..0.75f -> organs(E4)
         in 0.75f..1.0f -> organs(D4)
         in 1.25f..1.5f -> organs(A3) + organs(D4) + organs(Fsharp4)
-        in 1.5f..2.0f -> organs(B4) + organs(D4) + organs(G4)
+        in 1.5f..2.0f -> organs(B3) + organs(D4) + organs(G4)
         else -> silence
     }(time)
 }
