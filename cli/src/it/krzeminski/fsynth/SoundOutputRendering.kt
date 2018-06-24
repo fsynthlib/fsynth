@@ -1,6 +1,6 @@
 package it.krzeminski.fsynth
 
-import it.krzeminski.fsynth.types.Waveform
+import it.krzeminski.fsynth.types.Song
 import java.io.PrintStream
 
 fun configureOutputFormat() =
@@ -15,12 +15,12 @@ fun normalizedWaveValueToCharacter(value: Float): Char =
         (((value + 1.0f)/2.0f)*255.0f).toChar()
 
 /**
- * Prints out raw sound data taken from [wave] to standard output. The first [length] seconds is rendered.
+ * Prints out raw sound data taken from [song] to standard output.
  * 8 bits per sample and [sampleRate] samples per second are used.
  */
-fun render8bit(wave: Waveform, length: Float, sampleRate: Int) {
-    val samplesToRender = (sampleRate.toFloat()*length).toInt()
+fun render8bit(song: Song, sampleRate: Int) {
+    val samplesToRender = (sampleRate.toFloat()*song.durationInSeconds).toInt()
     for (sample in 0..samplesToRender) {
-        print(normalizedWaveValueToCharacter(wave(sample.toFloat()/sampleRate.toFloat())))
+        print(normalizedWaveValueToCharacter(song.waveform(sample.toFloat()/sampleRate.toFloat())))
     }
 }

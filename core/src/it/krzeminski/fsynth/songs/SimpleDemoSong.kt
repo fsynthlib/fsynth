@@ -3,6 +3,7 @@ package it.krzeminski.fsynth.songs
 import it.krzeminski.fsynth.instruments.organs
 import it.krzeminski.fsynth.silence
 import it.krzeminski.fsynth.types.MusicNote.*
+import it.krzeminski.fsynth.types.Song
 import it.krzeminski.fsynth.types.Waveform
 import it.krzeminski.fsynth.types.plus
 import it.krzeminski.fsynth.types.times
@@ -22,4 +23,6 @@ private val melody: Waveform = { time ->
 
 // Needed to avoid generating values from outside <-1.0; 1.0>, effectively lowering the volume.
 // TODO: Handle this issue properly.
-val simpleDemoSong = 0.3*melody
+private val simpleDemoSongWaveform = 0.3*melody
+
+val simpleDemoSong = Song(waveform = simpleDemoSongWaveform, durationInSeconds = 2.0f)
