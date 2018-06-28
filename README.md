@@ -1,6 +1,6 @@
 # Online Web demo
 
-http://krzeminski.it/fsynth/
+https://krzema12.github.io/fsynth/
 
 # CLI
 
