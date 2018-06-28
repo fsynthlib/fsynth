@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/krzema12/fsynth.svg?branch=master)](https://travis-ci.com/krzema12/fsynth)
+
 # Online Web demo
 
 https://krzema12.github.io/fsynth/
