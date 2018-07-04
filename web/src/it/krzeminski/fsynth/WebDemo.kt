@@ -2,7 +2,6 @@ package it.krzeminski.fsynth
 
 import it.krzeminski.fsynth.songs.simpleDemoSong
 import it.krzeminski.fsynth.types.Song
-import it.krzeminski.fsynth.types.Waveform
 import it.krzeminski.fsynth.typings.AudioBuffer
 import it.krzeminski.fsynth.typings.AudioContext
 import org.khronos.webgl.Float32Array
