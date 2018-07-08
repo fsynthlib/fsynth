@@ -1,6 +1,6 @@
 package it.krzeminski.fsynth
 
-import it.krzeminski.fsynth.songs.simpleDemoSong
+import it.krzeminski.fsynth.songs.vanHalenJumpIntro
 import it.krzeminski.fsynth.types.Song
 import it.krzeminski.fsynth.typings.AudioBuffer
 import it.krzeminski.fsynth.typings.AudioContext
@@ -8,7 +8,7 @@ import org.khronos.webgl.Float32Array
 import org.khronos.webgl.set
 
 fun main(args: Array<String>) =
-    playSong(simpleDemoSong)
+    playSong(vanHalenJumpIntro)
 
 fun playSong(song: Song) {
     val samplesPerSecond = 8000

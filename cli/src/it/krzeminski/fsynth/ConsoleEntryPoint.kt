@@ -1,9 +1,9 @@
 package it.krzeminski.fsynth
 
-import it.krzeminski.fsynth.songs.simpleDemoSong
+import it.krzeminski.fsynth.songs.vanHalenJumpIntro
 
 fun main(args: Array<String>) {
     configureOutputFormat()
 
-    render8bit(song = simpleDemoSong, sampleRate = 8000)
+    render8bit(song = vanHalenJumpIntro, sampleRate = 8000)
 }
