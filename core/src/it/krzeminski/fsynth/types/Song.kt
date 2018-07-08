@@ -2,13 +2,16 @@ package it.krzeminski.fsynth.types
 
 import it.krzeminski.fsynth.silence
 
-data class Song(val segments: List<SongSegment>, private val volume: Float) {
+data class Song(val tracks: List<Track>, private val volume: Float) {
     val waveform: Waveform
         get() = ::getSongWaveformValue
     val durationInSeconds: Float
-        get() = segments.map { it.durationInSeconds }.sum()
+        get() = tracks.map { it.segments.map { it.durationInSeconds }.sum() }.max() ?: 0.0f
 
-    private fun getSongWaveformValue(time: Float): Float {
+    private fun getSongWaveformValue(time: Float): Float =
+            tracks.map { it.getWaveformValue(time) }.sum()
+
+    private fun Track.getWaveformValue(time: Float): Float {
         var cumulatedDuration = 0.0f
         for (segment in segments) {
             if (time in cumulatedDuration..(cumulatedDuration + segment.durationInSeconds)) {
@@ -20,28 +23,46 @@ data class Song(val segments: List<SongSegment>, private val volume: Float) {
     }
 }
 
-fun song(beatsPerMinute: Int, instrument: (MusicNote) -> Waveform, volume: Float, init: SongBuilder.() -> Unit): Song {
-    val songBuilder = SongBuilder(beatsPerMinute, instrument, volume)
+data class Track(val segments: List<TrackSegment>)
+
+data class TrackSegment(val waveform: Waveform, val durationInSeconds: Float)
+
+fun song(beatsPerMinute: Int, volume: Float, init: SongBuilder.() -> Unit): Song {
+    val songBuilder = SongBuilder(beatsPerMinute, volume)
     songBuilder.init()
     return songBuilder.build()
 }
 
-data class SongSegment(val waveform: Waveform, val durationInSeconds: Float)
-
 class SongBuilder(
         private val beatsPerMinute: Int,
-        private val instrument: (MusicNote) -> Waveform,
         volume: Float)
 {
     private var song = Song(emptyList(), volume)
 
+    fun track(instrument: (MusicNote) -> Waveform, init: TrackBuilder.() -> Unit) {
+        val trackBuilder = TrackBuilder(instrument, beatsPerMinute)
+        trackBuilder.init()
+        song = song.copy(tracks = song.tracks + trackBuilder.build())
+    }
+
+    fun build(): Song {
+        return song
+    }
+}
+
+class TrackBuilder(
+        private val instrument: (MusicNote) -> Waveform,
+        private val beatsPerMinute: Int)
+{
+    private var track = Track(emptyList())
+
     fun note(noteValue: Float, note: MusicNote) {
-        song = song.copy(segments = song.segments + SongSegment(instrument(note), noteValue.toSeconds()))
+        track = track.copy(segments = track.segments + TrackSegment(instrument(note), noteValue.toSeconds()))
     }
 
     fun chord(noteValue: Float, vararg notes: MusicNote) {
-        song = song.copy(segments = song.segments +
-                SongSegment(
+        track = track.copy(segments = track.segments +
+                TrackSegment(
                         notes.asSequence()
                                 .map(instrument)
                                 .fold(silence) { accumulator, current -> accumulator + current },
@@ -49,11 +70,11 @@ class SongBuilder(
     }
 
     fun pause(noteValue: Float) {
-        song = song.copy(segments = song.segments + SongSegment(silence, noteValue.toSeconds()))
+        track = track.copy(segments = track.segments + TrackSegment(silence, noteValue.toSeconds()))
     }
 
-    fun build(): Song {
-        return song
+    fun build(): Track {
+        return track
     }
 
     private fun Float.toSeconds() = this*BEATS_PER_BAR*SECONDS_IN_MINUTE/beatsPerMinute.toFloat()
