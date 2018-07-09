@@ -11,7 +11,7 @@ fun main(args: Array<String>) =
     playSong(vanHalenJumpIntro)
 
 fun playSong(song: Song) {
-    val samplesPerSecond = 8000
+    val samplesPerSecond = 44100
 
     val buffer = renderSongToArray(song, samplesPerSecond)
     val context = AudioContext()

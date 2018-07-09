@@ -6,11 +6,11 @@ https://krzema12.github.io/fsynth/
 
 # CLI
 
-Pipe the output from the command to `aplay` and enjoy!
+Pipe the output from the command to `aplay -r 44100` and enjoy!
 
 # Rendering sound to file
 
 ```
-sox -r 8000 -e unsigned -b 8 -c 1 sound.raw sound.wav
+sox -r 44100 -e unsigned -b 8 -c 1 sound.raw sound.wav
 play sound.wav
 ```
