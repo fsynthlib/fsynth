@@ -15,7 +15,7 @@ data class Song(val tracks: List<Track>, private val volume: Float) {
         var cumulatedDuration = 0.0f
         for (segment in segments) {
             if (time in cumulatedDuration..(cumulatedDuration + segment.durationInSeconds)) {
-                return segment.waveform(time)*volume
+                return segment.waveform(time - cumulatedDuration)*volume
             }
             cumulatedDuration += segment.durationInSeconds
         }
