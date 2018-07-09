@@ -1,15 +1,15 @@
 package it.krzeminski.fsynth.songs
 
-import it.krzeminski.fsynth.instruments.organs
+import it.krzeminski.fsynth.instruments.synthesizer
 import it.krzeminski.fsynth.types.MusicNote.*
 import it.krzeminski.fsynth.types.by
 import it.krzeminski.fsynth.types.song
 
 val vanHalenJumpIntro = song(
         beatsPerMinute = 133,
-        volume = 0.2f)
+        volume = 0.15f)
 {
-    track(name = "Main", instrument = ::organs) {
+    track(name = "Main", instrument = ::synthesizer) {
         repeat(3) {
             pause(1 by 4)
             chord(1 by 8, G4, B4, D5)
@@ -49,7 +49,7 @@ val vanHalenJumpIntro = song(
         chord(5 by 8, C4, D4, G4)
     }
 
-    track(name = "Bass", instrument = ::organs) {
+    track(name = "Bass", instrument = ::synthesizer) {
         repeat(2) {
             chord(23 by 8, C2, C3)
             chord(1 by 2, F1, F2)
