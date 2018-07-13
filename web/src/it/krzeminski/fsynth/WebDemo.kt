@@ -6,9 +6,21 @@ import it.krzeminski.fsynth.typings.AudioBuffer
 import it.krzeminski.fsynth.typings.AudioContext
 import org.khronos.webgl.Float32Array
 import org.khronos.webgl.set
+import react.dom.div
+import react.dom.render
+import kotlin.browser.document
 
-fun main(args: Array<String>) =
+fun main(args: Array<String>) {
+    render(document.getElementById("root")) {
+        div {
+            + "The sound is synthesized and played after (re)loading the page."
+        }
+        div {
+            + "(Hello from React in Kotlin!)"
+        }
+    }
     playSong(vanHalenJumpIntro)
+}
 
 fun playSong(song: Song) {
     val samplesPerSecond = 44100

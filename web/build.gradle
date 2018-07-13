@@ -1,35 +1,68 @@
 apply plugin: 'kotlin-platform-js'
+apply plugin: 'org.jetbrains.kotlin.frontend'
 
 sourceSets {
     main.kotlin.srcDirs = [ "src/" ]
     test.kotlin.srcDirs = [ "tst/" ]
 }
 
+repositories {
+    jcenter()
+    maven {
+        url "https://kotlin.bintray.com/kotlin-js-wrappers"
+    }
+}
+
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
+    compile 'org.jetbrains:kotlin-react-dom:16.4.1-pre.34-kotlin-1.2.50'
     expectedBy project(":core")
 
     testCompile "org.jetbrains.kotlin:kotlin-test-js"
 }
 
+buildscript {
+    repositories {
+        jcenter()
+        maven {
+            url "https://dl.bintray.com/kotlin/kotlin-eap"
+        }
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-frontend-plugin:0.0.32"
+    }
+}
+
+// A temporary workaround to skip running Karma tests (they don't work).
+// TODO: fix it in scope of #10.
+tasks.whenTaskAdded { task ->
+    if (task.name == "karma-run-single") {
+        task.enabled = false
+    }
+}
+
 def webFilesDestination = "${buildDir}/web"
 
-// Copy Kotlin standard library (kotlin.js file) and any other dependencies from the JAR.
-// Taken from https://github.com/JetBrains/kotlin-web-site/blob/ad3921db5277a071882f9b2802ed2ba9657388c7/pages/docs/tutorials/javascript/getting-started-gradle/getting-started-with-gradle.md
-task assembleWeb(type: Sync) {
-    configurations.compile.each { File file ->
-        from(zipTree(file.absolutePath), {
-            includeEmptyDirs = false
-            include { fileTreeElement ->
-                def path = fileTreeElement.path
-                path.endsWith(".js") && (path.startsWith("META-INF/resources/") || !path.startsWith("META-INF/"))
-            }
-        })
+compileKotlin2Js {
+    kotlinOptions {
+        metaInfo = true
+        outputFile = "$webFilesDestination/web.bundle.js"
+        sourceMap = true
+        moduleKind = 'commonjs'
+        main = "call"
     }
-    from compileKotlin2Js.destinationDir
-    into webFilesDestination
+}
 
-    dependsOn classes
+kotlinFrontend {
+    npm {
+        dependency "react"
+        dependency "react-dom"
+    }
+
+    webpackBundle {
+        bundleName = "main"
+    }
 }
 
 task copyIndexHtml(type: Copy) {
@@ -37,5 +70,10 @@ task copyIndexHtml(type: Copy) {
     into file(webFilesDestination)
 }
 
-assemble.dependsOn assembleWeb
+task copyJavascriptBundle(type: Copy) {
+    from file("${buildDir}/bundle/main.bundle.js")
+    into file(webFilesDestination)
+}
+
 assemble.dependsOn copyIndexHtml
+assemble.dependsOn copyJavascriptBundle
