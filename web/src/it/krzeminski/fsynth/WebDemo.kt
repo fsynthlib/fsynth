@@ -1,11 +1,14 @@
 package it.krzeminski.fsynth
 
+import it.krzeminski.fsynth.songs.simpleDemoSong
 import it.krzeminski.fsynth.songs.vanHalenJumpIntro
 import it.krzeminski.fsynth.types.Song
 import it.krzeminski.fsynth.typings.AudioBuffer
 import it.krzeminski.fsynth.typings.AudioContext
+import kotlinx.html.js.onClickFunction
 import org.khronos.webgl.Float32Array
 import org.khronos.webgl.set
+import react.dom.button
 import react.dom.div
 import react.dom.render
 import kotlin.browser.document
@@ -13,13 +16,25 @@ import kotlin.browser.document
 fun main(args: Array<String>) {
     render(document.getElementById("root")) {
         div {
-            + "The sound is synthesized and played after (re)loading the page."
+            +"The sound is synthesized and played after clicking the chosen button below."
         }
-        div {
-            + "(Hello from React in Kotlin!)"
+        button {
+            +"Play 'Simple demo song'"
+            attrs {
+                onClickFunction = {
+                    playSong(simpleDemoSong)
+                }
+            }
+        }
+        button {
+            +"Play 'Van Halen - Jump (intro)'"
+            attrs {
+                onClickFunction = {
+                    playSong(vanHalenJumpIntro)
+                }
+            }
         }
     }
-    playSong(vanHalenJumpIntro)
 }
 
 fun playSong(song: Song) {
