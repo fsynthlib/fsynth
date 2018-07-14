@@ -11,6 +11,6 @@ deploy:
   skip-cleanup: true
   github-token: $GITHUB_TOKEN
   keep-history: true
-  local-dir: web/build/web
+  local-dir: web/build/deploy-me
   on:
     branch: master

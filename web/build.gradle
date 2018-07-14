@@ -42,15 +42,9 @@ tasks.whenTaskAdded { task ->
     }
 }
 
-def webFilesDestination = "${buildDir}/web"
-
 compileKotlin2Js {
     kotlinOptions {
-        metaInfo = true
-        outputFile = "$webFilesDestination/web.bundle.js"
-        sourceMap = true
         moduleKind = 'commonjs'
-        main = "call"
     }
 }
 
@@ -65,14 +59,16 @@ kotlinFrontend {
     }
 }
 
+def filesToDeployDestination = "${buildDir}/deploy-me"
+
 task copyIndexHtml(type: Copy) {
     from file("src/index.html")
-    into file(webFilesDestination)
+    into file(filesToDeployDestination)
 }
 
 task copyJavascriptBundle(type: Copy) {
     from file("${buildDir}/bundle/main.bundle.js")
-    into file(webFilesDestination)
+    into file(filesToDeployDestination)
 }
 
 assemble.dependsOn copyIndexHtml
