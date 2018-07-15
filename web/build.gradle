@@ -15,6 +15,7 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
+    compile 'org.jetbrains:kotlin-react:16.4.1-pre.34-kotlin-1.2.50'
     compile 'org.jetbrains:kotlin-react-dom:16.4.1-pre.34-kotlin-1.2.50'
     expectedBy project(":core")
 
@@ -52,6 +53,7 @@ kotlinFrontend {
     npm {
         dependency "react"
         dependency "react-dom"
+        dependency("@material-ui/core", "1.4.0")
     }
 
     webpackBundle {

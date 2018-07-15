@@ -5,10 +5,9 @@ import it.krzeminski.fsynth.songs.vanHalenJumpIntro
 import it.krzeminski.fsynth.types.Song
 import it.krzeminski.fsynth.typings.AudioBuffer
 import it.krzeminski.fsynth.typings.AudioContext
-import kotlinx.html.js.onClickFunction
+import it.krzeminski.fsynth.typings.materialButton
 import org.khronos.webgl.Float32Array
 import org.khronos.webgl.set
-import react.dom.button
 import react.dom.div
 import react.dom.render
 import kotlin.browser.document
@@ -18,18 +17,18 @@ fun main(args: Array<String>) {
         div {
             +"The sound is synthesized and played after clicking the chosen button below."
         }
-        button {
+        materialButton {
             +"Play 'Simple demo song'"
             attrs {
-                onClickFunction = {
+                onClick = {
                     playSong(simpleDemoSong)
                 }
             }
         }
-        button {
+        materialButton {
             +"Play 'Van Halen - Jump (intro)'"
             attrs {
-                onClickFunction = {
+                onClick = {
                     playSong(vanHalenJumpIntro)
                 }
             }
