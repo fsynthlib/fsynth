@@ -6,7 +6,16 @@ https://krzema12.github.io/fsynth/
 
 # CLI
 
-Pipe the output from the command to `aplay -r 44100` and enjoy!
+1. To generate the raw sound data to standard output:
+
+    ```
+    java -jar cli/build/libs/cli.jar "Van Halen - Jump (intro)"
+    ```
+
+2. To play it:
+
+* Linux: `<raw data> | aplay -r 44100`
+* Mac OS (`sox` is needed): `<raw data> | play -c 1 -b 8 -e unsigned -t raw -r 44100 -`
 
 # Rendering sound to file
 

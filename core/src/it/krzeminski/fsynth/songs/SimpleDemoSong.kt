@@ -8,6 +8,7 @@ import it.krzeminski.fsynth.types.song
 // The "volume" parameter is needed to avoid generating values from outside <-1.0; 1.0>.
 // TODO: Handle this issue properly, maybe compute maximum volume automatically and scale appropriately.
 val simpleDemoSong = song(
+        name = "Simple demo song",
         beatsPerMinute = 120,
         volume=0.3f)
 {

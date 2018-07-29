@@ -6,6 +6,7 @@ import it.krzeminski.fsynth.types.by
 import it.krzeminski.fsynth.types.song
 
 val vanHalenJumpIntro = song(
+        name = "Van Halen - Jump (intro)",
         beatsPerMinute = 133,
         volume = 0.15f)
 {

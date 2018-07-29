@@ -2,7 +2,7 @@ package it.krzeminski.fsynth.types
 
 import it.krzeminski.fsynth.silence
 
-data class Song(val tracks: List<Track>, private val volume: Float) {
+data class Song(val name: String, val tracks: List<Track>, private val volume: Float) {
     val waveform: Waveform
         get() = ::getSongWaveformValue
     val durationInSeconds: Float
@@ -27,17 +27,18 @@ data class Track(val segments: List<TrackSegment>, val name: String?)
 
 data class TrackSegment(val waveform: Waveform, val durationInSeconds: Float)
 
-fun song(beatsPerMinute: Int, volume: Float, init: SongBuilder.() -> Unit): Song {
-    val songBuilder = SongBuilder(beatsPerMinute, volume)
+fun song(name: String, beatsPerMinute: Int, volume: Float, init: SongBuilder.() -> Unit): Song {
+    val songBuilder = SongBuilder(name, beatsPerMinute, volume)
     songBuilder.init()
     return songBuilder.build()
 }
 
 class SongBuilder(
+        name: String,
         private val beatsPerMinute: Int,
         volume: Float)
 {
-    private var song = Song(emptyList(), volume)
+    private var song = Song(name, emptyList(), volume)
 
     fun track(instrument: (MusicNote) -> Waveform, init: TrackBuilder.() -> Unit) {
         val trackBuilder = TrackBuilder(instrument = instrument, beatsPerMinute = beatsPerMinute, name = null)
