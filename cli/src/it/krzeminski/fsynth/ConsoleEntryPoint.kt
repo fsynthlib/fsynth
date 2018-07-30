@@ -12,5 +12,5 @@ fun main(args: Array<String>) {
 
     songToPlay?.let {
         render8bit(song = it, sampleRate = 44100)
-    } ?: println("Available songs: ${allSongs.map { "\"${it.name}\"" }}")
+    } ?: println("Available songs: ${allSongs.joinToString { "'${it.name}'" }}")
 }
