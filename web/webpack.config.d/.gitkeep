@@ -1,0 +1,5 @@
+// This directory is here to silence a warning in Gradle 4.6.
+// In Gradle 5.0, the existence of this directory may be necessary,
+// unless a proper fix is made in kotlin-frontend-plugin.
+//
+// For details, see https://github.com/krzema12/fsynth/issues/16
