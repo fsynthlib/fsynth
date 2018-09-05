@@ -2,26 +2,7 @@ package it.krzeminski.fsynth.types
 
 import it.krzeminski.fsynth.silence
 
-data class Song(val name: String, val tracks: List<Track>, private val volume: Float) {
-    val waveform: Waveform
-        get() = ::getSongWaveformValue
-    val durationInSeconds: Float
-        get() = tracks.map { it.segments.map { it.durationInSeconds }.sum() }.max() ?: 0.0f
-
-    private fun getSongWaveformValue(time: Float): Float =
-            tracks.map { it.getWaveformValue(time) }.sum()
-
-    private fun Track.getWaveformValue(time: Float): Float {
-        var cumulatedDuration = 0.0f
-        for (segment in segments) {
-            if (time in cumulatedDuration..(cumulatedDuration + segment.durationInSeconds)) {
-                return segment.waveform(time - cumulatedDuration)*volume
-            }
-            cumulatedDuration += segment.durationInSeconds
-        }
-        return 0.0f
-    }
-}
+data class Song(val name: String, val tracks: List<Track>, val volume: Float)
 
 data class Track(val segments: List<TrackSegment>, val name: String?)
 
