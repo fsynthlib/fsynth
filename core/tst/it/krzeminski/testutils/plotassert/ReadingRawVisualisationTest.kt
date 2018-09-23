@@ -10,7 +10,7 @@ class ReadingRawVisualisationTest {
     @Test
     fun realLifeExample() {
         assertEquals(
-                readRawVisualisation {
+                actual = readRawVisualisation {
                     row(1.0f,  "    X   ")
                     row(       "   I  I ")
                     row(0.0f,  " III  II")
@@ -19,7 +19,7 @@ class ReadingRawVisualisationTest {
                     row(       "+      +")
                     x(0.0f, 1.0f)
                 },
-                RawVisualisation(
+                expected = RawVisualisation(
                         visualisationRows = listOf(
                                 VisualisationRow("    X   ", 1.0f),
                                 VisualisationRow("   I  I "),
@@ -36,13 +36,13 @@ class ReadingRawVisualisationTest {
     @Test
     fun randomIncorrectVisualisation() {
         assertEquals(
-                readRawVisualisation {
+                actual = readRawVisualisation {
                     row(-12.0f, "foobar XXXXXXXXXXXXX")
                     row(5.3f, "random text (*@(")
                     x(0.0f, 0.0f, 0.0f)
                     row("LOREM IPSUM III XXX")
                 },
-                RawVisualisation(
+                expected = RawVisualisation(
                         visualisationRows = listOf(
                                 VisualisationRow("foobar XXXXXXXXXXXXX", -12.0f),
                                 VisualisationRow("random text (*@(", 5.3f),
@@ -56,7 +56,7 @@ class ReadingRawVisualisationTest {
     @Test
     fun noXMarkersGiven() {
         assertEquals(
-                readRawVisualisation {
+                actual = readRawVisualisation {
                     row(1.0f,  "    X   ")
                     row(       "   I  I ")
                     row(0.0f,  " III  II")
@@ -64,7 +64,7 @@ class ReadingRawVisualisationTest {
                     row(-1.0f, "    X   ")
                     row(       "+      +")
                 },
-                RawVisualisation(
+                expected = RawVisualisation(
                         visualisationRows = listOf(
                                 VisualisationRow("    X   ", 1.0f),
                                 VisualisationRow("   I  I "),
@@ -81,10 +81,10 @@ class ReadingRawVisualisationTest {
     @Test
     fun noRowsGiven() {
         assertEquals(
-                readRawVisualisation {
+                actual = readRawVisualisation {
                     x(0.0f, 1.0f)
                 },
-                RawVisualisation(
+                expected = RawVisualisation(
                         visualisationRows = emptyList(),
                         xAxisMarkerValues = listOf(0.0f, 1.0f)
                 )
@@ -94,9 +94,9 @@ class ReadingRawVisualisationTest {
     @Test
     fun nothingGiven() {
         assertEquals(
-                readRawVisualisation {
+                actual = readRawVisualisation {
                 },
-                RawVisualisation(
+                expected = RawVisualisation(
                         visualisationRows = emptyList(),
                         xAxisMarkerValues = emptyList()
                 )
