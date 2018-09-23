@@ -11,12 +11,12 @@ class ReadingRawVisualisationTest {
     fun realLifeExample() {
         assertEquals(
                 readRawVisualisation {
-                    row(1.0f, "    X   ")
-                    row("   I  I ")
-                    row(0.0f, " III  II")
-                    row("   II I ")
+                    row(1.0f,  "    X   ")
+                    row(       "   I  I ")
+                    row(0.0f,  " III  II")
+                    row(       "   II I ")
                     row(-1.0f, "    X   ")
-                    row("+      +")
+                    row(       "+      +")
                     x(0.0f, 1.0f)
                 },
                 RawVisualisation(
@@ -57,12 +57,12 @@ class ReadingRawVisualisationTest {
     fun noXMarkersGiven() {
         assertEquals(
                 readRawVisualisation {
-                    row(1.0f, "    X   ")
-                    row("   I  I ")
-                    row(0.0f, " III  II")
-                    row("   II I ")
+                    row(1.0f,  "    X   ")
+                    row(       "   I  I ")
+                    row(0.0f,  " III  II")
+                    row(       "   II I ")
                     row(-1.0f, "    X   ")
-                    row("+      +")
+                    row(       "+      +")
                 },
                 RawVisualisation(
                         visualisationRows = listOf(
@@ -107,10 +107,10 @@ class ReadingRawVisualisationTest {
     fun xAxisMarkersGivenMoreThanOnce() {
         assertFailsWith<IllegalArgumentException>("X axis markers given more than once!") {
             readRawVisualisation {
-                row(1.0f, "    X   ")
-                row("   I  I ")
-                row(0.0f, " III  II")
-                row("   II I ")
+                row(1.0f,  "    X   ")
+                row(       "   I  I ")
+                row(0.0f,  " III  II")
+                row(       "   II I ")
                 row(-1.0f, "    X   ")
                 x(1.0f, 2.0f, 3.0f)
                 x(4.0f, 5.0f, 6.0f)
