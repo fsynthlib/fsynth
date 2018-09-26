@@ -1,6 +1,7 @@
 package it.krzeminski.testutils.plotassert
 
 import it.krzeminski.testutils.plotassert.types.RawVisualisation
+import it.krzeminski.testutils.plotassert.types.RawXAxis
 import it.krzeminski.testutils.plotassert.types.VisualisationRow
 
 /**
@@ -17,7 +18,7 @@ fun readRawVisualisation(collectVisualisation: PlotConstraintsBuilder.() -> Unit
 
 class PlotConstraintsBuilder(
         private val visualisationRows: MutableList<VisualisationRow> = mutableListOf(),
-        private val xAxisMarkerValues: MutableList<Float> = mutableListOf())
+        private var rawXAxis: RawXAxis? = null)
 {
     fun row(visualisationRowString: String) =
             visualisationRows.add(VisualisationRow(visualisationRowString))
@@ -25,11 +26,26 @@ class PlotConstraintsBuilder(
     fun row(yMarkedValue: Float, visualisationRowString: String) =
             visualisationRows.add(VisualisationRow(visualisationRowString, yMarkedValue))
 
-    fun x(vararg xMarkedValuesArg: Float) {
-        require(xAxisMarkerValues.isEmpty()) { "X axis markers given more than once!" }
-        xAxisMarkerValues.addAll(xMarkedValuesArg.toList())
+    fun build(): RawVisualisation =
+            RawVisualisation(visualisationRows, rawXAxis)
+
+    fun xAxis(collectXAxisDefinition: RawXAxisBuilder.() -> Unit) {
+        require(rawXAxis == null) { "X axis given more than once!" }
+        rawXAxis = with(RawXAxisBuilder()) {
+            collectXAxisDefinition()
+            build()
+        }
+    }
+}
+
+class RawXAxisBuilder(
+        private val values: MutableList<Float> = mutableListOf())
+{
+    fun values(vararg xAxisValues: Float) {
+        require(values.isEmpty()) { "X axis values given more than once!" }
+        values.addAll(xAxisValues.toList())
     }
 
-    fun build(): RawVisualisation =
-            RawVisualisation(visualisationRows, xAxisMarkerValues)
+    fun build(): RawXAxis =
+            RawXAxis(values)
 }

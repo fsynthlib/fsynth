@@ -2,6 +2,7 @@ package it.krzeminski.testutils.plotassert
 
 import it.krzeminski.testutils.plotassert.types.AxisMarker
 import it.krzeminski.testutils.plotassert.types.RawVisualisation
+import it.krzeminski.testutils.plotassert.types.RawXAxis
 import it.krzeminski.testutils.plotassert.types.VisualisationRow
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -22,7 +23,7 @@ class ReadingAxisMarkersTest {
                                         VisualisationRow("    X   "),
                                         VisualisationRow("+      +")
                                 ),
-                                xAxisMarkerValues = listOf(0.0f, 1.0f)
+                                xAxis = RawXAxis(listOf(0.0f, 1.0f))
                         )
                 ),
                 listOf(
@@ -42,7 +43,7 @@ class ReadingAxisMarkersTest {
                                     VisualisationRow("    X   ", 1.0f),
                                     VisualisationRow(" III  II", 1.0f)
                             ),
-                            xAxisMarkerValues = listOf(0.0f, 1.0f)
+                            xAxis = RawXAxis(listOf(0.0f, 1.0f))
                     )
             )
             fail("It should throw ${IllegalArgumentException::class}!")
@@ -61,7 +62,7 @@ class ReadingAxisMarkersTest {
                                     VisualisationRow(" III  II", 9.0f),
                                     VisualisationRow(" III  II", 2.0f)
                             ),
-                            xAxisMarkerValues = listOf(0.0f, 1.0f)
+                            xAxis = RawXAxis(listOf(0.0f, 1.0f))
                     )
             )
             fail("It should throw ${IllegalArgumentException::class}!")
@@ -79,7 +80,7 @@ class ReadingAxisMarkersTest {
                                     VisualisationRow("    X   "),
                                     VisualisationRow(" III  II")
                             ),
-                            xAxisMarkerValues = listOf(0.0f, 1.0f)
+                            xAxis = RawXAxis(listOf(0.0f, 1.0f))
                     )
             )
             fail("It should throw ${IllegalArgumentException::class}!")
@@ -97,7 +98,7 @@ class ReadingAxisMarkersTest {
                                     VisualisationRow("    X   "),
                                     VisualisationRow(" III  II", 3.0f)
                             ),
-                            xAxisMarkerValues = listOf(0.0f, 1.0f)
+                            xAxis = RawXAxis(listOf(0.0f, 1.0f))
                     )
             )
             fail("It should throw ${IllegalArgumentException::class}!")
