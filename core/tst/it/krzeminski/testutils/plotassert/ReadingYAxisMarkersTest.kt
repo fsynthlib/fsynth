@@ -8,7 +8,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.fail
 
-class ReadingAxisMarkersTest {
+class ReadingYAxisMarkersTest {
     @Test
     fun yAxisCommonCase() {
         assertEquals(
