@@ -12,14 +12,14 @@ class ReadingRawVisualisationTest {
     fun realLifeExample() {
         assertEquals(
                 actual = readRawVisualisation {
-                    row(1.0f,  "    X   ")
-                    row(       "   I  I ")
-                    row(0.0f,  " III  II")
-                    row(       "   II I ")
-                    row(-1.0f, "    X   ")
-                    row(       "+      +")
+                    row(1.0f,   "    X   ")
+                    row(        "   I  I ")
+                    row(0.0f,   " III  II")
+                    row(        "   II I ")
+                    row(-1.0f,  "    X   ")
                     xAxis {
-                        values(0.0f, 1.0f)
+                        markers("|     | ")
+                        values( 0.0f, 1.0f)
                     }
                 },
                 expected = RawVisualisation(
@@ -28,10 +28,11 @@ class ReadingRawVisualisationTest {
                                 VisualisationRow("   I  I "),
                                 VisualisationRow(" III  II", 0.0f),
                                 VisualisationRow("   II I "),
-                                VisualisationRow("    X   ", -1.0f),
-                                VisualisationRow("+      +")
+                                VisualisationRow("    X   ", -1.0f)
                         ),
-                        xAxis = RawXAxis(listOf(0.0f, 1.0f))
+                        xAxis = RawXAxis(
+                                markers = "|     | ",
+                                values = listOf(0.0f, 1.0f))
                 )
         )
     }
@@ -43,6 +44,7 @@ class ReadingRawVisualisationTest {
                     row(-12.0f, "foobar XXXXXXXXXXXXX")
                     row(5.3f, "random text (*@(")
                     xAxis {
+                        markers("lol!!!!!!!!!")
                         values(0.0f, 0.0f, 0.0f)
                     }
                     row("LOREM IPSUM III XXX")
@@ -53,7 +55,9 @@ class ReadingRawVisualisationTest {
                                 VisualisationRow("random text (*@(", 5.3f),
                                 VisualisationRow("LOREM IPSUM III XXX")
                         ),
-                        xAxis = RawXAxis(listOf(0.0f, 0.0f, 0.0f))
+                        xAxis = RawXAxis(
+                                markers = "lol!!!!!!!!!",
+                                values = listOf(0.0f, 0.0f, 0.0f))
                 )
         )
     }
@@ -67,7 +71,6 @@ class ReadingRawVisualisationTest {
                     row(0.0f,  " III  II")
                     row(       "   II I ")
                     row(-1.0f, "    X   ")
-                    row(       "+      +")
                 },
                 expected = RawVisualisation(
                         visualisationRows = listOf(
@@ -75,11 +78,60 @@ class ReadingRawVisualisationTest {
                                 VisualisationRow("   I  I "),
                                 VisualisationRow(" III  II", 0.0f),
                                 VisualisationRow("   II I "),
-                                VisualisationRow("    X   ", -1.0f),
-                                VisualisationRow("+      +")
+                                VisualisationRow("    X   ", -1.0f)
                         ),
                         xAxis = null)
                 )
+    }
+
+    @Test
+    fun nothingForXAxisGiven() {
+        assertEquals(
+                actual = readRawVisualisation {
+                    row(1.0f,  "    X   ")
+                    row(       "   I  I ")
+                    row(0.0f,  " III  II")
+                    row(       "   II I ")
+                    row(-1.0f, "    X   ")
+                    xAxis {
+                    }
+                },
+                expected = RawVisualisation(
+                        visualisationRows = listOf(
+                                VisualisationRow("    X   ", 1.0f),
+                                VisualisationRow("   I  I "),
+                                VisualisationRow(" III  II", 0.0f),
+                                VisualisationRow("   II I "),
+                                VisualisationRow("    X   ", -1.0f)
+                        ),
+                        xAxis = RawXAxis())
+        )
+    }
+
+    @Test
+    fun noMarkersForXAxisGiven() {
+        assertEquals(
+                actual = readRawVisualisation {
+                    row(1.0f,  "    X   ")
+                    row(       "   I  I ")
+                    row(0.0f,  " III  II")
+                    row(       "   II I ")
+                    row(-1.0f, "    X   ")
+                    xAxis {
+                        values(1.0f, 2.0f, 3.0f)
+                    }
+                },
+                expected = RawVisualisation(
+                        visualisationRows = listOf(
+                                VisualisationRow("    X   ", 1.0f),
+                                VisualisationRow("   I  I "),
+                                VisualisationRow(" III  II", 0.0f),
+                                VisualisationRow("   II I "),
+                                VisualisationRow("    X   ", -1.0f)
+                        ),
+                        xAxis = RawXAxis(
+                                values = listOf(1.0f, 2.0f, 3.0f)))
+        )
     }
 
     @Test
@@ -91,8 +143,8 @@ class ReadingRawVisualisationTest {
                     row(0.0f,  " III  II")
                     row(       "   II I ")
                     row(-1.0f, "    X   ")
-                    row(       "+      +")
                     xAxis {
+                        markers("|     | ")
                     }
                 },
                 expected = RawVisualisation(
@@ -101,10 +153,10 @@ class ReadingRawVisualisationTest {
                                 VisualisationRow("   I  I "),
                                 VisualisationRow(" III  II", 0.0f),
                                 VisualisationRow("   II I "),
-                                VisualisationRow("    X   ", -1.0f),
-                                VisualisationRow("+      +")
+                                VisualisationRow("    X   ", -1.0f)
                         ),
-                        xAxis = RawXAxis())
+                        xAxis = RawXAxis(
+                                markers = "|     | "))
         )
     }
 
@@ -113,12 +165,15 @@ class ReadingRawVisualisationTest {
         assertEquals(
                 actual = readRawVisualisation {
                     xAxis {
+                        markers("|   |")
                         values(0.0f, 1.0f)
                     }
                 },
                 expected = RawVisualisation(
                         visualisationRows = emptyList(),
-                        xAxis = RawXAxis(listOf(0.0f, 1.0f))
+                        xAxis = RawXAxis(
+                                markers = "|   |",
+                                values = listOf(0.0f, 1.0f))
                 )
         )
     }
@@ -135,6 +190,24 @@ class ReadingRawVisualisationTest {
     }
 
     @Test
+    fun xAxisMarkersGivenMoreThanOnce() {
+        assertFailsWith<IllegalArgumentException>("X axis markers given more than once!") {
+            readRawVisualisation {
+                row(1.0f,  "    X   ")
+                row(       "   I  I ")
+                row(0.0f,  " III  II")
+                row(       "   II I ")
+                row(-1.0f, "    X   ")
+                xAxis {
+                    markers("|      |")
+                    markers("   |    ")
+                    values(1.0f, 2.0f, 3.0f)
+                }
+            }
+        }
+    }
+
+    @Test
     fun xAxisValuesGivenMoreThanOnce() {
         assertFailsWith<IllegalArgumentException>("X axis values given more than once!") {
             readRawVisualisation {
@@ -143,8 +216,8 @@ class ReadingRawVisualisationTest {
                 row(0.0f,  " III  II")
                 row(       "   II I ")
                 row(-1.0f, "    X   ")
-                row(       "+      +")
                 xAxis {
+                    markers("|      |")
                     values(1.0f, 2.0f, 3.0f)
                     values(4.0f, 5.0f, 6.0f)
                 }
@@ -162,9 +235,11 @@ class ReadingRawVisualisationTest {
                 row(       "   II I ")
                 row(-1.0f, "    X   ")
                 xAxis {
+                    markers("|      |")
                     values(1.0f, 2.0f, 3.0f)
                 }
                 xAxis {
+                    markers("|      |")
                     values(4.0f, 5.0f, 6.0f)
                 }
             }

@@ -39,13 +39,19 @@ class PlotConstraintsBuilder(
 }
 
 class RawXAxisBuilder(
+        private var markers: String? = null,
         private val values: MutableList<Float> = mutableListOf())
 {
+    fun markers(markersString: String) {
+        require(markers == null) { "X axis markers given more than once!" }
+        markers = markersString
+    }
+
     fun values(vararg xAxisValues: Float) {
         require(values.isEmpty()) { "X axis values given more than once!" }
         values.addAll(xAxisValues.toList())
     }
 
     fun build(): RawXAxis =
-            RawXAxis(values)
+            RawXAxis(markers, values)
 }

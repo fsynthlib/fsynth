@@ -20,10 +20,11 @@ class ReadingAxisMarkersTest {
                                         VisualisationRow(" III  II", 0.0f),
                                         VisualisationRow("   II I "),
                                         VisualisationRow("    X   ", -1.0f),
-                                        VisualisationRow("    X   "),
-                                        VisualisationRow("+      +")
+                                        VisualisationRow("    X   ")
                                 ),
-                                xAxis = RawXAxis(listOf(0.0f, 1.0f))
+                                xAxis = RawXAxis(
+                                        markers = "|      |",
+                                        values = listOf(0.0f, 1.0f))
                         )
                 ),
                 listOf(
@@ -43,7 +44,9 @@ class ReadingAxisMarkersTest {
                                     VisualisationRow("    X   ", 1.0f),
                                     VisualisationRow(" III  II", 1.0f)
                             ),
-                            xAxis = RawXAxis(listOf(0.0f, 1.0f))
+                            xAxis = RawXAxis(
+                                    markers = "|      |",
+                                    values = listOf(0.0f, 1.0f))
                     )
             )
             fail("It should throw ${IllegalArgumentException::class}!")
@@ -62,7 +65,9 @@ class ReadingAxisMarkersTest {
                                     VisualisationRow(" III  II", 9.0f),
                                     VisualisationRow(" III  II", 2.0f)
                             ),
-                            xAxis = RawXAxis(listOf(0.0f, 1.0f))
+                            xAxis = RawXAxis(
+                                    markers = "|      |",
+                                    values = listOf(0.0f, 1.0f))
                     )
             )
             fail("It should throw ${IllegalArgumentException::class}!")
@@ -80,7 +85,9 @@ class ReadingAxisMarkersTest {
                                     VisualisationRow("    X   "),
                                     VisualisationRow(" III  II")
                             ),
-                            xAxis = RawXAxis(listOf(0.0f, 1.0f))
+                            xAxis = RawXAxis(
+                                    markers = "|      |",
+                                    values = listOf(0.0f, 1.0f))
                     )
             )
             fail("It should throw ${IllegalArgumentException::class}!")
@@ -98,7 +105,9 @@ class ReadingAxisMarkersTest {
                                     VisualisationRow("    X   "),
                                     VisualisationRow(" III  II", 3.0f)
                             ),
-                            xAxis = RawXAxis(listOf(0.0f, 1.0f))
+                            xAxis = RawXAxis(
+                                    markers = "|      |",
+                                    values = listOf(0.0f, 1.0f))
                     )
             )
             fail("It should throw ${IllegalArgumentException::class}!")
