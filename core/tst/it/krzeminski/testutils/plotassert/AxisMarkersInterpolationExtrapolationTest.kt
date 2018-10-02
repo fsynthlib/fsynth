@@ -72,6 +72,21 @@ class AxisMarkersInterpolationExtrapolationTest {
     }
 
     @Test
+    fun ascendingIndicesButDescendingValues() {
+        assertEquals(
+                actual = computeValueBounds(
+                        markers = listOf(
+                                AxisMarker(characterIndex = 0, value = 5.0f),
+                                AxisMarker(characterIndex = 4, value = 1.0f)),
+                        characterIndex = 1),
+                expected = ValueBounds(
+                        lowerBound = 3.5f,
+                        center = 4.0f,
+                        upperBound = 4.5f)
+        )
+    }
+
+    @Test
     fun notEnoughMarkers() {
         try {
             computeValueBounds(

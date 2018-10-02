@@ -2,6 +2,8 @@ package it.krzeminski.testutils.plotassert
 
 import it.krzeminski.testutils.plotassert.types.AxisMarker
 import it.krzeminski.testutils.plotassert.types.ValueBounds
+import kotlin.math.max
+import kotlin.math.min
 
 /**
  * Assuming some grid of characters and axis markers (doesn't matter if for X or Y axis), calculates what actual values
@@ -23,10 +25,12 @@ fun computeValueBounds(markers: List<AxisMarker>, characterIndex: Int): ValueBou
     val valueAroundIndex = { shift: Float ->
         interpolateAroundIndex(shift) ?: extrapolateAroundIndex(shift)
     }
+    val valueForShiftToLowerIndex = valueAroundIndex(-0.5f)
+    val valueForShiftToHigherIndex = valueAroundIndex(0.5f)
     return ValueBounds(
-            lowerBound = valueAroundIndex(-0.5f),
+            lowerBound = min(valueForShiftToLowerIndex, valueForShiftToHigherIndex),
             center = valueAroundIndex(0.0f),
-            upperBound = valueAroundIndex(0.5f))
+            upperBound = max(valueForShiftToLowerIndex, valueForShiftToHigherIndex))
 }
 
 private fun validate(markers: List<AxisMarker>, characterIndex: Int) {
