@@ -14,11 +14,9 @@ object VerticalRangeConstraintBuilder : ConstraintBuilder()
         val onlyLegalCharacters = column.characters.groupBy { it }.keys == setOf(' ', 'I')
         val noGapsBetweenLetters =
             column.characters
-                    .mapIndexed { index, character -> Pair(index, character) }
-                    .filter { it.second == 'I' }
-                    .map { it.first }
+                    .mapIndexedNotNull { index, character -> if (character == 'I') index else null }
                     .zipWithNext { a, b -> b - a }
-                    .all { it == 1 }
+                    .all { difference -> difference == 1 }
 
         return onlyLegalCharacters && noGapsBetweenLetters
     }
