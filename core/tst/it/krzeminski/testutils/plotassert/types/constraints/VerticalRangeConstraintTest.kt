@@ -1,9 +1,7 @@
-package it.krzeminski.fsynth.types.constraints
+package it.krzeminski.testutils.plotassert.types.constraints
 
 import it.krzeminski.testutils.plotassert.types.AxisMarker
 import it.krzeminski.testutils.plotassert.types.VisualisationColumn
-import it.krzeminski.testutils.plotassert.types.constraints.VerticalRangeConstraint
-import it.krzeminski.testutils.plotassert.types.constraints.VerticalRangeConstraintBuilder
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
