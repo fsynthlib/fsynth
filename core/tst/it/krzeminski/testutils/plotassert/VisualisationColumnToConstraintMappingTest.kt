@@ -66,7 +66,7 @@ class VisualisationColumnToConstraintMappingTest {
                     listOf(AxisMarker(5.0f, 0), AxisMarker(1.0f, 4)),
                     mockGetAvailableConstraintBuilders)
             fail("It should throw ${IllegalArgumentException::class}!")
-        } catch (e: Exception) {
+        } catch (e: IllegalArgumentException) {
             assertEquals("No constraints match this visualisation column: MOCK VISUALISATION COLUMN", e.message)
         }
     }
@@ -94,7 +94,7 @@ class VisualisationColumnToConstraintMappingTest {
                     listOf(AxisMarker(5.0f, 0), AxisMarker(1.0f, 4)),
                     mockGetAvailableConstraintBuilders)
             fail("It should throw ${IllegalArgumentException::class}!")
-        } catch (e: Exception) {
+        } catch (e: IllegalArgumentException) {
             assertNotNull(e.message)
             assertTrue(e.message!!.startsWith("Ambiguous constraint; more than 1 constraint type matches:"))
         }
