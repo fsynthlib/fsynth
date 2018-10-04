@@ -29,4 +29,11 @@ jacoco {
     toolVersion = "0.8.2"
 }
 
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled true
+    }
+}
+
 check.dependsOn(jacocoTestReport)
