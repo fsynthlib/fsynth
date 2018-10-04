@@ -49,6 +49,12 @@ class VerticalRangeConstraintTest {
     }
 
     @Test
+    fun manySubsequentICharactersWithoutSpaceCheckIfMatches() {
+        assertTrue(VerticalRangeConstraintBuilder.columnMatchesThisConstraintType(
+                VisualisationColumn("IIIII")))
+    }
+
+    @Test
     fun capitalICharactersDividedBySpaceCheckIfMatches() {
         assertFalse(VerticalRangeConstraintBuilder.columnMatchesThisConstraintType(
                 VisualisationColumn(" I II")))
@@ -82,5 +88,14 @@ class VerticalRangeConstraintTest {
                         column = VisualisationColumn(" III "),
                         yAxisMarkers = listOf(AxisMarker(5.0f, 0), AxisMarker(1.0f, 4))),
                 expected = VerticalRangeConstraint(minY = 1.5f, maxY = 4.5f))
+    }
+
+    @Test
+    fun manySubsequentICharactersWithoutSpaceBuildConstraint() {
+        assertEquals(
+                actual = VerticalRangeConstraintBuilder.buildConstraintFromColumn(
+                        column = VisualisationColumn("IIIII"),
+                        yAxisMarkers = listOf(AxisMarker(5.0f, 0), AxisMarker(1.0f, 4))),
+                expected = VerticalRangeConstraint(minY = 0.5f, maxY = 5.5f))
     }
 }

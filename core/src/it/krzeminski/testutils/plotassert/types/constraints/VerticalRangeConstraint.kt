@@ -19,7 +19,7 @@ data class VerticalRangeConstraint(
 object VerticalRangeConstraintBuilder : ConstraintBuilder()
 {
     override fun columnMatchesThisConstraintType(column: VisualisationColumn): Boolean {
-        val onlyLegalCharacters = column.characters.groupBy { it }.keys == setOf(' ', 'I')
+        val onlyLegalCharacters =  setOf(' ', 'I').containsAll(column.characters.groupBy { it }.keys)
         val noGapsBetweenLetters =
             column.characters
                     .mapIndexedNotNull { index, character -> if (character == 'I') index else null }
