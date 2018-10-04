@@ -6,8 +6,8 @@ import it.krzeminski.testutils.plotassert.types.AxisMarker
 import it.krzeminski.testutils.plotassert.types.VisualisationColumn
 
 data class VerticalRangeConstraint(
-        val minY: Float,
-        val maxY: Float) : YValueConstraint()
+        private val minY: Float,
+        private val maxY: Float) : YValueConstraint()
 {
     override fun assertMatches(yValue: Float) {
         if (yValue !in minY..maxY) {

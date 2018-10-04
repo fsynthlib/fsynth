@@ -12,7 +12,7 @@ import it.krzeminski.utils.almostEqualTo
  * meant to reflect it, actually checking if the values are really close to each other (~0.000001 of difference).
  */
 data class ExactValueConstraint(
-        val y: Float) : YValueConstraint()
+        private val y: Float) : YValueConstraint()
 {
     override fun assertMatches(yValue: Float) {
         if (!(y almostEqualTo yValue)) {

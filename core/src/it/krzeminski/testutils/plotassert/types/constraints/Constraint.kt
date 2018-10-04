@@ -3,8 +3,8 @@ package it.krzeminski.testutils.plotassert.types.constraints
 import it.krzeminski.testutils.plotassert.exceptions.FailedConstraintException
 
 data class Constraint(
-        val x: Float,
-        val yValueConstraint: YValueConstraint)
+        private val x: Float,
+        private val yValueConstraint: YValueConstraint)
 {
     fun assertMatches(functionUnderTest: (Float) -> Float) {
         try {
