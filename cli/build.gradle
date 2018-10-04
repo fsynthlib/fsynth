@@ -1,4 +1,5 @@
 apply plugin: 'kotlin-platform-jvm'
+apply plugin: 'jacoco'
 
 sourceSets {
     main.kotlin.srcDirs = [ "src/" ]
@@ -23,3 +24,9 @@ jar {
         attributes 'Main-Class': 'it.krzeminski.fsynth.ConsoleEntryPointKt'
     }
 }
+
+jacoco {
+    toolVersion = "0.8.2"
+}
+
+check.dependsOn(jacocoTestReport)
