@@ -9,7 +9,11 @@ import kotlin.test.*
 class VisualisationColumnToConstraintMappingTest {
     @Test
     fun oneConstraintMatches() {
-        val constraintToReturn = object : YValueConstraint() { }
+        val constraintToReturn = object : YValueConstraint() {
+            override fun assertMatches(yValue: Float) {
+                throw IllegalStateException("This method is irrelevant for this unit test.")
+            }
+        }
         val mockConstraintBuilder1 = object : ConstraintBuilder() {
             override fun columnMatchesThisConstraintType(column: VisualisationColumn) = true
 
