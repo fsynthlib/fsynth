@@ -25,7 +25,7 @@ object ExactValueConstraintBuilder : ConstraintBuilder()
 {
     override fun columnMatchesThisConstraintType(column: VisualisationColumn): Boolean =
             with (column.characters.groupBy { it }) {
-                return keys == setOf(' ', 'X') && this['X']?.size == 1
+                return keys == setOf(' ', 'X') && this['X']!!.size == 1
             }
 
     override fun buildConstraintFromColumn(

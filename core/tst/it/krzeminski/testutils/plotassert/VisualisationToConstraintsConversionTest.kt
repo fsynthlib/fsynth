@@ -102,7 +102,24 @@ class VisualisationToConstraintsConversionTest {
                     .toConstraints()
             fail("It should throw ${IllegalArgumentException::class}!")
         } catch (e: IllegalArgumentException) {
-            assertEquals("Visualisation rows and the X axis markers string must have the same length!", e.message)
+            assertEquals("X axis should be given!", e.message)
+        }
+    }
+
+    @Test
+    fun xAxisMarkersNotProvided() {
+        try {
+            RawVisualisation(
+                    visualisationRows = listOf(
+                            VisualisationRow("  X", 4.0f),
+                            VisualisationRow(" X "),
+                            VisualisationRow("X  ", 2.0f)
+                    ),
+                    xAxis = RawXAxis(markers = null))
+                    .toConstraints()
+            fail("It should throw ${IllegalArgumentException::class}!")
+        } catch (e: IllegalArgumentException) {
+            assertEquals("X axis markers should be given!", e.message)
         }
     }
 }
