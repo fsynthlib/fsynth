@@ -1,11 +1,6 @@
 apply plugin: 'kotlin-platform-js'
 apply plugin: 'org.jetbrains.kotlin.frontend'
 
-sourceSets {
-    main.kotlin.srcDirs = [ "src/" ]
-    test.kotlin.srcDirs = [ "tst/" ]
-}
-
 repositories {
     jcenter()
     maven {
@@ -64,7 +59,7 @@ kotlinFrontend {
 def filesToDeployDestination = "${buildDir}/deploy-me"
 
 task copyIndexHtml(type: Copy) {
-    from file("src/index.html")
+    from file("src/main/resources/index.html")
     into file(filesToDeployDestination)
 }
 

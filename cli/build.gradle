@@ -1,11 +1,6 @@
 apply plugin: 'kotlin-platform-jvm'
 apply plugin: 'jacoco'
 
-sourceSets {
-    main.kotlin.srcDirs = [ "src/" ]
-    test.kotlin.srcDirs = [ "tst/" ]
-}
-
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     expectedBy project(":core")
