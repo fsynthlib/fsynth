@@ -34,6 +34,19 @@ jacocoTestReport {
         xml.enabled true
         html.enabled true
     }
+
+    afterEvaluate {
+        classDirectories = files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    // Excluding songs and instruments from code coverage.
+                    // Rationale: testing songs would be like testing MIDI files - some pieces of data.
+                    // Regarding instruments, they are defined as math operations on simpler waveforms and testing them
+                    // would bring no benefit, however operations alone (addition, multiplication) are still tested.
+                    'it/krzeminski/fsynth/songs/**',
+                    'it/krzeminski/fsynth/instruments/**',
+            ])
+        })
+    }
 }
 
 check.dependsOn(jacocoTestReport)
