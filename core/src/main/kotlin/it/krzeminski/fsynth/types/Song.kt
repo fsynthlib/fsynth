@@ -21,12 +21,12 @@ class SongBuilder(
 {
     private var song = Song(name, emptyList(), volume)
 
-    fun track(instrument: (MusicNote) -> Waveform, init: TrackBuilder.() -> Unit) {
+    fun track(instrument: (Float) -> Waveform, init: TrackBuilder.() -> Unit) {
         val trackBuilder = TrackBuilder(instrument = instrument, beatsPerMinute = beatsPerMinute, name = null)
         initAndAppendTrack(trackBuilder, init)
     }
 
-    fun track(name: String, instrument: (MusicNote) -> Waveform, init: TrackBuilder.() -> Unit) {
+    fun track(name: String, instrument: (Float) -> Waveform, init: TrackBuilder.() -> Unit) {
         val trackBuilder = TrackBuilder(instrument, beatsPerMinute, name)
         initAndAppendTrack(trackBuilder, init)
     }
@@ -42,20 +42,21 @@ class SongBuilder(
 }
 
 class TrackBuilder(
-        private val instrument: (MusicNote) -> Waveform,
+        private val instrument: (Float) -> Waveform,
         private val beatsPerMinute: Int,
         private val name: String?)
 {
     private var track = Track(segments = emptyList(), name = name)
 
     fun note(noteValue: Float, note: MusicNote) {
-        track = track.copy(segments = track.segments + TrackSegment(instrument(note), noteValue.toSeconds()))
+        track = track.copy(segments = track.segments + TrackSegment(instrument(note.frequency), noteValue.toSeconds()))
     }
 
     fun chord(noteValue: Float, vararg notes: MusicNote) {
         track = track.copy(segments = track.segments +
                 TrackSegment(
                         notes.asSequence()
+                                .map { it.frequency }
                                 .map(instrument)
                                 .fold(silence) { accumulator, current -> accumulator + current },
                         noteValue.toSeconds()))

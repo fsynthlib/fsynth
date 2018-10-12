@@ -7,11 +7,11 @@ import it.krzeminski.fsynth.types.Waveform
 import it.krzeminski.fsynth.types.plus
 import it.krzeminski.fsynth.types.times
 
-fun synthesizer(note: MusicNote): Waveform = { t ->
+fun synthesizer(frequency: Float): Waveform = { t ->
     val baseValue = (
-            0.3*squareWave(note.frequency) +
-            0.2*squareWave(note.frequency*2) +
-            0.5*sineWave(note.frequency)
+            0.3*squareWave(frequency) +
+            0.2*squareWave(frequency*2) +
+            0.5*sineWave(frequency)
         )(t)
     baseValue/(t + 1)
 }
