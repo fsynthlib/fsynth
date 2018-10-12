@@ -21,12 +21,7 @@ class SongBuilder(
 {
     private var song = Song(name, emptyList(), volume)
 
-    fun track(instrument: (Float) -> Waveform, init: TrackBuilder.() -> Unit) {
-        val trackBuilder = TrackBuilder(instrument = instrument, beatsPerMinute = beatsPerMinute, name = null)
-        initAndAppendTrack(trackBuilder, init)
-    }
-
-    fun track(name: String, instrument: (Float) -> Waveform, init: TrackBuilder.() -> Unit) {
+    fun track(name: String? = null, instrument: (Float) -> Waveform, init: TrackBuilder.() -> Unit) {
         val trackBuilder = TrackBuilder(instrument, beatsPerMinute, name)
         initAndAppendTrack(trackBuilder, init)
     }
