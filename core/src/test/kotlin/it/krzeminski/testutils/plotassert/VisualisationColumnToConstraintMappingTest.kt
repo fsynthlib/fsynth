@@ -64,13 +64,13 @@ class VisualisationColumnToConstraintMappingTest {
             }
         }
         val mockGetAvailableConstraintBuilders = { listOf(mockConstraintBuilder1, mockConstraintBuilder2) }
-        try {
+
+        assertFailsWith<IllegalArgumentException> {
             mapVisualisationColumnToConstraint(
                     VisualisationColumn("MOCK VISUALISATION COLUMN"),
                     listOf(AxisMarker(5.0f, 0), AxisMarker(1.0f, 4)),
                     mockGetAvailableConstraintBuilders)
-            fail("It should throw ${IllegalArgumentException::class}!")
-        } catch (e: IllegalArgumentException) {
+        }.let { e ->
             assertEquals("No constraints match this visualisation column: MOCK VISUALISATION COLUMN", e.message)
         }
     }
@@ -92,13 +92,13 @@ class VisualisationColumnToConstraintMappingTest {
             }
         }
         val mockGetAvailableConstraintBuilders = { listOf(mockConstraintBuilder1, mockConstraintBuilder2) }
-        try {
+
+        assertFailsWith<IllegalArgumentException> {
             mapVisualisationColumnToConstraint(
                     VisualisationColumn("MOCK VISUALISATION COLUMN"),
                     listOf(AxisMarker(5.0f, 0), AxisMarker(1.0f, 4)),
                     mockGetAvailableConstraintBuilders)
-            fail("It should throw ${IllegalArgumentException::class}!")
-        } catch (e: IllegalArgumentException) {
+        }.let { e ->
             assertNotNull(e.message)
             assertTrue(e.message!!.startsWith("Ambiguous constraint; more than 1 constraint type matches:"))
         }

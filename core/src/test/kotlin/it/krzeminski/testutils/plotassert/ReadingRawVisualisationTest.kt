@@ -191,7 +191,7 @@ class ReadingRawVisualisationTest {
 
     @Test
     fun xAxisMarkersGivenMoreThanOnce() {
-        assertFailsWith<IllegalArgumentException>("X axis markers given more than once!") {
+        assertFailsWith<IllegalArgumentException> {
             readRawVisualisation {
                 row(1.0f,  "    X   ")
                 row(       "   I  I ")
@@ -204,12 +204,14 @@ class ReadingRawVisualisationTest {
                     values(1.0f, 2.0f, 3.0f)
                 }
             }
+        }.let { e ->
+            assertEquals("X axis markers given more than once!", e.message)
         }
     }
 
     @Test
     fun xAxisValuesGivenMoreThanOnce() {
-        assertFailsWith<IllegalArgumentException>("X axis values given more than once!") {
+        assertFailsWith<IllegalArgumentException> {
             readRawVisualisation {
                 row(1.0f,  "    X   ")
                 row(       "   I  I ")
@@ -222,12 +224,14 @@ class ReadingRawVisualisationTest {
                     values(4.0f, 5.0f, 6.0f)
                 }
             }
+        }.let { e ->
+            assertEquals("X axis values given more than once!", e.message)
         }
     }
 
     @Test
     fun xAxisGivenMoreThanOnce() {
-        assertFailsWith<IllegalArgumentException>("X axis given more than once!") {
+        assertFailsWith<IllegalArgumentException> {
             readRawVisualisation {
                 row(1.0f,  "    X   ")
                 row(       "   I  I ")
@@ -243,6 +247,8 @@ class ReadingRawVisualisationTest {
                     values(4.0f, 5.0f, 6.0f)
                 }
             }
+        }.let { e ->
+            assertEquals("X axis given more than once!", e.message)
         }
     }
 }

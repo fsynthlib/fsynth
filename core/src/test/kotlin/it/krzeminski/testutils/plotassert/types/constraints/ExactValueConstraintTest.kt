@@ -20,12 +20,10 @@ class ExactValueConstraintTest {
 
     @Test
     fun assertDoesNotMatch() {
-        try {
+        assertFailsWith<FailedConstraintException> {
             ExactValueConstraint(1.0f)
                     .assertMatches(3.0f)
-            fail("Should throw ${FailedConstraintException::class}!")
-
-        } catch (e: FailedConstraintException) {
+        }.let { e ->
             assertEquals("3.0 is not equal to 1.0!", e.message)
         }
     }

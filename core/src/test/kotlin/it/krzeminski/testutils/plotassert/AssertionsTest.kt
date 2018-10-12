@@ -3,6 +3,7 @@ package it.krzeminski.testutils.plotassert
 import it.krzeminski.testutils.plotassert.exceptions.FailedConstraintException
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.fail
 
 class AssertionsTest {
@@ -23,7 +24,7 @@ class AssertionsTest {
 
     @Test
     fun assertFunctionConformsToWhenOneAssertionFails() {
-        try {
+        assertFailsWith<FailedConstraintException> {
             assertFunctionConformsTo(
                     functionUnderTest = { 1.0f },
                     visualisation = {
@@ -35,8 +36,7 @@ class AssertionsTest {
                         }
                     }
             )
-            fail("Should throw ${FailedConstraintException::class}!")
-        } catch (e: FailedConstraintException) {
+        }.let { e ->
             assertEquals("For x=1.25: 1.0 is not equal to 0.0!", e.message)
         }
     }

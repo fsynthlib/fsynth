@@ -26,12 +26,10 @@ class VerticalRangeConstraintTest {
 
     @Test
     fun assertDoesNotMatch() {
-        try {
+        assertFailsWith<FailedConstraintException> {
             VerticalRangeConstraint(minY = 1.0f, maxY = 2.0f)
                     .assertMatches(3.0f)
-            fail("Should throw ${FailedConstraintException::class}!")
-
-        } catch (e: FailedConstraintException) {
+        }.let { e ->
             assertEquals("3.0 is not between 1.0 and 2.0!", e.message)
         }
     }

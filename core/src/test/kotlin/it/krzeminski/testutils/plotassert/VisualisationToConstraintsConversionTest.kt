@@ -8,6 +8,7 @@ import it.krzeminski.testutils.plotassert.types.constraints.ExactValueConstraint
 import it.krzeminski.testutils.plotassert.types.constraints.VerticalRangeConstraint
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.fail
 
 class VisualisationToConstraintsConversionTest {
@@ -53,7 +54,7 @@ class VisualisationToConstraintsConversionTest {
 
     @Test
     fun rowsHaveDifferentNumberOfCharacters() {
-        try {
+        assertFailsWith<IllegalArgumentException> {
             RawVisualisation(
                     visualisationRows = listOf(
                             VisualisationRow(" ", 4.0f),
@@ -61,18 +62,17 @@ class VisualisationToConstraintsConversionTest {
                             VisualisationRow("X  ", 2.0f)
                     ),
                     xAxis = RawXAxis(
-                            markers =        "| |",
+                            markers = "| |",
                             values = listOf(-1.0f, 1.0f)))
                     .toConstraints()
-            fail("It should throw ${IllegalArgumentException::class}!")
-        } catch (e: IllegalArgumentException) {
+        }.let { e ->
             assertEquals("Visualisation rows and the X axis markers string must have the same length!", e.message)
         }
     }
 
     @Test
     fun xAxisMarkersStringHasDifferentNumberOfCharacters() {
-        try {
+        assertFailsWith<IllegalArgumentException> {
             RawVisualisation(
                     visualisationRows = listOf(
                             VisualisationRow("  X", 4.0f),
@@ -83,15 +83,14 @@ class VisualisationToConstraintsConversionTest {
                             markers =        "|    |",
                             values = listOf(-1.0f, 1.0f)))
                     .toConstraints()
-            fail("It should throw ${IllegalArgumentException::class}!")
-        } catch (e: IllegalArgumentException) {
+        }.let { e ->
             assertEquals("Visualisation rows and the X axis markers string must have the same length!", e.message)
         }
     }
 
     @Test
     fun xAxisNotProvided() {
-        try {
+        assertFailsWith<IllegalArgumentException> {
             RawVisualisation(
                     visualisationRows = listOf(
                             VisualisationRow("  X", 4.0f),
@@ -100,15 +99,14 @@ class VisualisationToConstraintsConversionTest {
                     ),
                     xAxis = null)
                     .toConstraints()
-            fail("It should throw ${IllegalArgumentException::class}!")
-        } catch (e: IllegalArgumentException) {
+        }.let { e ->
             assertEquals("X axis should be given!", e.message)
         }
     }
 
     @Test
     fun xAxisMarkersNotProvided() {
-        try {
+        assertFailsWith<IllegalArgumentException> {
             RawVisualisation(
                     visualisationRows = listOf(
                             VisualisationRow("  X", 4.0f),
@@ -117,8 +115,7 @@ class VisualisationToConstraintsConversionTest {
                     ),
                     xAxis = RawXAxis(markers = null))
                     .toConstraints()
-            fail("It should throw ${IllegalArgumentException::class}!")
-        } catch (e: IllegalArgumentException) {
+        }.let { e ->
             assertEquals("X axis markers should be given!", e.message)
         }
     }

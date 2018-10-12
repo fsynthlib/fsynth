@@ -6,6 +6,7 @@ import it.krzeminski.testutils.plotassert.types.RawXAxis
 import it.krzeminski.testutils.plotassert.types.VisualisationRow
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.fail
 
 class ReadingYAxisMarkersTest {
@@ -37,7 +38,7 @@ class ReadingYAxisMarkersTest {
 
     @Test
     fun yAxisRepeatedValue() {
-        try {
+        assertFailsWith<IllegalArgumentException> {
             readYAxisMarkers(
                     RawVisualisation(
                             visualisationRows = listOf(
@@ -50,14 +51,14 @@ class ReadingYAxisMarkersTest {
                     )
             )
             fail("It should throw ${IllegalArgumentException::class}!")
-        } catch (e: IllegalArgumentException) {
-            assertEquals(e.message, "Given Y axis markers should have descending values (found: 1.0, 1.0)!")
+        }.let { e ->
+            assertEquals("Given Y axis markers should have descending values (found: 1.0, 1.0)!", e.message)
         }
     }
 
     @Test
     fun yAxisIncorrectOrder() {
-        try {
+        assertFailsWith<IllegalArgumentException> {
             readYAxisMarkers(
                     RawVisualisation(
                             visualisationRows = listOf(
@@ -71,14 +72,14 @@ class ReadingYAxisMarkersTest {
                     )
             )
             fail("It should throw ${IllegalArgumentException::class}!")
-        } catch (e: IllegalArgumentException) {
-            assertEquals(e.message, "Given Y axis markers should have descending values (found: 4.0, 9.0)!")
+        }.let { e ->
+            assertEquals("Given Y axis markers should have descending values (found: 4.0, 9.0)!", e.message)
         }
     }
 
     @Test
     fun yAxisNoMarkers() {
-        try {
+        assertFailsWith<IllegalArgumentException> {
             readYAxisMarkers(
                     RawVisualisation(
                             visualisationRows = listOf(
@@ -91,14 +92,14 @@ class ReadingYAxisMarkersTest {
                     )
             )
             fail("It should throw ${IllegalArgumentException::class}!")
-        } catch (e: IllegalArgumentException) {
-            assertEquals(e.message, "0 Y axis marker(s) found, and there should be at least two!")
+        }.let { e ->
+            assertEquals("0 Y axis marker(s) found, and there should be at least two!", e.message)
         }
     }
 
     @Test
     fun yAxisOneMarker() {
-        try {
+        assertFailsWith<IllegalArgumentException> {
             readYAxisMarkers(
                     RawVisualisation(
                             visualisationRows = listOf(
@@ -111,8 +112,8 @@ class ReadingYAxisMarkersTest {
                     )
             )
             fail("It should throw ${IllegalArgumentException::class}!")
-        } catch (e: IllegalArgumentException) {
-            assertEquals(e.message, "1 Y axis marker(s) found, and there should be at least two!")
+        }.let { e ->
+            assertEquals("1 Y axis marker(s) found, and there should be at least two!", e.message)
         }
     }
 }

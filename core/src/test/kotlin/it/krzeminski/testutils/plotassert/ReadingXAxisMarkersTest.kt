@@ -6,6 +6,7 @@ import it.krzeminski.testutils.plotassert.types.RawXAxis
 import it.krzeminski.testutils.plotassert.types.VisualisationRow
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.fail
 
 class ReadingXAxisMarkersTest {
@@ -33,7 +34,7 @@ class ReadingXAxisMarkersTest {
 
     @Test
     fun xAxisNumberOfMarkersNotEqualToNumberOfValues() {
-        try {
+        assertFailsWith<IllegalArgumentException> {
             readXAxisMarkers(
                     RawVisualisation(
                             visualisationRows = listOf(
@@ -45,15 +46,14 @@ class ReadingXAxisMarkersTest {
                                     values = listOf(3.0f, 2.0f, 1.0f))
                     )
             )
-            fail("It should throw ${IllegalArgumentException::class}!")
-        } catch (e: IllegalArgumentException) {
-            assertEquals(e.message, "X axis definition mismatch: found 1 marker(s) but 3 value(s)!")
+        }.let { e ->
+            assertEquals("X axis definition mismatch: found 1 marker(s) but 3 value(s)!", e.message)
         }
     }
 
     @Test
     fun xAxisValuesIncorrectOrder() {
-        try {
+        assertFailsWith<IllegalArgumentException> {
             readXAxisMarkers(
                     RawVisualisation(
                             visualisationRows = listOf(
@@ -65,15 +65,14 @@ class ReadingXAxisMarkersTest {
                                     values = listOf(3.0f, 2.0f, 1.0f))
                     )
             )
-            fail("It should throw ${IllegalArgumentException::class}!")
-        } catch (e: IllegalArgumentException) {
-            assertEquals(e.message, "Given X axis markers should have descending values (found: 3.0, 2.0)!")
+        }.let { e ->
+            assertEquals("Given X axis markers should have descending values (found: 3.0, 2.0)!", e.message)
         }
     }
 
     @Test
     fun xAxisMarkersStringIsNull() {
-        try {
+        assertFailsWith<IllegalArgumentException> {
             readXAxisMarkers(
                     RawVisualisation(
                             visualisationRows = listOf(
@@ -85,15 +84,14 @@ class ReadingXAxisMarkersTest {
                                     values = listOf(-2.0f, 1.0f, 4.5f))
                     )
             )
-            fail("It should throw ${IllegalArgumentException::class}!")
-        } catch (e: IllegalArgumentException) {
-            assertEquals(e.message, "You must specify X axis markers!")
+        }.let { e ->
+            assertEquals("You must specify X axis markers!", e.message)
         }
     }
 
     @Test
     fun xAxisIsNull() {
-        try {
+        assertFailsWith<IllegalArgumentException> {
             readXAxisMarkers(
                     RawVisualisation(
                             visualisationRows = listOf(
@@ -103,15 +101,14 @@ class ReadingXAxisMarkersTest {
                             xAxis = null
                     )
             )
-            fail("It should throw ${IllegalArgumentException::class}!")
-        } catch (e: IllegalArgumentException) {
-            assertEquals(e.message, "You must specify X axis!")
+        }.let { e ->
+            assertEquals("You must specify X axis!", e.message)
         }
     }
 
     @Test
     fun xAxisTooLittleValues() {
-        try {
+        assertFailsWith<IllegalArgumentException> {
             readXAxisMarkers(
                     RawVisualisation(
                             visualisationRows = listOf(
@@ -123,15 +120,14 @@ class ReadingXAxisMarkersTest {
                                     values = listOf(-2.0f))
                     )
             )
-            fail("It should throw ${IllegalArgumentException::class}!")
-        } catch (e: IllegalArgumentException) {
-            assertEquals(e.message, "1 X axis marker(s) found, and there should be at least two!")
+        }.let { e ->
+            assertEquals("1 X axis marker(s) found, and there should be at least two!", e.message)
         }
     }
 
     @Test
     fun xAxisIllegalCharactersInMarkersString() {
-        try {
+        assertFailsWith<IllegalArgumentException> {
             readXAxisMarkers(
                     RawVisualisation(
                             visualisationRows = listOf(
@@ -143,9 +139,8 @@ class ReadingXAxisMarkersTest {
                                     values = listOf(-2.0f, 1.0f, 4.5f))
                     )
             )
-            fail("It should throw ${IllegalArgumentException::class}!")
-        } catch (e: IllegalArgumentException) {
-            assertEquals(e.message, "Illegal characters given in X axis markers string, only ('|', ' ') are allowed!")
+        }.let { e ->
+            assertEquals("Illegal characters given in X axis markers string, only ('|', ' ') are allowed!", e.message)
         }
     }
 }
