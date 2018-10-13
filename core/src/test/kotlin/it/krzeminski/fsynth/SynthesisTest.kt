@@ -56,6 +56,16 @@ class SynthesisTest {
     }
 
     @Test
+    fun durationForEmptySong() {
+        val testSong = Song(
+                name = "Test song",
+                tracks = emptyList(),
+                volume = 1.0f)
+
+        assertEquals(0.0f, testSong.durationInSeconds)
+    }
+
+    @Test
     fun multipleTracksAreCorrectlySynthesized() {
         val testSong = Song(
                 name = "Test song",
