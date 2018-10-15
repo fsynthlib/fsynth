@@ -19,8 +19,7 @@ fun normalizedWaveValueToCharacter(value: Float): Char =
  * 8 bits per sample and [sampleRate] samples per second are used.
  */
 fun render8bit(song: Song, sampleRate: Int) {
-    val samplesToRender = (sampleRate.toFloat()*song.durationInSeconds).toInt()
-    for (sample in 0..samplesToRender) {
-        print(normalizedWaveValueToCharacter(song.waveform(sample.toFloat()/sampleRate.toFloat())))
-    }
+    song.renderWithSampleRate(sampleRate)
+            .map(::normalizedWaveValueToCharacter)
+            .forEach(::print)
 }

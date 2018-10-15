@@ -17,14 +17,10 @@ fun playSong(song: Song) {
 }
 
 private fun renderSongToArray(song: Song, samplesPerSecond: Int): Float32Array {
-    val numberOfSamplesToRender = (song.durationInSeconds*samplesPerSecond.toFloat()).toInt()
-    val buffer = Float32Array(numberOfSamplesToRender)
-
-    for (sample in 0..numberOfSamplesToRender) {
-        buffer[sample] = song.waveform(sample.toFloat()/samplesPerSecond.toFloat())
-    }
-
-    return buffer
+    return Float32Array(
+            song.renderWithSampleRate(samplesPerSecond)
+                    .toList()
+                    .toTypedArray())
 }
 
 private fun createAudioContextBuffer(context: AudioContext, buffer: Float32Array, samplesPerSecond: Int): AudioBuffer {
