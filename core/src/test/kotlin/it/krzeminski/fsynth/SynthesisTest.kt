@@ -18,8 +18,9 @@ class SynthesisTest {
                                 "Test track")),
                 volume = 1.0f)
 
+        val songEvaluationFunction = testSong.buildSongEvaluationFunction()
         assertEquals(0.5f, testSong.durationInSeconds)
-        assertFunctionConformsTo(testSong.waveform) {
+        assertFunctionConformsTo(songEvaluationFunction) {
             row(1.0f,   "XXXXXXXXI      IXXXXXXXI                                     ")
             row(0.0f,   "        I      I       I      IXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
             row(-1.0f,  "        IXXXXXXI       IXXXXXXI                              ")
@@ -78,7 +79,8 @@ class SynthesisTest {
                                 "Test track")),
                 volume = 0.5f)
 
-        assertFunctionConformsTo(testSong.waveform) {
+        val songEvaluationFunction = testSong.buildSongEvaluationFunction()
+        assertFunctionConformsTo(songEvaluationFunction) {
             row(1.0f,   "XXXXI   IXXXI                                                ")
             row(0.5f,   "    I   I   I                  IXXXXXXXXXXXXXXI              ")
             row(0.0f,   "    IXXXI   IXXXXXXI   IXXXI   I              I              ")

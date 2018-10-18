@@ -4,8 +4,8 @@ import it.krzeminski.fsynth.types.Song
 import it.krzeminski.fsynth.types.Track
 import it.krzeminski.fsynth.types.Waveform
 
-val Song.waveform: Waveform
-    get() = ::getSongWaveformValue
+fun Song.buildSongEvaluationFunction(): Waveform =
+        this::getSongWaveformValue
 
 val Song.durationInSeconds: Float
     get() = tracks.map { it.segments.map { it.durationInSeconds }.sum() }.max() ?: 0.0f
