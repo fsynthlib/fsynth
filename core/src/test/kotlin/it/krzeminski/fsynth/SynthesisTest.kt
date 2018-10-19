@@ -83,12 +83,39 @@ class SynthesisTest {
         assertFunctionConformsTo(songEvaluationFunction) {
             row(1.0f,   "XXXXI   IXXXI                                                ")
             row(0.5f,   "    I   I   I                  IXXXXXXXXXXXXXXI              ")
-            row(0.0f,   "    IXXXI   IXXXXXXI   IXXXI   I              I              ")
-            row(-0.5f,  "                   I   I   I   I              IXXXXXXXXXXXXXX")
+            row(0.0f,   "    IXXXI   IXXXXXXI   IXXXI   I              I             I")
+            row(-0.5f,  "                   I   I   I   I              IXXXXXXXXXXXXXI")
             row(-1.0f,  "                   IXXXI   IXXXI                             ")
             xAxis {
                 markers("|                             |                             |")
                 values( 0.0f,                         0.5f,                         1.0f)
+            }
+        }
+    }
+
+    @Test
+    fun multipleTracksAreCorrectlySynthesizedForSongLengthBeyondBucketSize() {
+        val testSong = Song(
+                name = "Test song",
+                tracks = listOf(
+                        Track(listOf(
+                                TrackSegment(squareWave(4.0f), 1.0f)),
+                                "Test track"),
+                        Track(listOf(
+                                TrackSegment(squareWave(1.0f), 2.0f)),
+                                "Test track")),
+                volume = 0.5f)
+
+        val songEvaluationFunction = testSong.buildSongEvaluationFunction()
+        assertFunctionConformsTo(songEvaluationFunction) {
+            row(1.0f,   "XXXXI   IXXXI                                                ")
+            row(0.5f,   "    I   I   I                 IXXXXXXXXXXXXXXXI              ")
+            row(0.0f,   "    IXXXI   IXXXXXXI   IXXXI  I               I             I")
+            row(-0.5f,  "                   I   I   I  I               IXXXXXXXXXXXXXI")
+            row(-1.0f,  "                   IXXXI   IXXI                              ")
+            xAxis {
+                markers("|              |              |              |              |")
+                values( 0.0f,          0.5f,          1.0f,          1.5f,          2.0f)
             }
         }
     }

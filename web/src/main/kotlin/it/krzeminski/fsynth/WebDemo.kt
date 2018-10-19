@@ -11,13 +11,11 @@ import kotlin.browser.document
 
 fun main(args: Array<String>) {
     render(document.getElementById("root")) {
+        div { +"The sound is synthesized and played after clicking the chosen button below." }
+        div { +"The synthesis may take several seconds, and blocks the UI, so please be patient." }
         div {
-            +"The sound is synthesized and played after clicking the chosen button below."
-        }
-        div {
-            +"The synthesis may take some time, even up to 1 minute and block the UI,"
-            +" so be patient. Optimization in scope of "
-            a("https://github.com/krzema12/fsynth/issues/12") { +"issue #12" }
+            +"Making this UI more user-friendly is in scope of "
+            a("https://github.com/krzema12/fsynth/issues/14") { +"issue #14" }
         }
         allSongs.forEach { song ->
             materialButton {
