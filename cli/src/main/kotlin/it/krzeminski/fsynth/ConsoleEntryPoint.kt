@@ -5,12 +5,9 @@ import it.krzeminski.fsynth.songs.getSongByName
 import it.krzeminski.fsynth.types.Song
 
 fun main(args: Array<String>) {
-    configureOutputFormat()
-
     val nameOfSongToPlay : String? = if (args.isNotEmpty()) args[0] else null
     val songToPlay : Song? = nameOfSongToPlay?.let { getSongByName(nameOfSongToPlay) }
 
-    songToPlay?.let {
-        render8bit(song = it, sampleRate = 44100)
-    } ?: println("Available songs: ${allSongs.joinToString { "'${it.name}'" }}")
+    songToPlay?.playOnJvm(samplesPerSecond = 44100, sampleSizeInBits = 8)
+            ?: println("Available songs: ${allSongs.joinToString { "'${it.name}'" }}")
 }
