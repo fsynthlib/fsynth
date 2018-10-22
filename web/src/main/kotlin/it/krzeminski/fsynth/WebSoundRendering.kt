@@ -3,13 +3,17 @@ package it.krzeminski.fsynth
 import it.krzeminski.fsynth.types.Song
 import it.krzeminski.fsynth.typings.AudioBuffer
 import it.krzeminski.fsynth.typings.AudioContext
+import it.krzeminski.testutils.measureTimeSeconds
 import org.khronos.webgl.Float32Array
-import org.khronos.webgl.set
 
 fun playSong(song: Song) {
     val samplesPerSecond = 44100
 
-    val buffer = renderSongToArray(song, samplesPerSecond)
+    lateinit var buffer: Float32Array
+    val timeInSeconds = measureTimeSeconds {
+        buffer = renderSongToArray(song, samplesPerSecond)
+    }
+    println("Synthesized in ${timeInSeconds} s")
     val context = AudioContext()
     val contextBuffer = createAudioContextBuffer(context, buffer, samplesPerSecond)
 
