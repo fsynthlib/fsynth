@@ -3,17 +3,10 @@ package it.krzeminski.fsynth
 import it.krzeminski.fsynth.types.Song
 
 fun render8bit(song: Song, sampleRate: Int): ByteArray =
-        (0..samplesToRender(sampleRate, song))
-                .map { sampleIndex -> sampleIndexToSeconds(sampleIndex, sampleRate) }
-                .map { time -> song.waveform(time) }
+        song.renderWithSampleRate(sampleRate)
                 .map { waveformValue -> normalizedWaveValueToByte(waveformValue) }
+                .toList()
                 .toByteArray()
-
-private fun samplesToRender(sampleRate: Int, song: Song) =
-        (sampleRate.toFloat() * song.durationInSeconds).toInt()
-
-private fun sampleIndexToSeconds(sampleIndex: Int, sampleRate: Int) =
-        sampleIndex.toFloat() / sampleRate.toFloat()
 
 /**
  * Takes [value] of the sound wave, between -1.0 and 1.0, and returns an 8-bit sample (e.g. 0 for -1.0, 255 for 1.0).
