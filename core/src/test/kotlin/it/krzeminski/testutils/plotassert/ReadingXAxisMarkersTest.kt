@@ -66,7 +66,7 @@ class ReadingXAxisMarkersTest {
                     )
             )
         }.let { e ->
-            assertEquals("Given X axis markers should have descending values (found: 3.0, 2.0)!", e.message)
+            assertEquals("Given X axis markers should have ascending values (found: 3.0, 2.0)!", e.message)
         }
     }
 

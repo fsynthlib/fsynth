@@ -70,7 +70,7 @@ private fun validateIfMarkerValuesIncreaseMonotonically(visualisationRows: List<
             .zipWithNext { a, b -> Pair(a, b) }
             .forEach { pair ->
                 require(pair.second - pair.first > 0.0f) {
-                    "Given X axis markers should have descending values " +
+                    "Given X axis markers should have ascending values " +
                             "(found: ${pair.first}, ${pair.second})!"
                 }
             }
