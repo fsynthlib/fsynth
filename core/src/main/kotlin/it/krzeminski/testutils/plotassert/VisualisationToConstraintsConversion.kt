@@ -19,7 +19,7 @@ fun RawVisualisation.toConstraints(): List<Constraint> {
 
 private fun validateAllPartsOfVisualisationArePresent(rawVisualisation: RawVisualisation) {
     requireNotNull(rawVisualisation.xAxis) { "X axis should be given!" }
-    requireNotNull(rawVisualisation.xAxis!!.markers) { "X axis markers should be given!" }
+    requireNotNull(rawVisualisation.xAxis.markers) { "X axis markers should be given!" }
 }
 
 private fun validateAllStringsHaveTheSameLength(rawVisualisation: RawVisualisation) {
