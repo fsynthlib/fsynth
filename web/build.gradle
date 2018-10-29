@@ -49,6 +49,7 @@ kotlinFrontend {
         dependency "react"
         dependency "react-dom"
         dependency("@material-ui/core", "3.3.2")
+        dependency("@material-ui/icons", "3.0.1")
     }
 
     webpackBundle {
