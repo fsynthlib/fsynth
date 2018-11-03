@@ -10,8 +10,8 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
-    compile 'org.jetbrains:kotlin-react:16.4.1-pre.34-kotlin-1.2.50'
-    compile 'org.jetbrains:kotlin-react-dom:16.4.1-pre.34-kotlin-1.2.50'
+    compile "org.jetbrains:kotlin-react:16.5.2-pre.58-kotlin-$kotlin_version"
+    compile "org.jetbrains:kotlin-react-dom:16.5.2-pre.58-kotlin-$kotlin_version"
     expectedBy project(":core")
 
     testCompile "org.jetbrains.kotlin:kotlin-test-js"
