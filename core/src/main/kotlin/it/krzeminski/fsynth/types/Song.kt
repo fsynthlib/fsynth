@@ -14,6 +14,10 @@ fun song(name: String, beatsPerMinute: Int, volume: Float, init: SongBuilder.() 
     return songBuilder.build()
 }
 
+@DslMarker
+annotation class SongDslMarker
+
+@SongDslMarker
 class SongBuilder(
         name: String,
         private val beatsPerMinute: Int,
@@ -36,6 +40,7 @@ class SongBuilder(
     }
 }
 
+@SongDslMarker
 class TrackBuilder(
         private val instrument: (Float) -> Waveform,
         private val beatsPerMinute: Int,
