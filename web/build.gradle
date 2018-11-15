@@ -30,17 +30,16 @@ buildscript {
     }
 }
 
-// A temporary workaround to skip running Karma tests (they don't work).
-// TODO: fix it in scope of #10.
-tasks.whenTaskAdded { task ->
-    if (task.name == "karma-run-single") {
-        task.enabled = false
+compileKotlin2Js {
+    kotlinOptions {
+        outputFile = "$project.buildDir.path/js/${project.name}.js"
+        moduleKind = "commonjs"
     }
 }
 
-compileKotlin2Js {
+compileTestKotlin2Js {
     kotlinOptions {
-        moduleKind = 'commonjs'
+        moduleKind = "commonjs"
     }
 }
 
@@ -50,10 +49,18 @@ kotlinFrontend {
         dependency "react-dom"
         dependency("@material-ui/core", "3.3.2")
         dependency("@material-ui/icons", "3.0.1")
+
+        devDependency "karma-chrome-launcher"
+        devDependency "puppeteer"
     }
 
     webpackBundle {
         bundleName = "main"
+    }
+
+    karma {
+        // All properties regarding Karma should be changed in the custom config file referred below.
+        customConfigFile = "karma.conf.js"
     }
 }
 
