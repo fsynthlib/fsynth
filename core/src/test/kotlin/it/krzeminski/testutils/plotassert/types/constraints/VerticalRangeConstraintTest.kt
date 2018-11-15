@@ -30,7 +30,7 @@ class VerticalRangeConstraintTest {
             VerticalRangeConstraint(minY = 1.0f, maxY = 2.0f)
                     .assertMatches(3.0f)
         }.let { e ->
-            assertEquals("3.0 is not between 1.0 and 2.0!", e.message)
+            assertTrue(e.message in setOf("3.0 is not between 1.0 and 2.0!", "3 is not between 1 and 2!"))
         }
     }
 

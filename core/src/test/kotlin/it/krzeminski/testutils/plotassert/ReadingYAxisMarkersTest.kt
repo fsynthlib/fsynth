@@ -7,6 +7,7 @@ import it.krzeminski.testutils.plotassert.types.VisualisationRow
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertTrue
 import kotlin.test.fail
 
 class ReadingYAxisMarkersTest {
@@ -52,7 +53,9 @@ class ReadingYAxisMarkersTest {
             )
             fail("It should throw ${IllegalArgumentException::class}!")
         }.let { e ->
-            assertEquals("Given Y axis markers should have descending values (found: 1.0, 1.0)!", e.message)
+            assertTrue(e.message in setOf(
+                    "Given Y axis markers should have descending values (found: 1.0, 1.0)!",
+                    "Given Y axis markers should have descending values (found: 1, 1)!"))
         }
     }
 
@@ -73,7 +76,9 @@ class ReadingYAxisMarkersTest {
             )
             fail("It should throw ${IllegalArgumentException::class}!")
         }.let { e ->
-            assertEquals("Given Y axis markers should have descending values (found: 4.0, 9.0)!", e.message)
+            assertTrue(e.message in setOf(
+                    "Given Y axis markers should have descending values (found: 4.0, 9.0)!",
+                    "Given Y axis markers should have descending values (found: 4, 9)!"))
         }
     }
 

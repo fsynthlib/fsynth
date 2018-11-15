@@ -4,6 +4,7 @@ import it.krzeminski.testutils.plotassert.exceptions.FailedConstraintException
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertTrue
 import kotlin.test.fail
 
 class AssertionsTest {
@@ -37,7 +38,7 @@ class AssertionsTest {
                     }
             )
         }.let { e ->
-            assertEquals("For x=1.25: 1.0 is not equal to 0.0!", e.message)
+            assertTrue(e.message in setOf("For x=1.25: 1.0 is not equal to 0.0!", "For x=1.25: 1 is not equal to 0!"))
         }
     }
 }

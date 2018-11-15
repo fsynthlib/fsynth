@@ -24,7 +24,7 @@ class ExactValueConstraintTest {
             ExactValueConstraint(1.0f)
                     .assertMatches(3.0f)
         }.let { e ->
-            assertEquals("3.0 is not equal to 1.0!", e.message)
+            assertTrue(e.message in setOf("3.0 is not equal to 1.0!", "3 is not equal to 1!"))
         }
     }
 

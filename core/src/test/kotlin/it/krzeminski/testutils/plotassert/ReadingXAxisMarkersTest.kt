@@ -7,6 +7,7 @@ import it.krzeminski.testutils.plotassert.types.VisualisationRow
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertTrue
 import kotlin.test.fail
 
 class ReadingXAxisMarkersTest {
@@ -66,7 +67,9 @@ class ReadingXAxisMarkersTest {
                     )
             )
         }.let { e ->
-            assertEquals("Given X axis markers should have ascending values (found: 3.0, 2.0)!", e.message)
+            assertTrue(e.message in setOf(
+                    "Given X axis markers should have ascending values (found: 3.0, 2.0)!",
+                    "Given X axis markers should have ascending values (found: 3, 2)!"))
         }
     }
 
