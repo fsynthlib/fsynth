@@ -1,5 +1,20 @@
 package it.krzeminski.fsynth.typings
 
+import it.krzeminski.fsynth.typings.materialui.icons.PlayArrowIcon
+import it.krzeminski.fsynth.typings.materialui.widgets.AppBar
+import it.krzeminski.fsynth.typings.materialui.widgets.AppBarProps
+import it.krzeminski.fsynth.typings.materialui.widgets.IconButton
+import it.krzeminski.fsynth.typings.materialui.widgets.IconButtonProps
+import it.krzeminski.fsynth.typings.materialui.widgets.List
+import it.krzeminski.fsynth.typings.materialui.widgets.ListItem
+import it.krzeminski.fsynth.typings.materialui.widgets.ListItemSecondaryAction
+import it.krzeminski.fsynth.typings.materialui.widgets.ListItemText
+import it.krzeminski.fsynth.typings.materialui.widgets.ListItemTextProps
+import it.krzeminski.fsynth.typings.materialui.widgets.Paper
+import it.krzeminski.fsynth.typings.materialui.widgets.PaperProps
+import it.krzeminski.fsynth.typings.materialui.widgets.Toolbar
+import it.krzeminski.fsynth.typings.materialui.widgets.Typography
+import it.krzeminski.fsynth.typings.materialui.widgets.TypographyProps
 import react.RBuilder
 import react.RHandler
 import react.RProps
@@ -20,11 +35,11 @@ fun RBuilder.materialTypography(handler: RHandler<TypographyProps>) = child(Typo
     handler()
 }
 
-fun RBuilder.materialList(handler: RHandler<ListProps>) = child(List::class) {
+fun RBuilder.materialList(handler: RHandler<RProps>) = child(List::class) {
     handler()
 }
 
-fun RBuilder.materialListItem(handler: RHandler<ListItemProps>) = child(ListItem::class) {
+fun RBuilder.materialListItem(handler: RHandler<RProps>) = child(ListItem::class) {
     handler()
 }
 
@@ -32,8 +47,7 @@ fun RBuilder.materialListItemText(handler: RHandler<ListItemTextProps>) = child(
     handler()
 }
 
-fun RBuilder.materialListItemSecondaryAction(handler: RHandler<ListItemSecondaryActionProps>)
-        = child(ListItemSecondaryAction::class)
+fun RBuilder.materialListItemSecondaryAction(handler: RHandler<RProps>) = child(ListItemSecondaryAction::class)
 {
     handler()
 }

@@ -1,5 +1,6 @@
 apply plugin: 'kotlin-platform-js'
 apply plugin: 'org.jetbrains.kotlin.frontend'
+apply plugin: 'kotlin-dce-js'
 
 repositories {
     jcenter()
