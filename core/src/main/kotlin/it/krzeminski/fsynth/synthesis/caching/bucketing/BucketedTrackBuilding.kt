@@ -1,10 +1,11 @@
 package it.krzeminski.fsynth.synthesis.caching.bucketing
 
-import it.krzeminski.fsynth.types.Track
+import it.krzeminski.fsynth.synthesis.types.TrackForSynthesis
+import it.krzeminski.fsynth.synthesis.types.TrackSegmentForSynthesis
 import it.krzeminski.fsynth.types.TrackSegment
 import kotlin.math.ceil
 
-fun Track.buildBucketedTrack(bucketSizeInSeconds: Float): BucketedTrack {
+fun TrackForSynthesis.buildBucketedTrack(bucketSizeInSeconds: Float): BucketedTrack {
     val positionedTrackSegments = positionedTrackSegmentsFrom(segments)
     val numberOfBuckets = calculateNumberOfBuckets(bucketSizeInSeconds)
 
@@ -16,17 +17,17 @@ fun Track.buildBucketedTrack(bucketSizeInSeconds: Float): BucketedTrack {
     return BucketedTrack(buckets, bucketSizeInSeconds)
 }
 
-private fun positionedTrackSegmentsFrom(segments: List<TrackSegment>): List<PositionedTrackSegment> {
+private fun positionedTrackSegmentsFrom(segments: List<TrackSegmentForSynthesis>): List<PositionedTrackSegment> {
     return segments.fold(emptyList()) { positionedTrackSegmentsSoFar, currentTrackSegment ->
         val last = positionedTrackSegmentsSoFar.lastOrNull()
         positionedTrackSegmentsSoFar.plus(PositionedTrackSegment(currentTrackSegment, last?.endTimeInSeconds ?: 0.0f))
     }
 }
 
-private fun Track.calculateNumberOfBuckets(bucketSizeInSeconds: Float) =
+private fun TrackForSynthesis.calculateNumberOfBuckets(bucketSizeInSeconds: Float) =
         ceil(durationInSeconds / bucketSizeInSeconds).toInt()
 
-private val Track.durationInSeconds: Float
+private val TrackForSynthesis.durationInSeconds: Float
     get() = this.segments.map { it.durationInSeconds }.sum()
 
 private fun segmentsForBucket(positionedTrackSegments: List<PositionedTrackSegment>,

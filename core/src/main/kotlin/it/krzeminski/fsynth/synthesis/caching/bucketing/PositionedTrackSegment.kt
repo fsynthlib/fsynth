@@ -1,9 +1,9 @@
 package it.krzeminski.fsynth.synthesis.caching.bucketing
 
-import it.krzeminski.fsynth.types.TrackSegment
+import it.krzeminski.fsynth.synthesis.types.TrackSegmentForSynthesis
 
 data class PositionedTrackSegment(
-        val trackSegment: TrackSegment,
+        val trackSegment: TrackSegmentForSynthesis,
         val startTimeInSeconds: Float)
 
 val PositionedTrackSegment.endTimeInSeconds: Float

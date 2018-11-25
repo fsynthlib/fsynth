@@ -3,11 +3,12 @@ package it.krzeminski.fsynth.synthesis
 import it.krzeminski.fsynth.synthesis.caching.bucketing.BucketedTrack
 import it.krzeminski.fsynth.synthesis.caching.bucketing.PositionedTrackSegment
 import it.krzeminski.fsynth.synthesis.caching.bucketing.buildBucketedTrack
+import it.krzeminski.fsynth.synthesis.types.SongForSynthesis
+import it.krzeminski.fsynth.synthesis.types.TrackForSynthesis
 import it.krzeminski.fsynth.types.Song
-import it.krzeminski.fsynth.types.Track
 import it.krzeminski.fsynth.types.Waveform
 
-fun Song.buildSongEvaluationFunction(): Waveform {
+fun SongForSynthesis.buildSongEvaluationFunction(): Waveform {
     val bucketedTracks = tracks.buildBucketedTracks()
     return { t ->
         getSongWaveformValueCached(bucketedTracks, volume, t)
@@ -15,9 +16,12 @@ fun Song.buildSongEvaluationFunction(): Waveform {
 }
 
 val Song.durationInSeconds: Float
-    get() = tracks.map { it.segments.map { it.durationInSeconds }.sum() }.max() ?: 0.0f
+    get() = this.preprocessForSynthesis().durationInSeconds
 
-private fun List<Track>.buildBucketedTracks(): List<BucketedTrack> =
+val SongForSynthesis.durationInSeconds: Float
+    get() = this.tracks.map { it.segments.map { it.durationInSeconds }.sum() }.max() ?: 0.0f
+
+private fun List<TrackForSynthesis>.buildBucketedTracks(): List<BucketedTrack> =
         this.map { track ->
             buildCachedTrack(track)
         }
@@ -32,8 +36,8 @@ private fun List<Track>.buildBucketedTracks(): List<BucketedTrack> =
  */
 private const val bucketSizeInSeconds = 1.0f
 
-private fun buildCachedTrack(track: Track): BucketedTrack {
-    return track.buildBucketedTrack(bucketSizeInSeconds = bucketSizeInSeconds)
+private fun buildCachedTrack(trackForSynthesis: TrackForSynthesis): BucketedTrack {
+    return trackForSynthesis.buildBucketedTrack(bucketSizeInSeconds = bucketSizeInSeconds)
 }
 
 private fun getSongWaveformValueCached(bucketedTracks: List<BucketedTrack>, volume: Float, time: Float): Float =

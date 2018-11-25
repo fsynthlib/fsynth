@@ -1,8 +1,8 @@
 package it.krzeminski.fsynth
 
-import it.krzeminski.fsynth.types.Song
-import it.krzeminski.fsynth.types.Track
-import it.krzeminski.fsynth.types.TrackSegment
+import it.krzeminski.fsynth.synthesis.types.SongForSynthesis
+import it.krzeminski.fsynth.synthesis.types.TrackForSynthesis
+import it.krzeminski.fsynth.synthesis.types.TrackSegmentForSynthesis
 import it.krzeminski.testutils.plotassert.assertFunctionConformsTo
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -10,12 +10,10 @@ import kotlin.test.assertEquals
 class RenderingTest {
     @Test
     fun rendersSongCorrectly() {
-        val testSong = Song(
-                name = "Test song",
+        val testSong = SongForSynthesis(
                 tracks = listOf(
-                        Track(listOf(
-                                TrackSegment(sineWave(1.0f), 3.0f)),
-                                "Test track")),
+                        TrackForSynthesis(listOf(
+                                TrackSegmentForSynthesis(sineWave(1.0f), 3.0f)))),
                 volume = 1.0f)
 
         val songSamples = testSong.renderWithSampleRate(8).toList().toFloatArray()
