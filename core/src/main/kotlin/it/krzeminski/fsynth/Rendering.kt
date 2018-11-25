@@ -1,5 +1,7 @@
 package it.krzeminski.fsynth
 
+import it.krzeminski.fsynth.synthesis.buildSongEvaluationFunction
+import it.krzeminski.fsynth.synthesis.durationInSeconds
 import it.krzeminski.fsynth.types.Song
 
 fun Song.renderWithSampleRate(sampleRate: Int): Sequence<Float> {

@@ -1,4 +1,4 @@
-package it.krzeminski.fsynth.caching.bucketing
+package it.krzeminski.fsynth.synthesis.caching.bucketing
 
 data class BucketedTrack(
         /**

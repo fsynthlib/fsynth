@@ -1,8 +1,8 @@
-package it.krzeminski.fsynth
+package it.krzeminski.fsynth.synthesis
 
-import it.krzeminski.fsynth.caching.bucketing.BucketedTrack
-import it.krzeminski.fsynth.caching.bucketing.PositionedTrackSegment
-import it.krzeminski.fsynth.caching.bucketing.buildBucketedTrack
+import it.krzeminski.fsynth.synthesis.caching.bucketing.BucketedTrack
+import it.krzeminski.fsynth.synthesis.caching.bucketing.PositionedTrackSegment
+import it.krzeminski.fsynth.synthesis.caching.bucketing.buildBucketedTrack
 import it.krzeminski.fsynth.types.Song
 import it.krzeminski.fsynth.types.Track
 import it.krzeminski.fsynth.types.Waveform

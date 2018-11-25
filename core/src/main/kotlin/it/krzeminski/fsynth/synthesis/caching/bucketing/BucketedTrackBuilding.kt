@@ -1,4 +1,4 @@
-package it.krzeminski.fsynth.caching.bucketing
+package it.krzeminski.fsynth.synthesis.caching.bucketing
 
 import it.krzeminski.fsynth.types.Track
 import it.krzeminski.fsynth.types.TrackSegment

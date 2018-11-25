@@ -1,5 +1,6 @@
 package it.krzeminski.fsynth
 
+import it.krzeminski.fsynth.synthesis.durationInSeconds
 import it.krzeminski.fsynth.types.Song
 import it.krzeminski.fsynth.typings.materialAppBar
 import it.krzeminski.fsynth.typings.materialIconButton

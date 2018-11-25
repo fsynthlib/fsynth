@@ -1,5 +1,6 @@
-package it.krzeminski.fsynth
+package it.krzeminski.fsynth.synthesis
 
+import it.krzeminski.fsynth.squareWave
 import it.krzeminski.fsynth.types.Song
 import it.krzeminski.fsynth.types.Track
 import it.krzeminski.fsynth.types.TrackSegment
