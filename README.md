@@ -22,3 +22,9 @@ java -jar cli/build/libs/cli.jar "Van Halen - Jump (intro)"
 
 To see a list of available songs, call the CLI without arguments. 
 
+# Build prerequisites
+
+The below dependencies won't be installed by Gradle:
+
+* JDK + path to it in `JAVA_HOME`
+* npm + path to its binary in `PATH`
