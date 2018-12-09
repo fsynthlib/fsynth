@@ -13,9 +13,10 @@ class SynthesisTest {
     fun singleTrackWithSingleSegment() {
         val testSong = SongForSynthesis(
                 tracks = listOf(
-                        TrackForSynthesis(listOf(
-                                TrackSegmentForSynthesis(squareWave(4.0f), 0.5f)))),
-                volume = 1.0f)
+                        TrackForSynthesis(
+                                segments = listOf(
+                                        TrackSegmentForSynthesis(squareWave(4.0f), 0.5f)),
+                                volume = 1.0f)))
 
         val songEvaluationFunction = testSong.buildSongEvaluationFunction()
         assertEquals(0.5f, testSong.durationInSeconds)
@@ -34,19 +35,24 @@ class SynthesisTest {
     fun durationIsCorrectlyCalculated() {
         val testSong = SongForSynthesis(
                 tracks = listOf(
-                        TrackForSynthesis(listOf(
-                                TrackSegmentForSynthesis(squareWave(4.0f), 0.1f),
-                                TrackSegmentForSynthesis(squareWave(4.0f), 0.2f),
-                                TrackSegmentForSynthesis(squareWave(4.0f), 0.3f))),
-                        TrackForSynthesis(listOf(
-                                TrackSegmentForSynthesis(squareWave(4.0f), 0.5f),
-                                TrackSegmentForSynthesis(squareWave(4.0f), 2.5f),
-                                TrackSegmentForSynthesis(squareWave(4.0f), 1.2f))),
-                        TrackForSynthesis(listOf(
-                                TrackSegmentForSynthesis(squareWave(4.0f), 1.0f),
-                                TrackSegmentForSynthesis(squareWave(4.0f), 0.2f),
-                                TrackSegmentForSynthesis(squareWave(4.0f), 0.2f)))),
-                volume = 1.0f)
+                        TrackForSynthesis(
+                                segments = listOf(
+                                        TrackSegmentForSynthesis(squareWave(4.0f), 0.1f),
+                                        TrackSegmentForSynthesis(squareWave(4.0f), 0.2f),
+                                        TrackSegmentForSynthesis(squareWave(4.0f), 0.3f)),
+                                volume = 1.0f),
+                        TrackForSynthesis(
+                                segments = listOf(
+                                        TrackSegmentForSynthesis(squareWave(4.0f), 0.5f),
+                                        TrackSegmentForSynthesis(squareWave(4.0f), 2.5f),
+                                        TrackSegmentForSynthesis(squareWave(4.0f), 1.2f)),
+                                volume = 1.0f),
+                        TrackForSynthesis(
+                                segments = listOf(
+                                        TrackSegmentForSynthesis(squareWave(4.0f), 1.0f),
+                                        TrackSegmentForSynthesis(squareWave(4.0f), 0.2f),
+                                        TrackSegmentForSynthesis(squareWave(4.0f), 0.2f)),
+                                volume = 1.0f)))
 
         assertEquals(0.5f + 2.5f + 1.2f, testSong.durationInSeconds)
     }
@@ -54,21 +60,23 @@ class SynthesisTest {
     @Test
     fun durationForEmptySongForSynthesis() {
         val testSong = SongForSynthesis(
-                tracks = emptyList(),
-                volume = 1.0f)
+                tracks = emptyList())
 
         assertEquals(0.0f, testSong.durationInSeconds)
     }
 
     @Test
-    fun multipleTracksAreCorrectlySynthesized() {
+    fun multipleTracksWithEqualVolumesAreCorrectlySynthesized() {
         val testSong = SongForSynthesis(
                 tracks = listOf(
-                        TrackForSynthesis(listOf(
-                                TrackSegmentForSynthesis(squareWave(8.0f), 0.5f))),
-                        TrackForSynthesis(listOf(
-                                TrackSegmentForSynthesis(squareWave(2.0f), 1.0f)))),
-                volume = 0.5f)
+                        TrackForSynthesis(
+                                segments = listOf(
+                                        TrackSegmentForSynthesis(squareWave(8.0f), 0.5f)),
+                                volume = 0.5f),
+                        TrackForSynthesis(
+                                segments = listOf(
+                                        TrackSegmentForSynthesis(squareWave(2.0f), 1.0f)),
+                                volume = 0.5f)))
 
         val songEvaluationFunction = testSong.buildSongEvaluationFunction()
         assertFunctionConformsTo(songEvaluationFunction) {
@@ -85,14 +93,48 @@ class SynthesisTest {
     }
 
     @Test
+    fun multipleTracksWithDifferentVolumesAreCorrectlySynthesized() {
+        val testSong = SongForSynthesis(
+                tracks = listOf(
+                        TrackForSynthesis(
+                                segments = listOf(
+                                        TrackSegmentForSynthesis(squareWave(8.0f), 0.5f)),
+                                volume = 0.5f),
+                        TrackForSynthesis(
+                                segments = listOf(
+                                        TrackSegmentForSynthesis(squareWave(2.0f), 1.0f)),
+                                volume = 0.25f)))
+
+        val songEvaluationFunction = testSong.buildSongEvaluationFunction()
+        assertFunctionConformsTo(songEvaluationFunction) {
+            row(1.0f,   "                                                             ")
+            row(0.75f,  "XXXXI   IXXXI                                                ")
+            row(0.5f,   "    I   I   I                                                ")
+            row(0.25f,  "    I   I   I   IXXI   IXXXI   IXXXXXXXXXXXXXXI              ")
+            row(0.0f,   "    I   I   I   I  I   I   I   I              I             I")
+            row(-0.25f, "    IXXXI   IXXXI  I   I   I   I              IXXXXXXXXXXXXXI")
+            row(-0.5f,  "                   I   I   I   I                             ")
+            row(-0.75f, "                   IXXXI   IXXXI                             ")
+            row(-1.0f,  "                                                             ")
+            xAxis {
+                markers("|                             |                             |")
+                values( 0.0f,                         0.5f,                         1.0f)
+            }
+        }
+    }
+
+    @Test
     fun multipleTracksAreCorrectlySynthesizedForSongLengthBeyondBucketSize() {
         val testSong = SongForSynthesis(
                 tracks = listOf(
-                        TrackForSynthesis(listOf(
-                                TrackSegmentForSynthesis(squareWave(4.0f), 1.0f))),
-                        TrackForSynthesis(listOf(
-                                TrackSegmentForSynthesis(squareWave(1.0f), 2.0f)))),
-                volume = 0.5f)
+                        TrackForSynthesis(
+                                segments = listOf(
+                                        TrackSegmentForSynthesis(squareWave(4.0f), 1.0f)),
+                                volume = 0.5f),
+                        TrackForSynthesis(
+                                segments = listOf(
+                                        TrackSegmentForSynthesis(squareWave(1.0f), 2.0f)),
+                                volume = 0.5f)))
 
         val songEvaluationFunction = testSong.buildSongEvaluationFunction()
         assertFunctionConformsTo(songEvaluationFunction) {

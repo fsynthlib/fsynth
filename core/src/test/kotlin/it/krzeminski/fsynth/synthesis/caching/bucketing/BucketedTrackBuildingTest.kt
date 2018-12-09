@@ -13,7 +13,8 @@ class BucketedTrackBuildingTest {
         val segment2 = TrackSegmentForSynthesis(silence, 0.5f)
         val segment3 = TrackSegmentForSynthesis(silence, 0.5f)
         val trackToBeCached = TrackForSynthesis(
-                segments = listOf(segment1, segment2, segment3))
+                segments = listOf(segment1, segment2, segment3),
+                volume = 1.0f)
 
         val bucketedTrack = trackToBeCached.buildBucketedTrack(bucketSizeInSeconds = 1.0f)
 
@@ -36,7 +37,8 @@ class BucketedTrackBuildingTest {
         val segment1 = TrackSegmentForSynthesis(silence, 0.5f)
         val segment2 = TrackSegmentForSynthesis(silence, 2.0f)
         val trackToBeCached = TrackForSynthesis(
-                segments = listOf(segment1, segment2))
+                segments = listOf(segment1, segment2),
+                volume = 1.0f)
 
         val bucketedTrack = trackToBeCached.buildBucketedTrack(bucketSizeInSeconds = 1.0f)
 
@@ -60,7 +62,8 @@ class BucketedTrackBuildingTest {
     fun segmentLengthEqualToBucketLength() {
         val segment1 = TrackSegmentForSynthesis(silence, 1.0f)
         val trackToBeCached = TrackForSynthesis(
-                segments = listOf(segment1))
+                segments = listOf(segment1),
+                volume = 1.0f)
 
         val bucketedTrack = trackToBeCached.buildBucketedTrack(bucketSizeInSeconds = 1.0f)
 

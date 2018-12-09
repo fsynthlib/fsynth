@@ -32,7 +32,6 @@ class PreprocessingTest {
         val testSong = Song(
                 name = "Test song",
                 beatsPerMinute = 240,
-                volume = 1.0f,
                 tracks = listOf(
                         Track(
                                 name = "Test track",
@@ -41,7 +40,8 @@ class PreprocessingTest {
                                         TrackSegment.SingleNote(NoteValue(1, 4), C4),
                                         TrackSegment.SingleNote(NoteValue(1, 8), E4),
                                         TrackSegment.SingleNote(NoteValue(1, 2), G4)
-                                )
+                                ),
+                                volume = 1.0f
                         )
                 )
         )
@@ -51,11 +51,12 @@ class PreprocessingTest {
         assertEquals(
                 expected = SongForSynthesis(
                         tracks = listOf(
-                                TrackForSynthesis(listOf(
-                                        TrackSegmentForSynthesis(testInstrumentForNoteC4, 0.25f),
-                                        TrackSegmentForSynthesis(testInstrumentForNoteE4, 0.125f),
-                                        TrackSegmentForSynthesis(testInstrumentForNoteG4, 0.5f)))),
-                        volume = 1.0f),
+                                TrackForSynthesis(
+                                        segments = listOf(
+                                                TrackSegmentForSynthesis(testInstrumentForNoteC4, 0.25f),
+                                                TrackSegmentForSynthesis(testInstrumentForNoteE4, 0.125f),
+                                                TrackSegmentForSynthesis(testInstrumentForNoteG4, 0.5f)),
+                                        volume = 1.0f))),
                 actual = preprocessedTestSong)
     }
 
@@ -64,14 +65,14 @@ class PreprocessingTest {
         val testSong = Song(
                 name = "Test song",
                 beatsPerMinute = 240,
-                volume = 1.0f,
                 tracks = listOf(
                         Track(
                                 name = "Test track",
                                 instrument = testInstrument,
                                 segments = listOf(
                                         TrackSegment.Chord(NoteValue(1, 4), listOf(C4, E4, G4))
-                                )
+                                ),
+                                volume = 1.0f
                         )
                 )
         )
@@ -90,14 +91,14 @@ class PreprocessingTest {
         val testSong = Song(
                 name = "Test song",
                 beatsPerMinute = 240,
-                volume = 1.0f,
                 tracks = listOf(
                         Track(
                                 name = "Test track",
                                 instrument = testInstrument,
                                 segments = listOf(
                                         TrackSegment.Pause(NoteValue(1, 4))
-                                )
+                                ),
+                                volume = 1.0f
                         )
                 )
         )
@@ -107,9 +108,10 @@ class PreprocessingTest {
         assertEquals(
                 expected = SongForSynthesis(
                         tracks = listOf(
-                                TrackForSynthesis(listOf(
-                                        TrackSegmentForSynthesis(silence, 0.25f)))),
-                        volume = 1.0f),
+                                TrackForSynthesis(
+                                        segments = listOf(
+                                                TrackSegmentForSynthesis(silence, 0.25f)),
+                                        volume = 1.0f))),
                 actual = preprocessedTestSong)
     }
 
@@ -118,21 +120,22 @@ class PreprocessingTest {
         val testSong = Song(
                 name = "Test song",
                 beatsPerMinute = 240,
-                volume = 0.123f,
                 tracks = listOf(
                         Track(
                                 name = "Test track",
                                 instrument = testInstrument,
                                 segments = listOf(
                                         TrackSegment.SingleNote(NoteValue(1, 4), C4)
-                                )
+                                ),
+                                volume = 1.0f
                         ),
                         Track(
                                 name = "Test track 2",
                                 instrument = testInstrument,
                                 segments = listOf(
                                         TrackSegment.SingleNote(NoteValue(1, 8), E4)
-                                )
+                                ),
+                                volume = 1.0f
                         )
                 )
         )
@@ -142,11 +145,14 @@ class PreprocessingTest {
         assertEquals(
                 expected = SongForSynthesis(
                         tracks = listOf(
-                                TrackForSynthesis(listOf(
-                                        TrackSegmentForSynthesis(testInstrumentForNoteC4, 0.25f))),
-                                TrackForSynthesis(listOf(
-                                        TrackSegmentForSynthesis(testInstrumentForNoteE4, 0.125f)))),
-                        volume = 0.123f),
+                                TrackForSynthesis(
+                                        segments = listOf(
+                                                TrackSegmentForSynthesis(testInstrumentForNoteC4, 0.25f)),
+                                        volume = 1.0f),
+                                TrackForSynthesis(
+                                        segments = listOf(
+                                                TrackSegmentForSynthesis(testInstrumentForNoteE4, 0.125f)),
+                                        volume = 1.0f))),
                 actual = preprocessedTestSong)
     }
 }

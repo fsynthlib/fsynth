@@ -9,6 +9,7 @@ data class BucketedTrack(
          * [ArrayList]. [List] is used here only to improve immutability ([ArrayList] is mutable).
          */
         val buckets: List<TrackBucket>,
-        val bucketSizeInSeconds: Float)
+        val bucketSizeInSeconds: Float,
+        val volume: Float)
 
 typealias TrackBucket = List<PositionedTrackSegment>

@@ -1,7 +1,7 @@
 package it.krzeminski.fsynth.types
 
-fun song(name: String, beatsPerMinute: Int, volume: Float, init: SongBuilder.() -> Unit): Song {
-    val songBuilder = SongBuilder(name, beatsPerMinute, volume)
+fun song(name: String, beatsPerMinute: Int, init: SongBuilder.() -> Unit): Song {
+    val songBuilder = SongBuilder(name, beatsPerMinute)
     songBuilder.init()
     return songBuilder.build()
 }
@@ -12,13 +12,14 @@ annotation class SongDslMarker
 @SongDslMarker
 class SongBuilder(
         name: String,
-        private val beatsPerMinute: Int,
-        volume: Float)
+        private val beatsPerMinute: Int)
 {
-    private var song = Song(name = name, beatsPerMinute = beatsPerMinute, volume = volume, tracks = emptyList())
+    private var song = Song(name = name, beatsPerMinute = beatsPerMinute, tracks = emptyList())
 
-    fun track(name: String? = null, instrument: (Float) -> Waveform, init: TrackBuilder.() -> Unit) {
-        val trackBuilder = TrackBuilder(instrument, name)
+    fun track(
+            name: String? = null, instrument: (Float) -> Waveform, volume: Float, init: TrackBuilder.() -> Unit)
+    {
+        val trackBuilder = TrackBuilder(instrument, volume, name)
         initAndAppendTrack(trackBuilder, init)
     }
 
@@ -35,9 +36,10 @@ class SongBuilder(
 @SongDslMarker
 class TrackBuilder(
         private val instrument: (Float) -> Waveform,
+        private val volume: Float,
         private val name: String?)
 {
-    private var track = Track(name = name, instrument = instrument, segments = emptyList())
+    private var track = Track(name = name, instrument = instrument, volume = volume, segments = emptyList())
 
     fun note(value: NoteValue, pitch: MusicNote) {
         track = track.copy(segments = track.segments + TrackSegment.SingleNote(value, pitch))

@@ -9,10 +9,9 @@ import it.krzeminski.fsynth.types.song
 // TODO: Handle this issue properly, maybe compute maximum volume automatically and scale appropriately.
 val simpleDemoSong = song(
         name = "Simple demo song",
-        beatsPerMinute = 120,
-        volume=0.3f)
+        beatsPerMinute = 120)
 {
-    track(instrument=::organs) {
+    track(instrument=::organs, volume = 0.3f) {
         note(1 by 8, D4)
         note(1 by 16, Csharp4)
         note(1 by 16, D4)

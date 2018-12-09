@@ -12,9 +12,10 @@ class RenderingTest {
     fun rendersSongCorrectly() {
         val testSong = SongForSynthesis(
                 tracks = listOf(
-                        TrackForSynthesis(listOf(
-                                TrackSegmentForSynthesis(sineWave(1.0f), 3.0f)))),
-                volume = 1.0f)
+                        TrackForSynthesis(
+                                segments = listOf(
+                                        TrackSegmentForSynthesis(sineWave(1.0f), 3.0f)),
+                                volume = 1.0f)))
 
         val songSamples = testSong.renderWithSampleRate(8).toList().toFloatArray()
 

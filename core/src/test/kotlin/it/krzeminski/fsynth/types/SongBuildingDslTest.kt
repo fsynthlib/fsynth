@@ -12,8 +12,8 @@ class SongBuildingDslTest {
 
     @Test
     fun severalSimpleNotes() {
-        val songCreatedWithDsl = song("Test song", 240, 1.0f) {
-            track("Test track", testInstrument) {
+        val songCreatedWithDsl = song("Test song", 240) {
+            track("Test track", testInstrument, 1.0f) {
                 note(1 by 4, C4)
                 note(1 by 8, E4)
                 note(1 by 2, G4)
@@ -23,11 +23,11 @@ class SongBuildingDslTest {
         val expectedSong = Song(
                 name = "Test song",
                 beatsPerMinute = 240,
-                volume = 1.0f,
                 tracks = listOf(
                         Track(
                                 name = "Test track",
                                 instrument = testInstrument,
+                                volume = 1.0f,
                                 segments = listOf(
                                         TrackSegment.SingleNote(NoteValue(1, 4), C4),
                                         TrackSegment.SingleNote(NoteValue(1, 8), E4),
@@ -42,8 +42,8 @@ class SongBuildingDslTest {
 
     @Test
     fun chord() {
-        val songCreatedWithDsl = song("Test song", 240, 1.0f) {
-            track("Test track", testInstrument) {
+        val songCreatedWithDsl = song("Test song", 240) {
+            track("Test track", testInstrument, 1.0f) {
                 chord(1 by 4, C4, E4, G4)
             }
         }
@@ -51,11 +51,11 @@ class SongBuildingDslTest {
         val expectedSong = Song(
                 name = "Test song",
                 beatsPerMinute = 240,
-                volume = 1.0f,
                 tracks = listOf(
                         Track(
                                 name = "Test track",
                                 instrument = testInstrument,
+                                volume = 1.0f,
                                 segments = listOf(
                                         TrackSegment.Chord(NoteValue(1, 4), listOf(C4, E4, G4))
                                 )
@@ -68,8 +68,8 @@ class SongBuildingDslTest {
 
     @Test
     fun pause() {
-        val songCreatedWithDsl = song("Test song", 240, 1.0f) {
-            track("Test track", testInstrument) {
+        val songCreatedWithDsl = song("Test song", 240) {
+            track("Test track", testInstrument, 1.0f) {
                 pause(1 by 4)
             }
         }
@@ -77,11 +77,11 @@ class SongBuildingDslTest {
         val expectedSong = Song(
                 name = "Test song",
                 beatsPerMinute = 240,
-                volume = 1.0f,
                 tracks = listOf(
                         Track(
                                 name = "Test track",
                                 instrument = testInstrument,
+                                volume = 1.0f,
                                 segments = listOf(
                                         TrackSegment.Pause(NoteValue(1, 4))
                                 )
@@ -94,11 +94,11 @@ class SongBuildingDslTest {
 
     @Test
     fun severalTracks() {
-        val songCreatedWithDsl = song("Test song", 240, 0.123f) {
-            track("Test track", testInstrument) {
+        val songCreatedWithDsl = song("Test song", 240) {
+            track("Test track", testInstrument, 0.123f) {
                 note(1 by 4, C4)
             }
-            track("Test track 2", testInstrument) {
+            track("Test track 2", testInstrument, 0.456f) {
                 note(1 by 8, E4)
             }
         }
@@ -106,11 +106,11 @@ class SongBuildingDslTest {
         val expectedSong = Song(
                 name = "Test song",
                 beatsPerMinute = 240,
-                volume = 0.123f,
                 tracks = listOf(
                         Track(
                                 name = "Test track",
                                 instrument = testInstrument,
+                                volume = 0.123f,
                                 segments = listOf(
                                         TrackSegment.SingleNote(NoteValue(1, 4), C4)
                                 )
@@ -118,6 +118,7 @@ class SongBuildingDslTest {
                         Track(
                                 name = "Test track 2",
                                 instrument = testInstrument,
+                                volume = 0.456f,
                                 segments = listOf(
                                         TrackSegment.SingleNote(NoteValue(1, 8), E4)
                                 )

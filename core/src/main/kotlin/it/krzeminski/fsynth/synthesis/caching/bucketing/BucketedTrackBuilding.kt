@@ -14,7 +14,7 @@ fun TrackForSynthesis.buildBucketedTrack(bucketSizeInSeconds: Float): BucketedTr
                     .map { bucketIndex -> segmentsForBucket(positionedTrackSegments, bucketIndex, bucketSizeInSeconds) }
                     .toList())
 
-    return BucketedTrack(buckets, bucketSizeInSeconds)
+    return BucketedTrack(buckets, bucketSizeInSeconds, volume)
 }
 
 private fun positionedTrackSegmentsFrom(segments: List<TrackSegmentForSynthesis>): List<PositionedTrackSegment> {

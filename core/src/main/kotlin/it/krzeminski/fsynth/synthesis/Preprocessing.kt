@@ -10,11 +10,12 @@ import it.krzeminski.fsynth.types.Track
 import it.krzeminski.fsynth.types.TrackSegment
 import it.krzeminski.fsynth.types.plus
 
-fun Song.preprocessForSynthesis() = SongForSynthesis(tracks = tracks.preprocess(this), volume = volume)
+fun Song.preprocessForSynthesis() = SongForSynthesis(tracks = tracks.preprocess(this))
 
 private fun List<Track>.preprocess(song: Song) = map { it.preprocess(song) }
 
-private fun Track.preprocess(song: Song) = TrackForSynthesis(segments = segments.preprocess(song, this))
+private fun Track.preprocess(song: Song) =
+        TrackForSynthesis(segments = segments.preprocess(song, this), volume = this.volume)
 
 private fun List<TrackSegment>.preprocess(song: Song, track: Track) = map { it.preprocess(song, track) }
 

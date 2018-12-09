@@ -11,7 +11,7 @@ import it.krzeminski.fsynth.types.Waveform
 fun SongForSynthesis.buildSongEvaluationFunction(): Waveform {
     val bucketedTracks = tracks.buildBucketedTracks()
     return { t ->
-        getSongWaveformValueCached(bucketedTracks, volume, t)
+        getSongWaveformValueCached(bucketedTracks, t)
     }
 }
 
@@ -40,8 +40,8 @@ private fun buildCachedTrack(trackForSynthesis: TrackForSynthesis): BucketedTrac
     return trackForSynthesis.buildBucketedTrack(bucketSizeInSeconds = bucketSizeInSeconds)
 }
 
-private fun getSongWaveformValueCached(bucketedTracks: List<BucketedTrack>, volume: Float, time: Float): Float =
-        bucketedTracks.map { it.getWaveformValue(time) }.sum()*volume
+private fun getSongWaveformValueCached(bucketedTracks: List<BucketedTrack>, time: Float): Float =
+        bucketedTracks.map { it.getWaveformValue(time) }.sum()
 
 private fun BucketedTrack.getWaveformValue(time: Float): Float {
     val whichBucket = (time / bucketSizeInSeconds).toInt()
@@ -52,7 +52,7 @@ private fun BucketedTrack.getWaveformValue(time: Float): Float {
     for (segmentInBucket in buckets[whichBucket]) {
         if (segmentInBucket playsFor time) {
             val timeRelativeToThisSegment = time - segmentInBucket.startTimeInSeconds
-            return segmentInBucket.trackSegment.waveform(timeRelativeToThisSegment)
+            return segmentInBucket.trackSegment.waveform(timeRelativeToThisSegment)*volume
         }
     }
 

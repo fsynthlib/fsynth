@@ -9,8 +9,8 @@ import kotlin.system.measureTimeMillis
 
 fun main(args: Array<String>) {
     (1..1000).forEach { numberOfSegments ->
-        val testSong = song(name = "Test song", beatsPerMinute = 100, volume = 1.0f) {
-            track(instrument = ::synthesizer) {
+        val testSong = song(name = "Test song", beatsPerMinute = 100) {
+            track(instrument = ::synthesizer, volume = 1.0f) {
                 repeat(numberOfSegments) {
                     note(1 by 4, MusicNote.A4)
                 }
