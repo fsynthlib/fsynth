@@ -1,14 +1,17 @@
 package it.krzeminski.fsynth.synthesis
 
 import it.krzeminski.fsynth.silence
+import it.krzeminski.fsynth.sineWave
 import it.krzeminski.fsynth.synthesis.types.SongForSynthesis
 import it.krzeminski.fsynth.synthesis.types.TrackForSynthesis
 import it.krzeminski.fsynth.synthesis.types.TrackSegmentForSynthesis
 import it.krzeminski.fsynth.types.MusicNote.*
+import it.krzeminski.fsynth.types.MusicNoteTransition
 import it.krzeminski.fsynth.types.NoteValue
 import it.krzeminski.fsynth.types.Song
 import it.krzeminski.fsynth.types.Track
 import it.krzeminski.fsynth.types.TrackSegment
+import it.krzeminski.testutils.plotassert.assertFunctionConformsTo
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -19,6 +22,7 @@ class PreprocessingTest {
         val testInstrumentForNoteG4 = { _: Float -> 789.0f }
         val testInstrument = { frequency: Float ->
             when (frequency) {
+                1.0f -> sineWave(1.0f)
                 C4.frequency -> testInstrumentForNoteC4
                 E4.frequency -> testInstrumentForNoteE4
                 G4.frequency -> testInstrumentForNoteG4
@@ -58,6 +62,55 @@ class PreprocessingTest {
                                                 TrackSegmentForSynthesis(testInstrumentForNoteG4, 0.5f)),
                                         volume = 1.0f))),
                 actual = preprocessedTestSong)
+    }
+
+    @Test
+    fun glissando() {
+        val testSong = Song(
+                name = "Test song",
+                beatsPerMinute = 240,
+                tracks = listOf(
+                        Track(
+                                name = "Test track",
+                                instrument = testInstrument,
+                                segments = listOf(
+                                        TrackSegment.Glissando(NoteValue(1, 4),
+                                                MusicNoteTransition(VeryLowForTesting, A0))
+                                ),
+                                volume = 1.0f
+                        )
+                )
+        )
+
+        val preprocessedTestSong = testSong.preprocessForSynthesis()
+
+        with (preprocessedTestSong.tracks[0]) {
+            assertEquals(1, segments.size)
+            assertEquals(0.25f, segments[0].durationInSeconds)
+            assertFunctionConformsTo(segments[0].waveform) {
+                row(1.0f,   "        IIII                          III                   II              I          ")
+                row(        "       I    II                       I   I                 I               I I         ")
+                row(        "     II       I                           I               I   I               I        ")
+                row(        "    I          I                    I                                     I            ")
+                row(        "   I            I                  I       I             I     I                       ")
+                row(        "                                            I                                          ")
+                row(        "  I              I                I                                      I     I       ")
+                row(        " I                I                                     I       I                      ")
+                row(0.0f,   "X                                I           I                                         ")
+                row(        "                   I                                   I         I              I     I")
+                row(        "                    I           I             I                         I              ")
+                row(        "                                                                                       ")
+                row(        "                     I         I               I      I           I                    ")
+                row(        "                      I       I                                        I         I   I ")
+                row(        "                       I     I                  I    I             I                   ")
+                row(        "                        I   I                    I  I                 I           I I  ")
+                row(-1.0f,  "                         III                      II                II             I   ")
+                xAxis {
+                    markers("|                                                                                     |")
+                    values( 0.0f,                                                                                0.25f)
+                }
+            }
+        }
     }
 
     @Test

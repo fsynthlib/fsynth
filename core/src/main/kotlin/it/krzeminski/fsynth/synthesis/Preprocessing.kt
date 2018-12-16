@@ -9,6 +9,8 @@ import it.krzeminski.fsynth.types.Song
 import it.krzeminski.fsynth.types.Track
 import it.krzeminski.fsynth.types.TrackSegment
 import it.krzeminski.fsynth.types.plus
+import kotlin.math.ln
+import kotlin.math.pow
 
 fun Song.preprocessForSynthesis() = SongForSynthesis(tracks = tracks.preprocess(this))
 
@@ -24,6 +26,18 @@ private fun TrackSegment.preprocess(song: Song, track: Track): TrackSegmentForSy
         is TrackSegment.SingleNote -> {
             return TrackSegmentForSynthesis(track.instrument(pitch.frequency), value.toSeconds(song.beatsPerMinute))
         }
+        is TrackSegment.Glissando -> {
+            return TrackSegmentForSynthesis(
+                    waveform = { t: Float ->
+                        val stretchedTime = stretchTimeForGlissando(
+                                transition.startPitch.midiNoteNumber,
+                                transition.endPitch.midiNoteNumber,
+                                value.toSeconds(song.beatsPerMinute),
+                                t)
+                        track.instrument(1.0f)(stretchedTime)
+                    },
+                    durationInSeconds = value.toSeconds(song.beatsPerMinute))
+        }
         is TrackSegment.Chord -> {
             return TrackSegmentForSynthesis(
                     waveform = pitches
@@ -36,6 +50,21 @@ private fun TrackSegment.preprocess(song: Song, track: Track): TrackSegmentForSy
             return TrackSegmentForSynthesis(silence, value.toSeconds(song.beatsPerMinute))
         }
     }
+}
+
+/**
+ * This function calculates what time should be given to a 1-hertz instrument function to sound like glissando with the
+ * given parameters. For example, if glissando should start at A4 and end at A5 (double the frequency of A4), the time
+ * at the end of glissando (when [t] is near [durationInSeconds]) will flow twice as fast comparing to [t] being near 0.
+ *
+ * A detailed explanation of this formula can be found at
+ * https://github.com/krzema12/fsynth/issues/21#issuecomment-449631393
+ */
+private fun stretchTimeForGlissando(startNoteIndex: Int, endNoteIndex: Int, durationInSeconds: Float, t: Float): Float {
+    val a = (endNoteIndex - startNoteIndex).toFloat()/(12.0f*durationInSeconds)
+    val b = (startNoteIndex - 69).toFloat()/12.0f
+    val c = 440.0f
+    return c*(2.0f.pow(a * t + b) - 2.0f.pow(b))/(a*ln(2.0f))
 }
 
 private fun NoteValue.toSeconds(beatsPerMinute: Int) =

@@ -2,7 +2,8 @@ package it.krzeminski.fsynth.types
 
 import kotlin.math.pow
 
-enum class MusicNote(private val midiNoteNumber: Int) {
+enum class MusicNote(val midiNoteNumber: Int) {
+    VeryLowForTesting(0),
     A0     (21),
     Asharp0(22),
     B0     (23),

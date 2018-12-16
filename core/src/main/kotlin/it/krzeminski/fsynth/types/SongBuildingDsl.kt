@@ -45,6 +45,10 @@ class TrackBuilder(
         track = track.copy(segments = track.segments + TrackSegment.SingleNote(value, pitch))
     }
 
+    fun glissando(value: NoteValue, transition: MusicNoteTransition) {
+        track = track.copy(segments = track.segments + TrackSegment.Glissando(value, transition))
+    }
+
     fun chord(value: NoteValue, vararg pitches: MusicNote) {
         track = track.copy(segments = track.segments + TrackSegment.Chord(value, pitches.toList()))
     }
@@ -59,3 +63,5 @@ class TrackBuilder(
 }
 
 infix fun Int.by(denominator: Int): NoteValue = NoteValue(this, denominator)
+
+infix fun MusicNote.to(endPitch: MusicNote): MusicNoteTransition = MusicNoteTransition(this, endPitch)

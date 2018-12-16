@@ -41,6 +41,32 @@ class SongBuildingDslTest {
     }
 
     @Test
+    fun glissando() {
+        val songCreatedWithDsl = song("Test song", 240) {
+            track("Test track", testInstrument, 1.0f) {
+                glissando(1 by 4, C4 to E4)
+            }
+        }
+
+        val expectedSong = Song(
+                name = "Test song",
+                beatsPerMinute = 240,
+                tracks = listOf(
+                        Track(
+                                name = "Test track",
+                                instrument = testInstrument,
+                                volume = 1.0f,
+                                segments = listOf(
+                                        TrackSegment.Glissando(NoteValue(1, 4), MusicNoteTransition(C4, E4))
+                                )
+                        )
+                )
+        )
+
+        assertEquals(expected = expectedSong, actual = songCreatedWithDsl)
+    }
+
+    @Test
     fun chord() {
         val songCreatedWithDsl = song("Test song", 240) {
             track("Test track", testInstrument, 1.0f) {
