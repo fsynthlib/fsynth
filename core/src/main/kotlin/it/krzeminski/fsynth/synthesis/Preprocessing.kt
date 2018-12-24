@@ -58,7 +58,7 @@ private fun TrackSegment.preprocess(song: Song, track: Track): TrackSegmentForSy
  * at the end of glissando (when [t] is near [durationInSeconds]) will flow twice as fast comparing to [t] being near 0.
  *
  * A detailed explanation of this formula can be found at
- * https://github.com/krzema12/fsynth/issues/21#issuecomment-449631393
+ * https://github.com/krzema12/fsynth/wiki/Glissando:-explanation-of-implementation
  */
 private fun stretchTimeForGlissando(startNoteIndex: Int, endNoteIndex: Int, durationInSeconds: Float, t: Float): Float {
     val a = (endNoteIndex - startNoteIndex).toFloat()/(12.0f*durationInSeconds)
