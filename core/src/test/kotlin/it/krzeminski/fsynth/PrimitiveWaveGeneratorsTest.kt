@@ -14,7 +14,7 @@ class PrimitiveWaveGeneratorsTest {
                     row(        "       III                     III                                               ")
                     row(        "    III                           III                                            ")
                     row(        "  II                                 II                                          ")
-                    row(0.0f,   "XI                                     IXI                                     IX")
+                    row(0.0f,   "XI                                     III                                     II")
                     row(        "                                          II                                 II  ")
                     row(        "                                            III                           III    ")
                     row(        "                                               III                     III       ")
@@ -32,17 +32,17 @@ class PrimitiveWaveGeneratorsTest {
         assertFunctionConformsTo(
                 functionUnderTest = sineWave(2.0f),
                 visualisation = {
-                    row(1.0f,   "        IIXII                                   IIXII                            ")
+                    row(1.0f,   "        IIXII                                   IIIII                            ")
                     row(        "     III     III                             III     III                         ")
                     row(        "    I           I                           I           I                        ")
                     row(        "  II             II                       II             II                      ")
                     row(        " I                 I                     I                 I                     ")
-                    row(0.0f,   "X                   X                   X                   X                   X")
+                    row(0.0f,   "X                   I                   I                   I                   I")
                     row(        "                     I                 I                     I                 I ")
                     row(        "                      II             II                       II             II  ")
                     row(        "                        I           I                           I           I    ")
                     row(        "                         III     III                             III     III     ")
-                    row(-1.0f,  "                            IIXII                                   IIXII        ")
+                    row(-1.0f,  "                            IIIII                                   IIXII        ")
                     xAxis {
                         markers("|                   |                   |                   |                   |")
                         values( 0.0f,               0.25f,              0.5f,               0.75f,              1.0f)

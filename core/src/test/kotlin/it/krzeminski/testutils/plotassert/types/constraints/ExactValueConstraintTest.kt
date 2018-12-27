@@ -13,9 +13,13 @@ class ExactValueConstraintTest {
     }
 
     @Test
-    fun assertMatchesWhenReallyCloseValues() {
-        ExactValueConstraint(1.0f)
-                .assertMatches(1.0000001f)
+    fun assertDoesNotMatchWhenReallyCloseValues() {
+        assertFailsWith<FailedConstraintException> {
+            ExactValueConstraint(1.0f)
+                    .assertMatches(1.0000001f)
+        }.let { e ->
+            assertTrue(e.message in setOf("1.0000001 is not equal to 1.0!", "1.0000001 is not equal to 1!"))
+        }
     }
 
     @Test
