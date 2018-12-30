@@ -10,7 +10,7 @@ fun Song.playOnJvm(samplesPerSecond: Int, sampleSizeInBits: Int) {
 
     lateinit var rawData: ByteArray
     val synthesisTimeInMilliseconds = measureTimeMillis {
-        rawData = render8bit(song = this, sampleRate = 44100)
+        rawData = render8bit(song = this, sampleRate = samplesPerSecond)
     }
     println("Synthesized in ${synthesisTimeInMilliseconds.toFloat()/1000.0f} s")
     val audioFormat = buildAudioFormat(samplesPerSecond, sampleSizeInBits)
