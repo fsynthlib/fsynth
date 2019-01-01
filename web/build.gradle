@@ -11,8 +11,8 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
-    compile "org.jetbrains:kotlin-react:16.5.2-pre.58-kotlin-$kotlin_version"
-    compile "org.jetbrains:kotlin-react-dom:16.5.2-pre.58-kotlin-$kotlin_version"
+    compile "org.jetbrains:kotlin-react:16.6.0-pre.65-kotlin-$kotlin_version"
+    compile "org.jetbrains:kotlin-react-dom:16.6.0-pre.65-kotlin-$kotlin_version"
     expectedBy project(":core")
 
     testCompile "org.jetbrains.kotlin:kotlin-test-js"
