@@ -1,4 +1,7 @@
-apply plugin: 'kotlin-platform-common'
+plugins {
+    id 'kotlin-platform-common'
+    id 'org.ajoberstar.grgit' version '3.0.0'
+}
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlin_version"
@@ -6,3 +9,32 @@ dependencies {
     testCompile "org.jetbrains.kotlin:kotlin-test-common:$kotlin_version"
     testCompile "org.jetbrains.kotlin:kotlin-test-annotations-common:$kotlin_version"
 }
+
+sourceSets.main.kotlin.srcDirs += "${buildDir}/generated/"
+
+task generateGitInfo() {
+    def fileDirectory = "${buildDir}/generated/it/krzeminski/fsynth/generated"
+    def fileName = "GitInfo.kt"
+
+    def sha1 = grgit.head().id
+    def timeUnixTimestamp = grgit.head().dateTime.toEpochSecond()
+    def containsUncommittedChanges = !grgit.status().clean
+    def contents = """\
+        package it.krzeminski.fsynth.generated
+
+        import it.krzeminski.gitinfo.types.CommitMetadata
+        import it.krzeminski.gitinfo.types.GitInfo
+
+        val gitInfo = GitInfo(
+                latestCommit = CommitMetadata(
+                        sha1 = "$sha1",
+                        timeUnixTimestamp = $timeUnixTimestamp),
+                containsUncommittedChanges = $containsUncommittedChanges)
+        """.stripIndent()
+    doLast {
+        file(fileDirectory).mkdirs()
+        file("$fileDirectory/$fileName").text = contents
+    }
+}
+
+compileKotlinCommon.dependsOn generateGitInfo

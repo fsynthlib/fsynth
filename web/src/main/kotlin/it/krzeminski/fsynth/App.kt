@@ -1,5 +1,6 @@
 package it.krzeminski.fsynth
 
+import it.krzeminski.fsynth.generated.gitInfo
 import it.krzeminski.fsynth.synthesis.durationInSeconds
 import it.krzeminski.fsynth.types.Song
 import it.krzeminski.fsynth.typings.materialAppBar
@@ -79,6 +80,9 @@ class App : RComponent<AppProps, RState>() {
                     }
                 }
             }
+        }
+        versionInfo {
+            attrs.gitInfo = gitInfo
         }
     }
 }
