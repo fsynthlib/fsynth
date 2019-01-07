@@ -15,7 +15,7 @@ class VersionInfo : RComponent<VersionInfoProps, RState>() {
         div {
             attrs.style = js {
                 color = "#555"
-                fontSize = "10pt"
+                fontSize = "0.8rem"
                 textAlign = "center"
                 marginTop = "10px"
             }
