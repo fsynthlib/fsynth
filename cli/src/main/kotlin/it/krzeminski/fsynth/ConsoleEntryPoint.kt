@@ -19,6 +19,5 @@ fun main(args: Array<String>) {
 private fun printIntroduction() {
     println("fsynth by Piotr Krzemiński")
     println("Version ${gitInfo.latestCommit.sha1.substring(0, 8)} " +
-            "from ${Instant.ofEpochSecond(gitInfo.latestCommit.timeUnixTimestamp)}" +
-            if (gitInfo.containsUncommittedChanges) " (dirty repo)" else "")
+            "from ${Instant.ofEpochSecond(gitInfo.latestCommit.timeUnixTimestamp)}")
 }

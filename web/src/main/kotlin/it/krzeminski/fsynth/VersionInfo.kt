@@ -29,9 +29,6 @@ class VersionInfo : RComponent<VersionInfoProps, RState>() {
                 }
             }
             +" from ${Date(gitInfo.latestCommit.timeUnixTimestamp*1000).toUTCString()}"
-            if (gitInfo.containsUncommittedChanges) {
-                +" (dirty repo)"
-            }
         }
     }
 }
