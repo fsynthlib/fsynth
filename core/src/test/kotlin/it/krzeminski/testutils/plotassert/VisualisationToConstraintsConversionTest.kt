@@ -87,36 +87,4 @@ class VisualisationToConstraintsConversionTest {
             assertEquals("Visualisation rows and the X axis markers string must have the same length!", e.message)
         }
     }
-
-    @Test
-    fun xAxisNotProvided() {
-        assertFailsWith<IllegalArgumentException> {
-            RawVisualisation(
-                    visualisationRows = listOf(
-                            VisualisationRow("  X", 4.0f),
-                            VisualisationRow(" X "),
-                            VisualisationRow("X  ", 2.0f)
-                    ),
-                    xAxis = null)
-                    .toConstraints()
-        }.let { e ->
-            assertEquals("X axis should be given!", e.message)
-        }
-    }
-
-    @Test
-    fun xAxisMarkersNotProvided() {
-        assertFailsWith<IllegalArgumentException> {
-            RawVisualisation(
-                    visualisationRows = listOf(
-                            VisualisationRow("  X", 4.0f),
-                            VisualisationRow(" X "),
-                            VisualisationRow("X  ", 2.0f)
-                    ),
-                    xAxis = RawXAxis(markers = null))
-                    .toConstraints()
-        }.let { e ->
-            assertEquals("X axis markers should be given!", e.message)
-        }
-    }
 }

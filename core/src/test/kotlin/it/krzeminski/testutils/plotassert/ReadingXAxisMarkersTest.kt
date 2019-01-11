@@ -74,42 +74,6 @@ class ReadingXAxisMarkersTest {
     }
 
     @Test
-    fun xAxisMarkersStringIsNull() {
-        assertFailsWith<IllegalArgumentException> {
-            readXAxisMarkers(
-                    RawVisualisation(
-                            visualisationRows = listOf(
-                                    VisualisationRow("    X   ", 1.0f),
-                                    VisualisationRow("   I  I ", -1.0f)
-                            ),
-                            xAxis = RawXAxis(
-                                    markers = null,
-                                    values = listOf(-2.0f, 1.0f, 4.5f))
-                    )
-            )
-        }.let { e ->
-            assertEquals("You must specify X axis markers!", e.message)
-        }
-    }
-
-    @Test
-    fun xAxisIsNull() {
-        assertFailsWith<IllegalArgumentException> {
-            readXAxisMarkers(
-                    RawVisualisation(
-                            visualisationRows = listOf(
-                                    VisualisationRow("    X   ", 1.0f),
-                                    VisualisationRow("   I  I ", -1.0f)
-                            ),
-                            xAxis = null
-                    )
-            )
-        }.let { e ->
-            assertEquals("You must specify X axis!", e.message)
-        }
-    }
-
-    @Test
     fun xAxisTooLittleValues() {
         assertFailsWith<IllegalArgumentException> {
             readXAxisMarkers(

@@ -27,9 +27,7 @@ private fun validateAllStringsHaveTheSameLength(rawVisualisation: RawVisualisati
     val allRowsHaveTheSameLength = rawVisualisation.visualisationRows
             .map { it.characters.length }
             .all { it == firstRowLength }
-    // 'xAxis' and 'markers' are non-null here because they have been validated earlier.
-    // TODO: it shouldn't be necessary in Kotlin 1.3, so remove it in scope of #17.
-    val xAxisMarkersStringHasTheSameLengthAsRows = rawVisualisation.xAxis!!.markers!!.length == firstRowLength
+    val xAxisMarkersStringHasTheSameLengthAsRows = rawVisualisation.xAxis.markers.length == firstRowLength
 
     require(allRowsHaveTheSameLength && xAxisMarkersStringHasTheSameLengthAsRows) {
         "Visualisation rows and the X axis markers string must have the same length!"

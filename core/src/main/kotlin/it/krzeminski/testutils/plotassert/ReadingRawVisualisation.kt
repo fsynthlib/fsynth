@@ -26,8 +26,11 @@ class PlotConstraintsBuilder(
     fun row(yMarkedValue: Float, visualisationRowString: String) =
             visualisationRows.add(VisualisationRow(visualisationRowString, yMarkedValue))
 
-    fun build(): RawVisualisation =
-            RawVisualisation(visualisationRows, rawXAxis)
+    fun build(): RawVisualisation {
+        val rawXAxisFinal = rawXAxis
+        requireNotNull(rawXAxisFinal) { "X axis not given!" }
+        return RawVisualisation(visualisationRows, rawXAxisFinal)
+    }
 
     fun xAxis(collectXAxisDefinition: RawXAxisBuilder.() -> Unit) {
         require(rawXAxis == null) { "X axis given more than once!" }
@@ -52,6 +55,10 @@ class RawXAxisBuilder(
         values.addAll(xAxisValues.toList())
     }
 
-    fun build(): RawXAxis =
-            RawXAxis(markers, values)
+    fun build(): RawXAxis {
+        val markersFinal = markers
+        requireNotNull(markersFinal) { "X axis markers not given!" }
+        require(values.size > 0) { "X axis values not given!" }
+        return RawXAxis(markersFinal, values)
+    }
 }

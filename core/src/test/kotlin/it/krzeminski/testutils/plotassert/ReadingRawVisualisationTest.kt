@@ -64,100 +64,70 @@ class ReadingRawVisualisationTest {
 
     @Test
     fun noXAxisGiven() {
-        assertEquals(
-                actual = readRawVisualisation {
-                    row(1.0f,  "    X   ")
-                    row(       "   I  I ")
-                    row(0.0f,  " III  II")
-                    row(       "   II I ")
-                    row(-1.0f, "    X   ")
-                },
-                expected = RawVisualisation(
-                        visualisationRows = listOf(
-                                VisualisationRow("    X   ", 1.0f),
-                                VisualisationRow("   I  I "),
-                                VisualisationRow(" III  II", 0.0f),
-                                VisualisationRow("   II I "),
-                                VisualisationRow("    X   ", -1.0f)
-                        ),
-                        xAxis = null)
-                )
+        assertFailsWith<IllegalArgumentException> {
+            readRawVisualisation {
+                row(1.0f,  "    X   ")
+                row(       "   I  I ")
+                row(0.0f,  " III  II")
+                row(       "   II I ")
+                row(-1.0f, "    X   ")
+            }
+        }.let { e ->
+            assertEquals("X axis not given!", e.message)
+        }
     }
 
     @Test
     fun nothingForXAxisGiven() {
-        assertEquals(
-                actual = readRawVisualisation {
-                    row(1.0f,  "    X   ")
-                    row(       "   I  I ")
-                    row(0.0f,  " III  II")
-                    row(       "   II I ")
-                    row(-1.0f, "    X   ")
-                    xAxis {
-                    }
-                },
-                expected = RawVisualisation(
-                        visualisationRows = listOf(
-                                VisualisationRow("    X   ", 1.0f),
-                                VisualisationRow("   I  I "),
-                                VisualisationRow(" III  II", 0.0f),
-                                VisualisationRow("   II I "),
-                                VisualisationRow("    X   ", -1.0f)
-                        ),
-                        xAxis = RawXAxis())
-        )
+        assertFailsWith<IllegalArgumentException> {
+            readRawVisualisation {
+                row(1.0f,  "    X   ")
+                row(       "   I  I ")
+                row(0.0f,  " III  II")
+                row(       "   II I ")
+                row(-1.0f, "    X   ")
+                xAxis {
+                }
+            }
+        }.let { e ->
+            assertEquals("X axis markers not given!", e.message)
+        }
     }
 
     @Test
     fun noMarkersForXAxisGiven() {
-        assertEquals(
-                actual = readRawVisualisation {
-                    row(1.0f,  "    X   ")
-                    row(       "   I  I ")
-                    row(0.0f,  " III  II")
-                    row(       "   II I ")
-                    row(-1.0f, "    X   ")
-                    xAxis {
-                        values(1.0f, 2.0f, 3.0f)
-                    }
-                },
-                expected = RawVisualisation(
-                        visualisationRows = listOf(
-                                VisualisationRow("    X   ", 1.0f),
-                                VisualisationRow("   I  I "),
-                                VisualisationRow(" III  II", 0.0f),
-                                VisualisationRow("   II I "),
-                                VisualisationRow("    X   ", -1.0f)
-                        ),
-                        xAxis = RawXAxis(
-                                values = listOf(1.0f, 2.0f, 3.0f)))
-        )
+        assertFailsWith<IllegalArgumentException> {
+            readRawVisualisation {
+                row(1.0f,  "    X   ")
+                row(       "   I  I ")
+                row(0.0f,  " III  II")
+                row(       "   II I ")
+                row(-1.0f, "    X   ")
+                xAxis {
+                    values(1.0f, 2.0f, 3.0f)
+                }
+            }
+        }.let { e ->
+            assertEquals("X axis markers not given!", e.message)
+        }
     }
 
     @Test
     fun noValuesForXAxisGiven() {
-        assertEquals(
-                actual = readRawVisualisation {
-                    row(1.0f,  "    X   ")
-                    row(       "   I  I ")
-                    row(0.0f,  " III  II")
-                    row(       "   II I ")
-                    row(-1.0f, "    X   ")
-                    xAxis {
-                        markers("|     | ")
-                    }
-                },
-                expected = RawVisualisation(
-                        visualisationRows = listOf(
-                                VisualisationRow("    X   ", 1.0f),
-                                VisualisationRow("   I  I "),
-                                VisualisationRow(" III  II", 0.0f),
-                                VisualisationRow("   II I "),
-                                VisualisationRow("    X   ", -1.0f)
-                        ),
-                        xAxis = RawXAxis(
-                                markers = "|     | "))
-        )
+        assertFailsWith<IllegalArgumentException> {
+            readRawVisualisation {
+                row(1.0f,  "    X   ")
+                row(       "   I  I ")
+                row(0.0f,  " III  II")
+                row(       "   II I ")
+                row(-1.0f, "    X   ")
+                xAxis {
+                    markers("|     | ")
+                }
+            }
+        }.let { e ->
+            assertEquals("X axis values not given!", e.message)
+        }
     }
 
     @Test
@@ -180,13 +150,12 @@ class ReadingRawVisualisationTest {
 
     @Test
     fun nothingGiven() {
-        assertEquals(
-                actual = readRawVisualisation {
-                },
-                expected = RawVisualisation(
-                        visualisationRows = emptyList(),
-                        xAxis = null)
-        )
+        assertFailsWith<IllegalArgumentException> {
+            readRawVisualisation {
+            }
+        }.let { e ->
+            assertEquals("X axis not given!", e.message)
+        }
     }
 
     @Test
