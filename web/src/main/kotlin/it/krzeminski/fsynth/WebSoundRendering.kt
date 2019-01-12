@@ -13,7 +13,7 @@ fun playSong(song: Song) {
     val timeInSeconds = measureTimeSeconds {
         buffer = renderSongToArray(song, samplesPerSecond)
     }
-    println("Synthesized in ${timeInSeconds} s")
+    println("Synthesized in $timeInSeconds s")
     val context = AudioContext()
     val contextBuffer = createAudioContextBuffer(context, buffer, samplesPerSecond)
 
@@ -35,7 +35,7 @@ private fun createAudioContextBuffer(context: AudioContext, buffer: Float32Array
 }
 
 private fun startPlayback(context: AudioContext, audioBuffer: AudioBuffer) =
-        with (context.createBufferSource()) {
+        with(context.createBufferSource()) {
             buffer = audioBuffer
             connect(context.destination)
             start(0)

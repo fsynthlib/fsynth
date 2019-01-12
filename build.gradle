@@ -21,3 +21,7 @@ allprojects {
         }
     }
 }
+
+subprojects {
+    apply from: "$rootDir/ktlint.gradle"
+}

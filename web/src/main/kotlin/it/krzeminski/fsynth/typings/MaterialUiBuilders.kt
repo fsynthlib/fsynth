@@ -47,8 +47,7 @@ fun RBuilder.materialListItemText(handler: RHandler<ListItemTextProps>) = child(
     handler()
 }
 
-fun RBuilder.materialListItemSecondaryAction(handler: RHandler<RProps>) = child(ListItemSecondaryAction::class)
-{
+fun RBuilder.materialListItemSecondaryAction(handler: RHandler<RProps>) = child(ListItemSecondaryAction::class) {
     handler()
 }
 

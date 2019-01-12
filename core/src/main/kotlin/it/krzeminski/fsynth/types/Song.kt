@@ -3,10 +3,11 @@ package it.krzeminski.fsynth.types
 data class Song(val name: String, val beatsPerMinute: Int, val tracks: List<Track>)
 
 data class Track(
-        val name: String?,
-        val instrument: (Float) -> Waveform,
-        val volume: Float,
-        val segments: List<TrackSegment>)
+    val name: String?,
+    val instrument: (Float) -> Waveform,
+    val volume: Float,
+    val segments: List<TrackSegment>
+)
 
 sealed class TrackSegment {
     data class SingleNote(val value: NoteValue, val pitch: MusicNote) : TrackSegment()

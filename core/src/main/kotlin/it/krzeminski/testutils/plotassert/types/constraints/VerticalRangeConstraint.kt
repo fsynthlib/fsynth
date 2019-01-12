@@ -6,9 +6,9 @@ import it.krzeminski.testutils.plotassert.types.AxisMarker
 import it.krzeminski.testutils.plotassert.types.VisualisationColumn
 
 data class VerticalRangeConstraint(
-        private val minY: Float,
-        private val maxY: Float) : YValueConstraint()
-{
+    private val minY: Float,
+    private val maxY: Float
+) : YValueConstraint() {
     override fun assertMatches(yValue: Float) {
         if (yValue !in minY..maxY) {
             throw FailedConstraintException("$yValue is not between $minY and $maxY!")
@@ -16,10 +16,9 @@ data class VerticalRangeConstraint(
     }
 }
 
-object VerticalRangeConstraintBuilder : ConstraintBuilder()
-{
+object VerticalRangeConstraintBuilder : ConstraintBuilder() {
     override fun columnMatchesThisConstraintType(column: VisualisationColumn): Boolean {
-        val onlyLegalCharacters =  setOf(' ', 'I').containsAll(column.characters.groupBy { it }.keys)
+        val onlyLegalCharacters = setOf(' ', 'I').containsAll(column.characters.groupBy { it }.keys)
         val noGapsBetweenLetters =
             column.characters
                     .mapIndexedNotNull { index, character -> if (character == 'I') index else null }
@@ -30,7 +29,9 @@ object VerticalRangeConstraintBuilder : ConstraintBuilder()
     }
 
     override fun buildConstraintFromColumn(
-            column: VisualisationColumn, yAxisMarkers: List<AxisMarker>): YValueConstraint
+        column: VisualisationColumn,
+        yAxisMarkers: List<AxisMarker>
+    ): YValueConstraint
     {
         val indexOfFirstCharacter = column.characters.indexOfFirst { it == 'I' }
         val indexOfLastCharacter = column.characters.indexOfLast { it == 'I' }

@@ -34,10 +34,12 @@ private fun validateAllStringsHaveTheSameLength(rawVisualisation: RawVisualisati
     }
 }
 
-private fun buildConstraint(visualisationColumn: VisualisationColumn,
-                            yAxisMarkers: List<AxisMarker>,
-                            xAxisMarkers: List<AxisMarker>,
-                            xIndex: Int): Constraint?
+private fun buildConstraint(
+    visualisationColumn: VisualisationColumn,
+    yAxisMarkers: List<AxisMarker>,
+    xAxisMarkers: List<AxisMarker>,
+    xIndex: Int
+): Constraint?
 {
     val yValueConstraint = mapVisualisationColumnToConstraint(visualisationColumn, yAxisMarkers)
     val xValueBounds = computeValueBounds(xAxisMarkers, xIndex)

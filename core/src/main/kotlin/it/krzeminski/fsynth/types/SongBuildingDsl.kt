@@ -11,14 +11,17 @@ annotation class SongDslMarker
 
 @SongDslMarker
 class SongBuilder(
-        name: String,
-        private val beatsPerMinute: Int)
-{
+    name: String,
+    private val beatsPerMinute: Int
+) {
     private var song = Song(name = name, beatsPerMinute = beatsPerMinute, tracks = emptyList())
 
     fun track(
-            name: String? = null, instrument: (Float) -> Waveform, volume: Float, init: TrackBuilder.() -> Unit)
-    {
+        name: String? = null,
+        instrument: (Float) -> Waveform,
+        volume: Float,
+        init: TrackBuilder.() -> Unit
+    ) {
         val trackBuilder = TrackBuilder(instrument, volume, name)
         initAndAppendTrack(trackBuilder, init)
     }
@@ -35,10 +38,10 @@ class SongBuilder(
 
 @SongDslMarker
 class TrackBuilder(
-        private val instrument: (Float) -> Waveform,
-        private val volume: Float,
-        private val name: String?)
-{
+    private val instrument: (Float) -> Waveform,
+    private val volume: Float,
+    private val name: String?
+) {
     private var track = Track(name = name, instrument = instrument, volume = volume, segments = emptyList())
 
     fun note(value: NoteValue, pitch: MusicNote) {

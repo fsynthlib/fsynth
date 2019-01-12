@@ -1,14 +1,13 @@
 package it.krzeminski.fsynth.songs
 
 import it.krzeminski.fsynth.instruments.synthesizer
-import it.krzeminski.fsynth.types.MusicNote.*
+import it.krzeminski.fsynth.types.MusicNote.* // ktlint-disable no-wildcard-imports
 import it.krzeminski.fsynth.types.by
 import it.krzeminski.fsynth.types.song
 
 val vanHalenJumpIntro = song(
         name = "Van Halen - Jump (intro)",
-        beatsPerMinute = 133)
-{
+        beatsPerMinute = 133) {
     track(name = "Main", instrument = ::synthesizer, volume = 0.15f) {
         repeat(3) {
             pause(1 by 4)

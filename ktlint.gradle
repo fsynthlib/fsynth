@@ -1,0 +1,33 @@
+repositories {
+    jcenter()
+}
+
+configurations {
+    ktlint
+}
+
+dependencies {
+    ktlint "com.github.shyiko:ktlint:0.29.0"
+}
+
+task ktlint(type: JavaExec, group: "verification") {
+    description = "Check Kotlin code style."
+    classpath = configurations.ktlint
+    main = "com.github.shyiko.ktlint.Main"
+    // Run only for the actual production code, omit tests.
+    args "src/main/**/*.kt", "-v"
+}
+
+task ktlintFormat(type: JavaExec, group: "formatting") {
+    description = "Fix Kotlin code style deviations."
+    classpath = configurations.ktlint
+    main = "com.github.shyiko.ktlint.Main"
+    // Run only for the actual production code, omit tests.
+    args "-F", "src/main/**/*.kt"
+}
+
+afterEvaluate {
+    if (project.tasks.check) {
+        check.dependsOn(ktlint)
+    }
+}

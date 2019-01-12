@@ -4,7 +4,11 @@ import it.krzeminski.fsynth.generated.gitInfo
 import it.krzeminski.gitinfo.types.GitInfo
 import kotlinext.js.js
 import kotlinx.html.style
-import react.*
+import react.RBuilder
+import react.RComponent
+import react.RHandler
+import react.RProps
+import react.RState
 import react.dom.a
 import react.dom.div
 import react.dom.span

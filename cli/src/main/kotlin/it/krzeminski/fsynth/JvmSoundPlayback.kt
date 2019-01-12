@@ -2,7 +2,11 @@ package it.krzeminski.fsynth
 
 import it.krzeminski.fsynth.types.Song
 import java.io.ByteArrayInputStream
-import javax.sound.sampled.*
+import javax.sound.sampled.AudioFormat
+import javax.sound.sampled.AudioInputStream
+import javax.sound.sampled.AudioSystem
+import javax.sound.sampled.Clip
+import javax.sound.sampled.LineEvent
 import kotlin.system.measureTimeMillis
 
 fun Song.playOnJvm(samplesPerSecond: Int, sampleSizeInBits: Int) {
@@ -12,7 +16,7 @@ fun Song.playOnJvm(samplesPerSecond: Int, sampleSizeInBits: Int) {
     val synthesisTimeInMilliseconds = measureTimeMillis {
         rawData = render8bit(song = this, sampleRate = samplesPerSecond)
     }
-    println("Synthesized in ${synthesisTimeInMilliseconds.toFloat()/1000.0f} s")
+    println("Synthesized in ${synthesisTimeInMilliseconds.toFloat() / 1000.0f} s")
     val audioFormat = buildAudioFormat(samplesPerSecond, sampleSizeInBits)
     val audioInputStream = prepareAudioInputStream(rawData, audioFormat)
 
@@ -43,7 +47,7 @@ private fun prepareAudioInputStream(rawData: ByteArray, audioFormat: AudioFormat
 
 private fun playAndBlockUntilFinishes(audioInputStream: AudioInputStream) {
     println("Playing...")
-    with (AudioSystem.getClip()) {
+    with(AudioSystem.getClip()) {
         open(audioInputStream)
         start()
         sleepUntilPlaybackFinishes()

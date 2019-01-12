@@ -10,10 +10,11 @@ import it.krzeminski.testutils.plotassert.types.constraints.getAvailableConstrai
  * Returns null when the given column doesn't specify any constraint.
  */
 fun mapVisualisationColumnToConstraint(
-        column: VisualisationColumn,
-        yAxisMarkers: List<AxisMarker>,
-        getAvailableConstraintBuilders:
-        () -> List<ConstraintBuilder> = ::getAvailableConstraintBuilders): YValueConstraint?
+    column: VisualisationColumn,
+    yAxisMarkers: List<AxisMarker>,
+    getAvailableConstraintBuilders:
+    () -> List<ConstraintBuilder> = ::getAvailableConstraintBuilders
+): YValueConstraint?
 {
     if (onlySpaces(column)) {
         return null

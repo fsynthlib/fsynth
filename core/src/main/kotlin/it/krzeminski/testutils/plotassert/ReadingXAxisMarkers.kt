@@ -12,7 +12,7 @@ fun readXAxisMarkers(rawVisualisation: RawVisualisation): List<AxisMarker> {
 
     val markerIndices = rawVisualisation.xAxis.markers
             .mapIndexed { index, character -> Pair(index, character) }
-            .filter { pair -> pair.second == markerCharacter}
+            .filter { pair -> pair.second == markerCharacter }
             .map { pair -> pair.first }
     return rawVisualisation.xAxis.values
             .zip(markerIndices)

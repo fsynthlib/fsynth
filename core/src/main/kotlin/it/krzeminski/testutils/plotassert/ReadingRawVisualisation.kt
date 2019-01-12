@@ -17,9 +17,9 @@ fun readRawVisualisation(collectVisualisation: PlotConstraintsBuilder.() -> Unit
 }
 
 class PlotConstraintsBuilder(
-        private val visualisationRows: MutableList<VisualisationRow> = mutableListOf(),
-        private var rawXAxis: RawXAxis? = null)
-{
+    private val visualisationRows: MutableList<VisualisationRow> = mutableListOf(),
+    private var rawXAxis: RawXAxis? = null
+) {
     fun row(visualisationRowString: String) =
             visualisationRows.add(VisualisationRow(visualisationRowString))
 
@@ -42,9 +42,9 @@ class PlotConstraintsBuilder(
 }
 
 class RawXAxisBuilder(
-        private var markers: String? = null,
-        private val values: MutableList<Float> = mutableListOf())
-{
+    private var markers: String? = null,
+    private val values: MutableList<Float> = mutableListOf()
+) {
     fun markers(markersString: String) {
         require(markers == null) { "X axis markers given more than once!" }
         markers = markersString

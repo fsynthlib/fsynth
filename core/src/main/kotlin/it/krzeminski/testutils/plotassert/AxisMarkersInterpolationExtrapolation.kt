@@ -91,7 +91,7 @@ private fun extrapolate(markers: List<AxisMarker>, continuousCharacterIndex: Flo
  *  see https://en.wikipedia.org/wiki/Linear_interpolation#Applications.
  */
 private fun lerpBetweenAxisMarkers(first: AxisMarker, second: AxisMarker, characterIndex: Float): Float {
-    val normalizedDistance = (characterIndex - first.characterIndex.toFloat())/
+    val normalizedDistance = (characterIndex - first.characterIndex.toFloat()) /
             (second.characterIndex - first.characterIndex).toFloat()
-    return first.value + (second.value - first.value)*normalizedDistance
+    return first.value + (second.value - first.value) * normalizedDistance
 }

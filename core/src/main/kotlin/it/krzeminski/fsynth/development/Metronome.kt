@@ -16,7 +16,7 @@ fun Song.add4by4MetronomeTrackForDevelopment(trackSegments: Int) =
                 segments = generateTrackSegments(trackSegments)))
 
 private fun generateTrackSegments(trackSegments: Int) =
-        (0..(trackSegments-1)).asSequence()
+        (0..(trackSegments - 1)).asSequence()
                 .flatMap {
                     listOf(C5, C4, C4, C4)
                             .flatMap { note ->

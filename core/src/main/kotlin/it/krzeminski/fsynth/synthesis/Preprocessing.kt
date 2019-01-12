@@ -61,10 +61,10 @@ private fun TrackSegment.preprocess(song: Song, track: Track): TrackSegmentForSy
  * https://github.com/krzema12/fsynth/wiki/Glissando:-explanation-of-implementation
  */
 private fun stretchTimeForGlissando(startNoteIndex: Int, endNoteIndex: Int, durationInSeconds: Float, t: Float): Float {
-    val a = (endNoteIndex - startNoteIndex).toFloat()/(12.0f*durationInSeconds)
-    val b = (startNoteIndex - 69).toFloat()/12.0f
+    val a = (endNoteIndex - startNoteIndex).toFloat() / (12.0f * durationInSeconds)
+    val b = (startNoteIndex - 69).toFloat() / 12.0f
     val c = 440.0f
-    return c*(2.0f.pow(a * t + b) - 2.0f.pow(b))/(a*ln(2.0f))
+    return c * (2.0f.pow(a * t + b) - 2.0f.pow(b)) / (a * ln(2.0f))
 }
 
 private fun NoteValue.toSeconds(beatsPerMinute: Int) =

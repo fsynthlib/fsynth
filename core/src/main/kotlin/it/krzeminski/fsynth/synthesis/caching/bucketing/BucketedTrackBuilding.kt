@@ -2,7 +2,6 @@ package it.krzeminski.fsynth.synthesis.caching.bucketing
 
 import it.krzeminski.fsynth.synthesis.types.TrackForSynthesis
 import it.krzeminski.fsynth.synthesis.types.TrackSegmentForSynthesis
-import it.krzeminski.fsynth.types.TrackSegment
 import kotlin.math.ceil
 
 fun TrackForSynthesis.buildBucketedTrack(bucketSizeInSeconds: Float): BucketedTrack {
@@ -30,9 +29,11 @@ private fun TrackForSynthesis.calculateNumberOfBuckets(bucketSizeInSeconds: Floa
 private val TrackForSynthesis.durationInSeconds: Float
     get() = this.segments.map { it.durationInSeconds }.sum()
 
-private fun segmentsForBucket(positionedTrackSegments: List<PositionedTrackSegment>,
-                              bucketIndex: Int,
-                              bucketSizeInSeconds: Float): List<PositionedTrackSegment>
+private fun segmentsForBucket(
+    positionedTrackSegments: List<PositionedTrackSegment>,
+    bucketIndex: Int,
+    bucketSizeInSeconds: Float
+): List<PositionedTrackSegment>
 {
     return positionedTrackSegments
             .filter { segment -> segment.belongsToBucket(bucketIndex, bucketSizeInSeconds) }
@@ -45,8 +46,10 @@ private fun PositionedTrackSegment.belongsToBucket(bucketIndex: Int, bucketSizeI
             this spansOverWhole bucketBounds
 }
 
-private data class BucketBounds(val startTimeInSeconds: Float,
-                                val endTimeInSeconds: Float)
+private data class BucketBounds(
+    val startTimeInSeconds: Float,
+    val endTimeInSeconds: Float
+)
 
 private fun makeBucketBounds(bucketIndex: Int, bucketSizeInSeconds: Float): BucketBounds {
     val startTimeInSeconds = bucketSizeInSeconds * bucketIndex.toFloat()

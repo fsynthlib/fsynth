@@ -52,7 +52,7 @@ private fun BucketedTrack.getWaveformValue(time: Float): Float {
     for (segmentInBucket in buckets[whichBucket]) {
         if (segmentInBucket playsFor time) {
             val timeRelativeToThisSegment = time - segmentInBucket.startTimeInSeconds
-            return segmentInBucket.trackSegment.waveform(timeRelativeToThisSegment)*volume
+            return segmentInBucket.trackSegment.waveform(timeRelativeToThisSegment) * volume
         }
     }
 
