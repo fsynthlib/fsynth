@@ -14,10 +14,19 @@ https://krzema12.github.io/fsynth/
 
 ## Java CLI
 
-The below command uses system sound output to play music:
+The CLI uses system sound output to play music.
+
+You can use the CLI from the distribution package:
 
 ```
-java -jar cli/build/libs/cli.jar "Van Halen - Jump (intro)"
+./gradlew :cli:installDist
+cli/build/install/fsynth/bin/fsynth 'Van Halen - Jump (intro)'
+```
+
+or during development, you can call the CLI through Gradle:
+
+```
+./gradlew :cli:run --args="'Van Halen - Jump (intro)'"
 ```
 
 To see a list of available songs, call the CLI without arguments. 

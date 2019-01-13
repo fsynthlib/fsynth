@@ -1,4 +1,5 @@
 apply plugin: 'kotlin-platform-jvm'
+apply plugin: 'application'
 apply plugin: 'jacoco'
 
 dependencies {
@@ -10,15 +11,8 @@ dependencies {
     testCompile "org.jetbrains.kotlin:kotlin-test-junit"
 }
 
-jar {
-    from {
-        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
-    }
-
-    manifest {
-        attributes 'Main-Class': 'it.krzeminski.fsynth.ConsoleEntryPointKt'
-    }
-}
+mainClassName = 'it.krzeminski.fsynth.ConsoleEntryPointKt'
+applicationName = 'fsynth'
 
 jacoco {
     toolVersion = "0.8.2"
