@@ -4,6 +4,19 @@ jdk:
 before_install:
   - chmod +x gradlew
   - chmod +x gradle/wrapper/gradle-wrapper.jar
+# BEGIN: workaround
+# There are problems with ingesting PlotAssert through Bintray,
+# so as a short-term solution, PlotAssert is built locally
+# and exposed though Maven's local repository.
+# TODO: fix it in scope of #36.
+  - git clone https://github.com/krzema12/PlotAssert.git
+  - cd PlotAssert
+  - chmod +x gradlew
+  - chmod +x gradle/wrapper/gradle-wrapper.jar
+  - ./gradlew build
+  - ./gradlew publishToMavenLocal
+  - cd ..
+# END: workaround
 script:
   - ./gradlew build
 deploy:
