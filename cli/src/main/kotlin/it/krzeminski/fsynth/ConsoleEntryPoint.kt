@@ -1,19 +1,29 @@
 package it.krzeminski.fsynth
 
+import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.parameters.options.option
+import com.github.ajalt.clikt.parameters.options.required
 import it.krzeminski.fsynth.generated.gitInfo
 import it.krzeminski.fsynth.songs.allSongs
 import it.krzeminski.fsynth.songs.getSongByName
-import it.krzeminski.fsynth.types.Song
 import java.time.Instant
 
-fun main(args: Array<String>) {
-    printIntroduction()
+fun main(args: Array<String>) = Synthesize().main(args)
 
-    val nameOfSongToPlay: String? = if (args.isNotEmpty()) args[0] else null
-    val songToPlay: Song? = nameOfSongToPlay?.let { getSongByName(nameOfSongToPlay) }
+private class Synthesize : CliktCommand(name = "fsynth") {
+    val songName: String by option(
+            "--song",
+            help = "Name of the song to play. Available songs: ${getAvailableSongNames()}",
+            metavar = "NAME")
+            .required()
 
-    songToPlay?.playOnJvm(samplesPerSecond = 44100, sampleSizeInBits = 8)
-            ?: println("Available songs: ${allSongs.joinToString { "'${it.name}'" }}")
+    override fun run() {
+        printIntroduction()
+
+        val songToPlay = getSongByName(songName)
+        songToPlay?.playOnJvm(samplesPerSecond = 44100, sampleSizeInBits = 8)
+                ?: println("Available songs: ${getAvailableSongNames()}")
+    }
 }
 
 private fun printIntroduction() {
@@ -21,3 +31,5 @@ private fun printIntroduction() {
     println("Version ${gitInfo.latestCommit.sha1.substring(0, 8)} " +
             "from ${Instant.ofEpochSecond(gitInfo.latestCommit.timeUnixTimestamp)}")
 }
+
+private fun getAvailableSongNames() = allSongs.joinToString { "'${it.name}'" }
