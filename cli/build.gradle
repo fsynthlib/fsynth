@@ -2,6 +2,12 @@ apply plugin: 'kotlin-platform-jvm'
 apply plugin: 'application'
 apply plugin: 'jacoco'
 
+repositories {
+    maven {
+        url "https://dl.bintray.com/krzema1212/it.krzeminski"
+    }
+}
+
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     expectedBy project(":core")

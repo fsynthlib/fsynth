@@ -3,6 +3,12 @@ plugins {
     id 'org.ajoberstar.grgit' version '3.0.0'
 }
 
+repositories {
+    maven {
+        url "https://dl.bintray.com/krzema1212/it.krzeminski"
+    }
+}
+
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlin_version"
 
