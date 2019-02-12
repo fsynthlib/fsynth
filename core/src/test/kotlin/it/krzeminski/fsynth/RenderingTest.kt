@@ -7,6 +7,8 @@ import it.krzeminski.testutils.plotassert.assertFunctionConformsTo
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
+/* ktlint-disable no-multi-spaces paren-spacing */
+
 class RenderingTest {
     @Test
     fun rendersSongCorrectly() {
@@ -42,3 +44,5 @@ class RenderingTest {
                 })
     }
 }
+
+/* ktlint-disable no-multi-spaces paren-spacing */

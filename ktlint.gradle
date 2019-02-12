@@ -15,7 +15,7 @@ task ktlint(type: JavaExec, group: "verification") {
     classpath = configurations.ktlint
     main = "com.github.shyiko.ktlint.Main"
     // Run only for the actual production code, omit tests.
-    args "src/main/**/*.kt", "-v"
+    args "src/**/*.kt", "-v"
 }
 
 task ktlintFormat(type: JavaExec, group: "formatting") {
@@ -23,7 +23,7 @@ task ktlintFormat(type: JavaExec, group: "formatting") {
     classpath = configurations.ktlint
     main = "com.github.shyiko.ktlint.Main"
     // Run only for the actual production code, omit tests.
-    args "-F", "src/main/**/*.kt"
+    args "-F", "src/**/*.kt"
 }
 
 afterEvaluate {

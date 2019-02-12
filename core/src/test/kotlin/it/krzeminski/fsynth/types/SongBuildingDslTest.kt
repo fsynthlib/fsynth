@@ -2,7 +2,7 @@ package it.krzeminski.fsynth.types
 
 import it.krzeminski.fsynth.instruments.organs
 import kotlin.test.Test
-import it.krzeminski.fsynth.types.MusicNote.*
+import it.krzeminski.fsynth.types.MusicNote.* // ktlint-disable no-wildcard-imports
 import kotlin.test.assertEquals
 
 class SongBuildingDslTest {

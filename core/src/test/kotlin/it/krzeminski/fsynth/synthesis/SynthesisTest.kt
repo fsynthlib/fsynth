@@ -8,6 +8,8 @@ import it.krzeminski.testutils.plotassert.assertFunctionConformsTo
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
+/* ktlint-disable no-multi-spaces paren-spacing */
+
 class SynthesisTest {
     @Test
     fun singleTrackWithSingleSegment() {
@@ -150,3 +152,5 @@ class SynthesisTest {
         }
     }
 }
+
+/* ktlint-disable no-multi-spaces paren-spacing */

@@ -5,7 +5,7 @@ import it.krzeminski.fsynth.sineWave
 import it.krzeminski.fsynth.synthesis.types.SongForSynthesis
 import it.krzeminski.fsynth.synthesis.types.TrackForSynthesis
 import it.krzeminski.fsynth.synthesis.types.TrackSegmentForSynthesis
-import it.krzeminski.fsynth.types.MusicNote.*
+import it.krzeminski.fsynth.types.MusicNote.* // ktlint-disable no-wildcard-imports
 import it.krzeminski.fsynth.types.MusicNoteTransition
 import it.krzeminski.fsynth.types.NoteValue
 import it.krzeminski.fsynth.types.Song
@@ -64,6 +64,8 @@ class PreprocessingTest {
                 actual = preprocessedTestSong)
     }
 
+    /* ktlint-disable no-multi-spaces paren-spacing */
+
     @Test
     fun glissando() {
         val testSong = Song(
@@ -112,6 +114,8 @@ class PreprocessingTest {
             }
         }
     }
+
+    /* ktlint-disable no-multi-spaces paren-spacing */
 
     @Test
     fun chord() {

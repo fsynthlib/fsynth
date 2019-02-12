@@ -4,6 +4,8 @@ import it.krzeminski.fsynth.squareWave
 import it.krzeminski.testutils.plotassert.assertFunctionConformsTo
 import kotlin.test.Test
 
+/* ktlint-disable no-multi-spaces paren-spacing */
+
 class WaveformTest {
     @Test
     fun addingTwoWaveforms() {
@@ -48,7 +50,7 @@ class WaveformTest {
                 values( 0.0f,                          1.0f)
             }
         }
-        val aboveWaveformMultiplied = 3.0*waveform
+        val aboveWaveformMultiplied = 3.0 * waveform
         assertFunctionConformsTo(aboveWaveformMultiplied) {
             row(3.0f,   "XXXXXXXI       IXXXXXXXI       I")
             row(-3.0f,  "       IXXXXXXXI       IXXXXXXXI")
@@ -59,3 +61,5 @@ class WaveformTest {
         }
     }
 }
+
+/* ktlint-disable no-multi-spaces paren-spacing */
