@@ -61,6 +61,7 @@ kotlinFrontend {
 
     webpackBundle {
         bundleName = "main"
+        mode = "production"
     }
 
     karma {
