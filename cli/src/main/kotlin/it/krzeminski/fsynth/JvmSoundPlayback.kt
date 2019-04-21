@@ -9,7 +9,7 @@ import javax.sound.sampled.Clip
 import javax.sound.sampled.LineEvent
 import kotlin.system.measureTimeMillis
 
-fun Song.playOnJvm(samplesPerSecond: Int, sampleSizeInBits: Int, startTime: Float) {
+fun Song.asAudioStream(samplesPerSecond: Int, sampleSizeInBits: Int, startTime: Float): AudioInputStream? {
     require(sampleSizeInBits == 8) { "Only 8-bit samples are supported now!" }
 
     lateinit var rawData: ByteArray
@@ -18,15 +18,23 @@ fun Song.playOnJvm(samplesPerSecond: Int, sampleSizeInBits: Int, startTime: Floa
     }
 
     if (rawData.isEmpty()) {
-        println("No song data to play, exiting")
-        return
+        println("No song data to play, returning a null AudioInputStream")
+        return null
     }
 
     println("Synthesized in ${synthesisTimeInMilliseconds.toFloat() / 1000.0f} s")
     val audioFormat = buildAudioFormat(samplesPerSecond, sampleSizeInBits)
-    val audioInputStream = prepareAudioInputStream(rawData, audioFormat)
+    return prepareAudioInputStream(rawData, audioFormat)
+}
 
-    playAndBlockUntilFinishes(audioInputStream)
+fun AudioInputStream.playAndBlockUntilFinishes() {
+    println("Playing...")
+    val audioInputStream = this
+    with(AudioSystem.getClip()) {
+        open(audioInputStream)
+        start()
+        sleepUntilPlaybackFinishes()
+    }
 }
 
 private object AudioFormatConstants {
@@ -49,15 +57,6 @@ private fun prepareAudioInputStream(rawData: ByteArray, audioFormat: AudioFormat
             ByteArrayInputStream(rawData),
             audioFormat,
             rawData.size.toLong())
-}
-
-private fun playAndBlockUntilFinishes(audioInputStream: AudioInputStream) {
-    println("Playing...")
-    with(AudioSystem.getClip()) {
-        open(audioInputStream)
-        start()
-        sleepUntilPlaybackFinishes()
-    }
 }
 
 private fun Clip.sleepUntilPlaybackFinishes() {

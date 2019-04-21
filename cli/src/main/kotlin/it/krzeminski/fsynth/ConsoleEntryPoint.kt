@@ -34,9 +34,15 @@ private class Synthesize : CliktCommand(name = "fsynth") {
     override fun run() {
         printIntroduction()
 
-        val songToPlay = getSongByName(songName)
-        songToPlay?.playOnJvm(samplesPerSecond = 44100, sampleSizeInBits = 8, startTime = startTime)
-                ?: println("Available songs: ${getAvailableSongNames()}")
+        val song = getSongByName(songName)
+
+        if (song == null) {
+            println("Available songs: ${getAvailableSongNames()}")
+            return
+        }
+
+        val audioStream = song.asAudioStream(samplesPerSecond = 44100, sampleSizeInBits = 8, startTime = startTime)
+        audioStream?.playAndBlockUntilFinishes()
     }
 }
 
