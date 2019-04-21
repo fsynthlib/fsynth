@@ -9,13 +9,19 @@ import javax.sound.sampled.Clip
 import javax.sound.sampled.LineEvent
 import kotlin.system.measureTimeMillis
 
-fun Song.playOnJvm(samplesPerSecond: Int, sampleSizeInBits: Int) {
+fun Song.playOnJvm(samplesPerSecond: Int, sampleSizeInBits: Int, startTime: Float) {
     require(sampleSizeInBits == 8) { "Only 8-bit samples are supported now!" }
 
     lateinit var rawData: ByteArray
     val synthesisTimeInMilliseconds = measureTimeMillis {
-        rawData = render8bit(song = this, sampleRate = samplesPerSecond)
+        rawData = render8bit(song = this, sampleRate = samplesPerSecond, startTime = startTime)
     }
+
+    if (rawData.isEmpty()) {
+        println("No song data to play, exiting")
+        return
+    }
+
     println("Synthesized in ${synthesisTimeInMilliseconds.toFloat() / 1000.0f} s")
     val audioFormat = buildAudioFormat(samplesPerSecond, sampleSizeInBits)
     val audioInputStream = prepareAudioInputStream(rawData, audioFormat)

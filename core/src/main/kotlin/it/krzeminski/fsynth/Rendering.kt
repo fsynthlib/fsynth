@@ -6,14 +6,15 @@ import it.krzeminski.fsynth.synthesis.preprocessForSynthesis
 import it.krzeminski.fsynth.synthesis.types.SongForSynthesis
 import it.krzeminski.fsynth.types.Song
 
-fun Song.renderWithSampleRate(sampleRate: Int) =
+fun Song.renderWithSampleRate(sampleRate: Int, startTime: Float) =
         this.preprocessForSynthesis()
-                .renderWithSampleRate(sampleRate)
+                .renderWithSampleRate(sampleRate, startTime)
 
-fun SongForSynthesis.renderWithSampleRate(sampleRate: Int): Sequence<Float> {
+fun SongForSynthesis.renderWithSampleRate(sampleRate: Int, startTime: Float): Sequence<Float> {
+    val startSample = (sampleRate.toFloat() * startTime).toInt()
     val samplesToRender = (sampleRate.toFloat() * durationInSeconds).toInt()
     val songEvaluationFunction = buildSongEvaluationFunction()
-    return (0..samplesToRender).asSequence()
+    return (startSample..samplesToRender).asSequence()
             .map(sampleIndexToTimeInSeconds(sampleRate))
             .map(songEvaluationFunction)
 }

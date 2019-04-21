@@ -2,8 +2,8 @@ package it.krzeminski.fsynth
 
 import it.krzeminski.fsynth.types.Song
 
-fun render8bit(song: Song, sampleRate: Int): ByteArray =
-        song.renderWithSampleRate(sampleRate)
+fun render8bit(song: Song, sampleRate: Int, startTime: Float): ByteArray =
+        song.renderWithSampleRate(sampleRate, startTime)
                 .map { waveformValue -> normalizedWaveValueToByte(waveformValue) }
                 .toList()
                 .toByteArray()

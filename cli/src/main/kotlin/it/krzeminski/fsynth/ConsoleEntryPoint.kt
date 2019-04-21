@@ -1,8 +1,11 @@
 package it.krzeminski.fsynth
 
 import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
+import com.github.ajalt.clikt.parameters.options.validate
+import com.github.ajalt.clikt.parameters.types.float
 import it.krzeminski.fsynth.generated.gitInfo
 import it.krzeminski.fsynth.songs.allSongs
 import it.krzeminski.fsynth.songs.getSongByName
@@ -17,11 +20,22 @@ private class Synthesize : CliktCommand(name = "fsynth") {
             metavar = "NAME")
             .required()
 
+    val startTime: Float by option(
+            help = "Optional. Starts the payback omitting the given amount of seconds",
+            metavar = "SECONDS")
+            .float()
+            .default(0.0f)
+            .validate {
+                require(it >= 0.0f) {
+                    "Start time should be positive!"
+                }
+            }
+
     override fun run() {
         printIntroduction()
 
         val songToPlay = getSongByName(songName)
-        songToPlay?.playOnJvm(samplesPerSecond = 44100, sampleSizeInBits = 8)
+        songToPlay?.playOnJvm(samplesPerSecond = 44100, sampleSizeInBits = 8, startTime = startTime)
                 ?: println("Available songs: ${getAvailableSongNames()}")
     }
 }
