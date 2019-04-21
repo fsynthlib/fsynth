@@ -2,6 +2,8 @@ package it.krzeminski.fsynth
 
 import it.krzeminski.fsynth.types.Song
 import java.io.ByteArrayInputStream
+import java.nio.file.Path
+import javax.sound.sampled.AudioFileFormat
 import javax.sound.sampled.AudioFormat
 import javax.sound.sampled.AudioInputStream
 import javax.sound.sampled.AudioSystem
@@ -35,6 +37,10 @@ fun AudioInputStream.playAndBlockUntilFinishes() {
         start()
         sleepUntilPlaybackFinishes()
     }
+}
+
+fun AudioInputStream.saveAsWaveFile(path: Path) {
+    AudioSystem.write(this, AudioFileFormat.Type.WAVE, path.toFile())
 }
 
 private object AudioFormatConstants {

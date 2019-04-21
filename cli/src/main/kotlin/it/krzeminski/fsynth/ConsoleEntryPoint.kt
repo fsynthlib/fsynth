@@ -6,9 +6,11 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.options.validate
 import com.github.ajalt.clikt.parameters.types.float
+import com.github.ajalt.clikt.parameters.types.path
 import it.krzeminski.fsynth.generated.gitInfo
 import it.krzeminski.fsynth.songs.allSongs
 import it.krzeminski.fsynth.songs.getSongByName
+import java.nio.file.Path
 import java.time.Instant
 
 fun main(args: Array<String>) = Synthesize().main(args)
@@ -31,6 +33,11 @@ private class Synthesize : CliktCommand(name = "fsynth") {
                 }
             }
 
+    val outputFile: Path? by option(
+            help = "Optional. If given, the song will not be played, but instead, written as a WAVE file",
+            metavar = "PATH")
+            .path()
+
     override fun run() {
         printIntroduction()
 
@@ -42,7 +49,13 @@ private class Synthesize : CliktCommand(name = "fsynth") {
         }
 
         val audioStream = song.asAudioStream(samplesPerSecond = 44100, sampleSizeInBits = 8, startTime = startTime)
-        audioStream?.playAndBlockUntilFinishes()
+
+        val outputFileFinal = outputFile
+        if (outputFileFinal != null) {
+            audioStream?.saveAsWaveFile(outputFileFinal)
+        } else {
+            audioStream?.playAndBlockUntilFinishes()
+        }
     }
 }
 
