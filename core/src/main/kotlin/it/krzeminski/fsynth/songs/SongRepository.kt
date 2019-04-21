@@ -6,6 +6,11 @@ package it.krzeminski.fsynth.songs
 // and in what order they appear when sorted alphabetically. Because of this, this very file appears before
 // 'VanHalenJumpIntro.kt', so 'vanHalenJumpIntro' constant was not yet defined, and in 'allSongs' list, the list
 // contained 'simpleDemoSong' and 'undefined'.
-val allSongs by lazy { listOf(simpleDemoSong, vanHalenJumpIntro) }
+val allSongs by lazy {
+    listOf(
+            simpleDemoSong,
+            vanHalenJumpIntro,
+            pinkPantherThemeIntro)
+}
 
 fun getSongByName(name: String) = allSongs.find { it.name == name }
