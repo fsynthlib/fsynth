@@ -12,5 +12,3 @@ val allSongs by lazy {
             vanHalenJumpIntro,
             pinkPantherThemeIntro)
 }
-
-fun getSongByName(name: String) = allSongs.find { it.name == name }

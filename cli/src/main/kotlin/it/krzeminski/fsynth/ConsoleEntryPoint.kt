@@ -5,21 +5,23 @@ import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.options.validate
+import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.float
 import com.github.ajalt.clikt.parameters.types.path
 import it.krzeminski.fsynth.generated.gitInfo
 import it.krzeminski.fsynth.songs.allSongs
-import it.krzeminski.fsynth.songs.getSongByName
+import it.krzeminski.fsynth.types.Song
 import java.nio.file.Path
 import java.time.Instant
 
 fun main(args: Array<String>) = Synthesize().main(args)
 
 private class Synthesize : CliktCommand(name = "fsynth") {
-    val songName: String by option(
+    val song: Song by option(
             "--song",
-            help = "Name of the song to play. Available songs: ${getAvailableSongNames()}",
+            help = "Name of the song to play",
             metavar = "NAME")
+            .choice(allSongs.map { it.name to it }.toMap())
             .required()
 
     val startTime: Float by option(
@@ -41,13 +43,6 @@ private class Synthesize : CliktCommand(name = "fsynth") {
     override fun run() {
         printIntroduction()
 
-        val song = getSongByName(songName)
-
-        if (song == null) {
-            println("Available songs: ${getAvailableSongNames()}")
-            return
-        }
-
         val audioStream = song.asAudioStream(samplesPerSecond = 44100, sampleSizeInBits = 8, startTime = startTime)
 
         val outputFileFinal = outputFile
@@ -64,5 +59,3 @@ private fun printIntroduction() {
     println("Version ${gitInfo.latestCommit.sha1.substring(0, 8)} " +
             "from ${Instant.ofEpochSecond(gitInfo.latestCommit.timeUnixTimestamp)}")
 }
-
-private fun getAvailableSongNames() = allSongs.joinToString { "'${it.name}'" }
