@@ -20,13 +20,13 @@ You can use the CLI from the distribution package:
 
 ```
 ./gradlew :cli:installDist
-cli/build/install/fsynth/bin/fsynth 'Van Halen - Jump (intro)'
+cli/build/install/fsynth/bin/fsynth --song 'Van Halen - Jump (intro)'
 ```
 
 or during development, you can call the CLI through Gradle:
 
 ```
-./gradlew :cli:run --args="'Van Halen - Jump (intro)'"
+./gradlew :cli:run --args="--song 'Van Halen - Jump (intro)'"
 ```
 
 To see a list of available songs, call the CLI without arguments. 
