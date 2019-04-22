@@ -1,6 +1,7 @@
 package it.krzeminski.fsynth.songs
 
 import it.krzeminski.fsynth.effects.simpleDecayEnvelope
+import it.krzeminski.fsynth.instruments.cymbals
 import it.krzeminski.fsynth.instruments.synthesizer
 import it.krzeminski.fsynth.types.MusicNote.* // ktlint-disable no-wildcard-imports
 import it.krzeminski.fsynth.types.by
@@ -138,5 +139,32 @@ val pinkPantherThemeIntro = song(name = "Pink Panther Theme (intro)", beatsPerMi
             note(1 by 2, C2)
             pause(1 by 2)
         }
+    }
+
+    track(name = "Percussion", instrument = ::cymbals, volume = 0.05f) {
+        fun repeatingPattern() {
+            note(1 by 12, A4)
+            pause(2 by 12)
+            note(1 by 12, A4)
+            pause(1 by 12)
+            note(1 by 24, A4)
+            pause(1 by 24)
+        }
+
+        pause(1 by 1)
+
+        repeat(24) {
+            repeatingPattern()
+        }
+
+        note(1 by 12, A4)
+        pause(11 by 12)
+        pause(1 by 1)
+
+        repeat(2) {
+            repeatingPattern()
+        }
+
+        note(1 by 2, A4)
     }
 }
