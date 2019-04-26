@@ -6,6 +6,7 @@ package it.krzeminski.fsynth.songs
 // and in what order they appear when sorted alphabetically. Because of this, this very file appears before
 // 'VanHalenJumpIntro.kt', so 'vanHalenJumpIntro' constant was not yet defined, and in 'allSongs' list, the list
 // contained 'simpleDemoSong' and 'undefined'.
+// Tracked as https://youtrack.jetbrains.com/issue/KT-25796
 val allSongs by lazy {
     listOf(
             simpleDemoSong,
