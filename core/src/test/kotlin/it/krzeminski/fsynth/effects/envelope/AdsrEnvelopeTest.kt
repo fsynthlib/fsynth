@@ -1,7 +1,5 @@
-package it.krzeminski.fsynth.envelope
+package it.krzeminski.fsynth.effects.envelope
 
-import it.krzeminski.fsynth.effects.envelope.AdsrEnvelopeDefinition
-import it.krzeminski.fsynth.effects.envelope.adsrEnvelope
 import it.krzeminski.testutils.plotassert.assertFunctionConformsTo
 import kotlin.math.abs
 import kotlin.test.Test
