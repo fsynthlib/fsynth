@@ -5,9 +5,11 @@ import it.krzeminski.fsynth.synthesis.types.SongForSynthesis
 import it.krzeminski.fsynth.synthesis.types.TrackForSynthesis
 import it.krzeminski.fsynth.types.BoundedWaveform
 import it.krzeminski.fsynth.types.NoteValue
+import it.krzeminski.fsynth.types.PositionedBoundedWaveform
 import it.krzeminski.fsynth.types.Song
 import it.krzeminski.fsynth.types.Track
 import it.krzeminski.fsynth.types.TrackSegment
+import it.krzeminski.fsynth.types.endTime
 import it.krzeminski.fsynth.types.plus
 import kotlin.math.ln
 import kotlin.math.pow
@@ -19,9 +21,21 @@ private fun List<Track>.preprocess(song: Song) = map { it.preprocess(song) }
 private fun Track.preprocess(song: Song) =
         TrackForSynthesis(segments = segments.preprocess(song, this), volume = this.volume)
 
-private fun List<TrackSegment>.preprocess(song: Song, track: Track) = map { it.preprocess(song, track) }
+private fun List<TrackSegment>.preprocess(song: Song, track: Track) =
+        map { it.toBoundedWaveform(song, track) }
+                .addPositions()
 
-private fun TrackSegment.preprocess(song: Song, track: Track): BoundedWaveform {
+private fun List<BoundedWaveform>.addPositions(): List<PositionedBoundedWaveform> {
+    // An assumption is made here that the N-th BoundedWaveform's end is N+1-th BoundedWaveform's beginning.
+    // It will change when BoundedWaveform's length is not equal to TrackSegment's length, which is the case for
+    // envelopes, when the sound still plays after a note is released.
+    return this.fold(emptyList()) { positionedBoundedWaveformsSoFar, currentTrackSegment ->
+        val last = positionedBoundedWaveformsSoFar.lastOrNull()
+        positionedBoundedWaveformsSoFar + PositionedBoundedWaveform(currentTrackSegment, last?.endTime ?: 0.0f)
+    }
+}
+
+private fun TrackSegment.toBoundedWaveform(song: Song, track: Track): BoundedWaveform {
     when (this) {
         is TrackSegment.SingleNote -> {
             return BoundedWaveform(track.instrument(pitch.frequency), value.toSeconds(song.beatsPerMinute))

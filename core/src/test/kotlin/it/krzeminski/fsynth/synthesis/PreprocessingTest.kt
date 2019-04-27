@@ -8,6 +8,7 @@ import it.krzeminski.fsynth.types.BoundedWaveform
 import it.krzeminski.fsynth.types.MusicNote.* // ktlint-disable no-wildcard-imports
 import it.krzeminski.fsynth.types.MusicNoteTransition
 import it.krzeminski.fsynth.types.NoteValue
+import it.krzeminski.fsynth.types.PositionedBoundedWaveform
 import it.krzeminski.fsynth.types.Song
 import it.krzeminski.fsynth.types.Track
 import it.krzeminski.fsynth.types.TrackSegment
@@ -57,9 +58,15 @@ class PreprocessingTest {
                         tracks = listOf(
                                 TrackForSynthesis(
                                         segments = listOf(
-                                                BoundedWaveform(testInstrumentForNoteC4, 0.25f),
-                                                BoundedWaveform(testInstrumentForNoteE4, 0.125f),
-                                                BoundedWaveform(testInstrumentForNoteG4, 0.5f)),
+                                                PositionedBoundedWaveform(
+                                                        BoundedWaveform(testInstrumentForNoteC4, 0.25f),
+                                                        0.0f),
+                                                PositionedBoundedWaveform(
+                                                        BoundedWaveform(testInstrumentForNoteE4, 0.125f),
+                                                        0.25f),
+                                                PositionedBoundedWaveform(
+                                                        BoundedWaveform(testInstrumentForNoteG4, 0.5f),
+                                                        0.375f)),
                                         volume = 1.0f))),
                 actual = preprocessedTestSong)
     }
@@ -88,8 +95,9 @@ class PreprocessingTest {
 
         with (preprocessedTestSong.tracks[0]) {
             assertEquals(1, segments.size)
-            assertEquals(0.25f, segments[0].duration)
-            assertFunctionConformsTo(segments[0].waveform) {
+            assertEquals(0.0f, segments[0].startTime)
+            assertEquals(0.25f, segments[0].boundedWaveform.duration)
+            assertFunctionConformsTo(segments[0].boundedWaveform.waveform) {
                 row(1.0f,   "        IIII                          III                   II              I          ")
                 row(        "       I    II                       I   I                 I               I I         ")
                 row(        "     II       I                           I               I   I               I        ")
@@ -138,8 +146,9 @@ class PreprocessingTest {
 
         with (preprocessedTestSong.tracks[0]) {
             assertEquals(1, segments.size)
-            assertEquals(0.25f, segments[0].duration)
-            assertEquals(123.0f + 456.0f + 789.0f, segments[0].waveform(0.0f))
+            assertEquals(0.0f, segments[0].startTime)
+            assertEquals(0.25f, segments[0].boundedWaveform.duration)
+            assertEquals(123.0f + 456.0f + 789.0f, segments[0].boundedWaveform.waveform(0.0f))
         }
     }
 
@@ -167,7 +176,7 @@ class PreprocessingTest {
                         tracks = listOf(
                                 TrackForSynthesis(
                                         segments = listOf(
-                                                BoundedWaveform(silence, 0.25f)),
+                                                PositionedBoundedWaveform(BoundedWaveform(silence, 0.25f), 0.0f)),
                                         volume = 1.0f))),
                 actual = preprocessedTestSong)
     }
@@ -204,11 +213,13 @@ class PreprocessingTest {
                         tracks = listOf(
                                 TrackForSynthesis(
                                         segments = listOf(
-                                                BoundedWaveform(testInstrumentForNoteC4, 0.25f)),
+                                                PositionedBoundedWaveform(
+                                                        BoundedWaveform(testInstrumentForNoteC4, 0.25f), 0.0f)),
                                         volume = 1.0f),
                                 TrackForSynthesis(
                                         segments = listOf(
-                                                BoundedWaveform(testInstrumentForNoteE4, 0.125f)),
+                                                PositionedBoundedWaveform(
+                                                        BoundedWaveform(testInstrumentForNoteE4, 0.125f), 0.0f)),
                                         volume = 1.0f))),
                 actual = preprocessedTestSong)
     }

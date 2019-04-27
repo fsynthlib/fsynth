@@ -7,6 +7,7 @@ import it.krzeminski.fsynth.synthesis.types.TrackForSynthesis
 import it.krzeminski.fsynth.types.PositionedBoundedWaveform
 import it.krzeminski.fsynth.types.Song
 import it.krzeminski.fsynth.types.Waveform
+import it.krzeminski.fsynth.types.endTime
 
 fun SongForSynthesis.buildSongEvaluationFunction(): Waveform {
     val bucketedTracks = tracks.buildBucketedTracks()
@@ -22,7 +23,7 @@ val SongForSynthesis.durationInSeconds: Float
     get() = this.tracks.map { it.durationInSeconds }.max() ?: 0.0f
 
 val TrackForSynthesis.durationInSeconds: Float
-    get() = this.segments.map { it.duration }.sum()
+    get() = this.segments.map { it.endTime }.max() ?: 0.0f
 
 private fun List<TrackForSynthesis>.buildBucketedTracks(): List<BucketedTrack> =
         this.map { track ->

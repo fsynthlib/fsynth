@@ -10,9 +10,9 @@ import kotlin.test.assertEquals
 class BucketedTrackBuildingTest {
     @Test
     fun simpleTrack() {
-        val segment1 = BoundedWaveform(silence, 0.5f)
-        val segment2 = BoundedWaveform(silence, 0.5f)
-        val segment3 = BoundedWaveform(silence, 0.5f)
+        val segment1 = PositionedBoundedWaveform(BoundedWaveform(silence, 0.5f), 0.0f)
+        val segment2 = PositionedBoundedWaveform(BoundedWaveform(silence, 0.5f), 0.5f)
+        val segment3 = PositionedBoundedWaveform(BoundedWaveform(silence, 0.5f), 1.0f)
         val trackToBeCached = TrackForSynthesis(
                 segments = listOf(segment1, segment2, segment3),
                 volume = 1.0f)
@@ -21,22 +21,17 @@ class BucketedTrackBuildingTest {
 
         assertEquals(2, bucketedTrack.buckets.size)
         assertEquals(
-                listOf(
-                        PositionedBoundedWaveform(boundedWaveform = segment1, startTime = 0.0f),
-                        PositionedBoundedWaveform(boundedWaveform = segment2, startTime = 0.5f),
-                        PositionedBoundedWaveform(boundedWaveform = segment3, startTime = 1.0f)),
+                listOf(segment1, segment2, segment3),
                 bucketedTrack.buckets[0])
         assertEquals(
-                listOf(
-                        PositionedBoundedWaveform(boundedWaveform = segment2, startTime = 0.5f),
-                        PositionedBoundedWaveform(boundedWaveform = segment3, startTime = 1.0f)),
+                listOf(segment2, segment3),
                 bucketedTrack.buckets[1])
     }
 
     @Test
     fun segmentSpanningOverThreeBuckets() {
-        val segment1 = BoundedWaveform(silence, 0.5f)
-        val segment2 = BoundedWaveform(silence, 2.0f)
+        val segment1 = PositionedBoundedWaveform(BoundedWaveform(silence, 0.5f), 0.0f)
+        val segment2 = PositionedBoundedWaveform(BoundedWaveform(silence, 2.0f), 0.5f)
         val trackToBeCached = TrackForSynthesis(
                 segments = listOf(segment1, segment2),
                 volume = 1.0f)
@@ -45,23 +40,41 @@ class BucketedTrackBuildingTest {
 
         assertEquals(3, bucketedTrack.buckets.size)
         assertEquals(
-                listOf(
-                        PositionedBoundedWaveform(boundedWaveform = segment1, startTime = 0.0f),
-                        PositionedBoundedWaveform(boundedWaveform = segment2, startTime = 0.5f)),
+                listOf(segment1, segment2),
                 bucketedTrack.buckets[0])
         assertEquals(
-                listOf(
-                        PositionedBoundedWaveform(boundedWaveform = segment2, startTime = 0.5f)),
+                listOf(segment2),
                 bucketedTrack.buckets[1])
         assertEquals(
-                listOf(
-                        PositionedBoundedWaveform(boundedWaveform = segment2, startTime = 0.5f)),
+                listOf(segment2),
                 bucketedTrack.buckets[2])
     }
 
     @Test
+    fun overlappingSegments() {
+        val segment1 = PositionedBoundedWaveform(BoundedWaveform(silence, 0.5f), 0.0f)
+        val segment2 = PositionedBoundedWaveform(BoundedWaveform(silence, 0.5f), 0.25f)
+        val segment3 = PositionedBoundedWaveform(BoundedWaveform(silence, 0.5f), 0.5f)
+        val segment4 = PositionedBoundedWaveform(BoundedWaveform(silence, 0.5f), 0.75f)
+        val segment5 = PositionedBoundedWaveform(BoundedWaveform(silence, 0.5f), 1.0f)
+        val trackToBeCached = TrackForSynthesis(
+                segments = listOf(segment1, segment2, segment3, segment4, segment5),
+                volume = 1.0f)
+
+        val bucketedTrack = trackToBeCached.buildBucketedTrack(bucketSizeInSeconds = 1.0f)
+
+        assertEquals(2, bucketedTrack.buckets.size)
+        assertEquals(
+                listOf(segment1, segment2, segment3, segment4, segment5),
+                bucketedTrack.buckets[0])
+        assertEquals(
+                listOf(segment3, segment4, segment5),
+                bucketedTrack.buckets[1])
+    }
+
+    @Test
     fun segmentLengthEqualToBucketLength() {
-        val segment1 = BoundedWaveform(silence, 1.0f)
+        val segment1 = PositionedBoundedWaveform(BoundedWaveform(silence, 1.0f), 0.0f)
         val trackToBeCached = TrackForSynthesis(
                 segments = listOf(segment1),
                 volume = 1.0f)
@@ -70,8 +83,7 @@ class BucketedTrackBuildingTest {
 
         assertEquals(1, bucketedTrack.buckets.size)
         assertEquals(
-                listOf(
-                        PositionedBoundedWaveform(boundedWaveform = segment1, startTime = 0.0f)),
+                listOf(segment1),
                 bucketedTrack.buckets[0])
     }
 }

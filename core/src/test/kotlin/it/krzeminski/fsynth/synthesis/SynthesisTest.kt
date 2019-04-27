@@ -4,6 +4,7 @@ import it.krzeminski.fsynth.squareWave
 import it.krzeminski.fsynth.synthesis.types.SongForSynthesis
 import it.krzeminski.fsynth.synthesis.types.TrackForSynthesis
 import it.krzeminski.fsynth.types.BoundedWaveform
+import it.krzeminski.fsynth.types.PositionedBoundedWaveform
 import it.krzeminski.testutils.plotassert.assertFunctionConformsTo
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -17,7 +18,7 @@ class SynthesisTest {
                 tracks = listOf(
                         TrackForSynthesis(
                                 segments = listOf(
-                                        BoundedWaveform(squareWave(4.0f), 0.5f)),
+                                        PositionedBoundedWaveform(BoundedWaveform(squareWave(4.0f), 0.5f), 0.0f)),
                                 volume = 1.0f)))
 
         val songEvaluationFunction = testSong.buildSongEvaluationFunction()
@@ -39,21 +40,21 @@ class SynthesisTest {
                 tracks = listOf(
                         TrackForSynthesis(
                                 segments = listOf(
-                                        BoundedWaveform(squareWave(4.0f), 0.1f),
-                                        BoundedWaveform(squareWave(4.0f), 0.2f),
-                                        BoundedWaveform(squareWave(4.0f), 0.3f)),
+                                        PositionedBoundedWaveform(BoundedWaveform(squareWave(4.0f), 0.1f), 0.0f),
+                                        PositionedBoundedWaveform(BoundedWaveform(squareWave(4.0f), 0.2f), 0.1f),
+                                        PositionedBoundedWaveform(BoundedWaveform(squareWave(4.0f), 0.3f), 0.3f)),
                                 volume = 1.0f),
                         TrackForSynthesis(
                                 segments = listOf(
-                                        BoundedWaveform(squareWave(4.0f), 0.5f),
-                                        BoundedWaveform(squareWave(4.0f), 2.5f),
-                                        BoundedWaveform(squareWave(4.0f), 1.2f)),
+                                        PositionedBoundedWaveform(BoundedWaveform(squareWave(4.0f), 0.5f), 0.0f),
+                                        PositionedBoundedWaveform(BoundedWaveform(squareWave(4.0f), 2.5f), 0.5f),
+                                        PositionedBoundedWaveform(BoundedWaveform(squareWave(4.0f), 1.2f), 3.0f)),
                                 volume = 1.0f),
                         TrackForSynthesis(
                                 segments = listOf(
-                                        BoundedWaveform(squareWave(4.0f), 1.0f),
-                                        BoundedWaveform(squareWave(4.0f), 0.2f),
-                                        BoundedWaveform(squareWave(4.0f), 0.2f)),
+                                        PositionedBoundedWaveform(BoundedWaveform(squareWave(4.0f), 1.0f), 0.0f),
+                                        PositionedBoundedWaveform(BoundedWaveform(squareWave(4.0f), 0.2f), 1.0f),
+                                        PositionedBoundedWaveform(BoundedWaveform(squareWave(4.0f), 0.2f), 1.2f)),
                                 volume = 1.0f)))
 
         assertEquals(0.5f + 2.5f + 1.2f, testSong.durationInSeconds)
@@ -73,11 +74,11 @@ class SynthesisTest {
                 tracks = listOf(
                         TrackForSynthesis(
                                 segments = listOf(
-                                        BoundedWaveform(squareWave(8.0f), 0.5f)),
+                                        PositionedBoundedWaveform(BoundedWaveform(squareWave(8.0f), 0.5f), 0.0f)),
                                 volume = 0.5f),
                         TrackForSynthesis(
                                 segments = listOf(
-                                        BoundedWaveform(squareWave(2.0f), 1.0f)),
+                                        PositionedBoundedWaveform(BoundedWaveform(squareWave(2.0f), 1.0f), 0.0f)),
                                 volume = 0.5f)))
 
         val songEvaluationFunction = testSong.buildSongEvaluationFunction()
@@ -100,11 +101,11 @@ class SynthesisTest {
                 tracks = listOf(
                         TrackForSynthesis(
                                 segments = listOf(
-                                        BoundedWaveform(squareWave(8.0f), 0.5f)),
+                                        PositionedBoundedWaveform(BoundedWaveform(squareWave(8.0f), 0.5f), 0.0f)),
                                 volume = 0.5f),
                         TrackForSynthesis(
                                 segments = listOf(
-                                        BoundedWaveform(squareWave(2.0f), 1.0f)),
+                                        PositionedBoundedWaveform(BoundedWaveform(squareWave(2.0f), 1.0f), 0.0f)),
                                 volume = 0.25f)))
 
         val songEvaluationFunction = testSong.buildSongEvaluationFunction()
@@ -131,11 +132,11 @@ class SynthesisTest {
                 tracks = listOf(
                         TrackForSynthesis(
                                 segments = listOf(
-                                        BoundedWaveform(squareWave(4.0f), 1.0f)),
+                                        PositionedBoundedWaveform(BoundedWaveform(squareWave(4.0f), 1.0f), 0.0f)),
                                 volume = 0.5f),
                         TrackForSynthesis(
                                 segments = listOf(
-                                        BoundedWaveform(squareWave(1.0f), 2.0f)),
+                                        PositionedBoundedWaveform(BoundedWaveform(squareWave(1.0f), 2.0f), 0.0f)),
                                 volume = 0.5f)))
 
         val songEvaluationFunction = testSong.buildSongEvaluationFunction()
