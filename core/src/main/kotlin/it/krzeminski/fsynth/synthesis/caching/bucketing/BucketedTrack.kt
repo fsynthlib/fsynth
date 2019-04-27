@@ -1,5 +1,7 @@
 package it.krzeminski.fsynth.synthesis.caching.bucketing
 
+import it.krzeminski.fsynth.types.PositionedBoundedWaveform
+
 data class BucketedTrack(
     /**
      * 0th element of this list contains track segments that exist in the song in the time range
@@ -13,4 +15,4 @@ data class BucketedTrack(
     val volume: Float
 )
 
-typealias TrackBucket = List<PositionedTrackSegment>
+typealias TrackBucket = List<PositionedBoundedWaveform>

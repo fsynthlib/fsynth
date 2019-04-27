@@ -1,10 +1,10 @@
 package it.krzeminski.fsynth.synthesis
 
 import it.krzeminski.fsynth.synthesis.caching.bucketing.BucketedTrack
-import it.krzeminski.fsynth.synthesis.caching.bucketing.PositionedTrackSegment
 import it.krzeminski.fsynth.synthesis.caching.bucketing.buildBucketedTrack
 import it.krzeminski.fsynth.synthesis.types.SongForSynthesis
 import it.krzeminski.fsynth.synthesis.types.TrackForSynthesis
+import it.krzeminski.fsynth.types.PositionedBoundedWaveform
 import it.krzeminski.fsynth.types.Song
 import it.krzeminski.fsynth.types.Waveform
 
@@ -51,16 +51,16 @@ private fun BucketedTrack.getWaveformValue(time: Float): Float {
 
     for (segmentInBucket in buckets[whichBucket]) {
         if (segmentInBucket playsFor time) {
-            val timeRelativeToThisSegment = time - segmentInBucket.startTimeInSeconds
-            return segmentInBucket.trackSegment.waveform(timeRelativeToThisSegment) * volume
+            val timeRelativeToThisSegment = time - segmentInBucket.startTime
+            return segmentInBucket.boundedWaveform.waveform(timeRelativeToThisSegment) * volume
         }
     }
 
     return 0.0f
 }
 
-private infix fun PositionedTrackSegment.playsFor(time: Float) =
-        time >= startTimeInSeconds && time <= (startTimeInSeconds + trackSegment.duration)
+private infix fun PositionedBoundedWaveform.playsFor(time: Float) =
+        time >= startTime && time <= (startTime + boundedWaveform.duration)
 
 private fun BucketedTrack.containsBucketWithIndex(whichBucket: Int) =
         whichBucket < buckets.size

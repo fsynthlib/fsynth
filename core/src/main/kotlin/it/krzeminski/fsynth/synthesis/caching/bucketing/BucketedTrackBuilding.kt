@@ -2,24 +2,26 @@ package it.krzeminski.fsynth.synthesis.caching.bucketing
 
 import it.krzeminski.fsynth.synthesis.types.TrackForSynthesis
 import it.krzeminski.fsynth.types.BoundedWaveform
+import it.krzeminski.fsynth.types.PositionedBoundedWaveform
+import it.krzeminski.fsynth.types.endTime
 import kotlin.math.ceil
 
 fun TrackForSynthesis.buildBucketedTrack(bucketSizeInSeconds: Float): BucketedTrack {
-    val positionedTrackSegments = positionedTrackSegmentsFrom(segments)
+    val positionedBoundedWaveforms = positionedBoundedWaveformsFrom(segments)
     val numberOfBuckets = calculateNumberOfBuckets(bucketSizeInSeconds)
 
     val buckets = ArrayList(
             (0 until numberOfBuckets).asSequence()
-                    .map { bucketIndex -> segmentsForBucket(positionedTrackSegments, bucketIndex, bucketSizeInSeconds) }
+                    .map { bucketIndex -> segmentsForBucket(positionedBoundedWaveforms, bucketIndex, bucketSizeInSeconds) }
                     .toList())
 
     return BucketedTrack(buckets, bucketSizeInSeconds, volume)
 }
 
-private fun positionedTrackSegmentsFrom(segments: List<BoundedWaveform>): List<PositionedTrackSegment> {
-    return segments.fold(emptyList()) { positionedTrackSegmentsSoFar, currentTrackSegment ->
-        val last = positionedTrackSegmentsSoFar.lastOrNull()
-        positionedTrackSegmentsSoFar.plus(PositionedTrackSegment(currentTrackSegment, last?.endTimeInSeconds ?: 0.0f))
+private fun positionedBoundedWaveformsFrom(segments: List<BoundedWaveform>): List<PositionedBoundedWaveform> {
+    return segments.fold(emptyList()) { positionedBoundedWaveformsSoFar, currentTrackSegment ->
+        val last = positionedBoundedWaveformsSoFar.lastOrNull()
+        positionedBoundedWaveformsSoFar.plus(PositionedBoundedWaveform(currentTrackSegment, last?.endTime ?: 0.0f))
     }
 }
 
@@ -30,19 +32,19 @@ private val TrackForSynthesis.durationInSeconds: Float
     get() = this.segments.map { it.duration }.sum()
 
 private fun segmentsForBucket(
-    positionedTrackSegments: List<PositionedTrackSegment>,
+    positionedBoundedWaveforms: List<PositionedBoundedWaveform>,
     bucketIndex: Int,
     bucketSizeInSeconds: Float
-): List<PositionedTrackSegment>
+): List<PositionedBoundedWaveform>
 {
-    return positionedTrackSegments
+    return positionedBoundedWaveforms
             .filter { segment -> segment.belongsToBucket(bucketIndex, bucketSizeInSeconds) }
 }
 
-private fun PositionedTrackSegment.belongsToBucket(bucketIndex: Int, bucketSizeInSeconds: Float): Boolean {
+private fun PositionedBoundedWaveform.belongsToBucket(bucketIndex: Int, bucketSizeInSeconds: Float): Boolean {
     val bucketBounds = makeBucketBounds(bucketIndex, bucketSizeInSeconds)
-    return startTimeInSeconds inBoundsOf bucketBounds ||
-            endTimeInSeconds inBoundsOf bucketBounds ||
+    return startTime inBoundsOf bucketBounds ||
+            endTime inBoundsOf bucketBounds ||
             this spansOverWhole bucketBounds
 }
 
@@ -61,5 +63,5 @@ private fun makeBucketBounds(bucketIndex: Int, bucketSizeInSeconds: Float): Buck
 private infix fun Float.inBoundsOf(bucketBounds: BucketBounds) =
         this >= bucketBounds.startTimeInSeconds && this <= bucketBounds.endTimeInSeconds
 
-private infix fun PositionedTrackSegment.spansOverWhole(bucketBounds: BucketBounds) =
-        startTimeInSeconds <= bucketBounds.startTimeInSeconds && endTimeInSeconds >= bucketBounds.endTimeInSeconds
+private infix fun PositionedBoundedWaveform.spansOverWhole(bucketBounds: BucketBounds) =
+        startTime <= bucketBounds.startTimeInSeconds && endTime >= bucketBounds.endTimeInSeconds

@@ -3,6 +3,7 @@ package it.krzeminski.fsynth.synthesis.caching.bucketing
 import it.krzeminski.fsynth.silence
 import it.krzeminski.fsynth.synthesis.types.TrackForSynthesis
 import it.krzeminski.fsynth.types.BoundedWaveform
+import it.krzeminski.fsynth.types.PositionedBoundedWaveform
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -21,14 +22,14 @@ class BucketedTrackBuildingTest {
         assertEquals(2, bucketedTrack.buckets.size)
         assertEquals(
                 listOf(
-                        PositionedTrackSegment(trackSegment = segment1, startTimeInSeconds = 0.0f),
-                        PositionedTrackSegment(trackSegment = segment2, startTimeInSeconds = 0.5f),
-                        PositionedTrackSegment(trackSegment = segment3, startTimeInSeconds = 1.0f)),
+                        PositionedBoundedWaveform(boundedWaveform = segment1, startTime = 0.0f),
+                        PositionedBoundedWaveform(boundedWaveform = segment2, startTime = 0.5f),
+                        PositionedBoundedWaveform(boundedWaveform = segment3, startTime = 1.0f)),
                 bucketedTrack.buckets[0])
         assertEquals(
                 listOf(
-                        PositionedTrackSegment(trackSegment = segment2, startTimeInSeconds = 0.5f),
-                        PositionedTrackSegment(trackSegment = segment3, startTimeInSeconds = 1.0f)),
+                        PositionedBoundedWaveform(boundedWaveform = segment2, startTime = 0.5f),
+                        PositionedBoundedWaveform(boundedWaveform = segment3, startTime = 1.0f)),
                 bucketedTrack.buckets[1])
     }
 
@@ -45,16 +46,16 @@ class BucketedTrackBuildingTest {
         assertEquals(3, bucketedTrack.buckets.size)
         assertEquals(
                 listOf(
-                        PositionedTrackSegment(trackSegment = segment1, startTimeInSeconds = 0.0f),
-                        PositionedTrackSegment(trackSegment = segment2, startTimeInSeconds = 0.5f)),
+                        PositionedBoundedWaveform(boundedWaveform = segment1, startTime = 0.0f),
+                        PositionedBoundedWaveform(boundedWaveform = segment2, startTime = 0.5f)),
                 bucketedTrack.buckets[0])
         assertEquals(
                 listOf(
-                        PositionedTrackSegment(trackSegment = segment2, startTimeInSeconds = 0.5f)),
+                        PositionedBoundedWaveform(boundedWaveform = segment2, startTime = 0.5f)),
                 bucketedTrack.buckets[1])
         assertEquals(
                 listOf(
-                        PositionedTrackSegment(trackSegment = segment2, startTimeInSeconds = 0.5f)),
+                        PositionedBoundedWaveform(boundedWaveform = segment2, startTime = 0.5f)),
                 bucketedTrack.buckets[2])
     }
 
@@ -70,7 +71,7 @@ class BucketedTrackBuildingTest {
         assertEquals(1, bucketedTrack.buckets.size)
         assertEquals(
                 listOf(
-                        PositionedTrackSegment(trackSegment = segment1, startTimeInSeconds = 0.0f)),
+                        PositionedBoundedWaveform(boundedWaveform = segment1, startTime = 0.0f)),
                 bucketedTrack.buckets[0])
     }
 }
