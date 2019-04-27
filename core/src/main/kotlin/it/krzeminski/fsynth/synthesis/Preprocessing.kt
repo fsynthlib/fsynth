@@ -3,7 +3,7 @@ package it.krzeminski.fsynth.synthesis
 import it.krzeminski.fsynth.silence
 import it.krzeminski.fsynth.synthesis.types.SongForSynthesis
 import it.krzeminski.fsynth.synthesis.types.TrackForSynthesis
-import it.krzeminski.fsynth.synthesis.types.TrackSegmentForSynthesis
+import it.krzeminski.fsynth.types.BoundedWaveform
 import it.krzeminski.fsynth.types.NoteValue
 import it.krzeminski.fsynth.types.Song
 import it.krzeminski.fsynth.types.Track
@@ -21,13 +21,13 @@ private fun Track.preprocess(song: Song) =
 
 private fun List<TrackSegment>.preprocess(song: Song, track: Track) = map { it.preprocess(song, track) }
 
-private fun TrackSegment.preprocess(song: Song, track: Track): TrackSegmentForSynthesis {
+private fun TrackSegment.preprocess(song: Song, track: Track): BoundedWaveform {
     when (this) {
         is TrackSegment.SingleNote -> {
-            return TrackSegmentForSynthesis(track.instrument(pitch.frequency), value.toSeconds(song.beatsPerMinute))
+            return BoundedWaveform(track.instrument(pitch.frequency), value.toSeconds(song.beatsPerMinute))
         }
         is TrackSegment.Glissando -> {
-            return TrackSegmentForSynthesis(
+            return BoundedWaveform(
                     waveform = { t: Float ->
                         val stretchedTime = stretchTimeForGlissando(
                                 transition.startPitch.midiNoteNumber,
@@ -36,18 +36,18 @@ private fun TrackSegment.preprocess(song: Song, track: Track): TrackSegmentForSy
                                 t)
                         track.instrument(1.0f)(stretchedTime)
                     },
-                    durationInSeconds = value.toSeconds(song.beatsPerMinute))
+                    duration = value.toSeconds(song.beatsPerMinute))
         }
         is TrackSegment.Chord -> {
-            return TrackSegmentForSynthesis(
+            return BoundedWaveform(
                     waveform = pitches
                             .map { it.frequency }
                             .map(track.instrument)
                             .reduce { accumulator, current -> accumulator + current },
-                    durationInSeconds = value.toSeconds(song.beatsPerMinute))
+                    duration = value.toSeconds(song.beatsPerMinute))
         }
         is TrackSegment.Pause -> {
-            return TrackSegmentForSynthesis(silence, value.toSeconds(song.beatsPerMinute))
+            return BoundedWaveform(silence, value.toSeconds(song.beatsPerMinute))
         }
     }
 }

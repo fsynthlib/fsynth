@@ -4,7 +4,7 @@ import it.krzeminski.fsynth.silence
 import it.krzeminski.fsynth.sineWave
 import it.krzeminski.fsynth.synthesis.types.SongForSynthesis
 import it.krzeminski.fsynth.synthesis.types.TrackForSynthesis
-import it.krzeminski.fsynth.synthesis.types.TrackSegmentForSynthesis
+import it.krzeminski.fsynth.types.BoundedWaveform
 import it.krzeminski.fsynth.types.MusicNote.* // ktlint-disable no-wildcard-imports
 import it.krzeminski.fsynth.types.MusicNoteTransition
 import it.krzeminski.fsynth.types.NoteValue
@@ -57,9 +57,9 @@ class PreprocessingTest {
                         tracks = listOf(
                                 TrackForSynthesis(
                                         segments = listOf(
-                                                TrackSegmentForSynthesis(testInstrumentForNoteC4, 0.25f),
-                                                TrackSegmentForSynthesis(testInstrumentForNoteE4, 0.125f),
-                                                TrackSegmentForSynthesis(testInstrumentForNoteG4, 0.5f)),
+                                                BoundedWaveform(testInstrumentForNoteC4, 0.25f),
+                                                BoundedWaveform(testInstrumentForNoteE4, 0.125f),
+                                                BoundedWaveform(testInstrumentForNoteG4, 0.5f)),
                                         volume = 1.0f))),
                 actual = preprocessedTestSong)
     }
@@ -88,7 +88,7 @@ class PreprocessingTest {
 
         with (preprocessedTestSong.tracks[0]) {
             assertEquals(1, segments.size)
-            assertEquals(0.25f, segments[0].durationInSeconds)
+            assertEquals(0.25f, segments[0].duration)
             assertFunctionConformsTo(segments[0].waveform) {
                 row(1.0f,   "        IIII                          III                   II              I          ")
                 row(        "       I    II                       I   I                 I               I I         ")
@@ -138,7 +138,7 @@ class PreprocessingTest {
 
         with (preprocessedTestSong.tracks[0]) {
             assertEquals(1, segments.size)
-            assertEquals(0.25f, segments[0].durationInSeconds)
+            assertEquals(0.25f, segments[0].duration)
             assertEquals(123.0f + 456.0f + 789.0f, segments[0].waveform(0.0f))
         }
     }
@@ -167,7 +167,7 @@ class PreprocessingTest {
                         tracks = listOf(
                                 TrackForSynthesis(
                                         segments = listOf(
-                                                TrackSegmentForSynthesis(silence, 0.25f)),
+                                                BoundedWaveform(silence, 0.25f)),
                                         volume = 1.0f))),
                 actual = preprocessedTestSong)
     }
@@ -204,11 +204,11 @@ class PreprocessingTest {
                         tracks = listOf(
                                 TrackForSynthesis(
                                         segments = listOf(
-                                                TrackSegmentForSynthesis(testInstrumentForNoteC4, 0.25f)),
+                                                BoundedWaveform(testInstrumentForNoteC4, 0.25f)),
                                         volume = 1.0f),
                                 TrackForSynthesis(
                                         segments = listOf(
-                                                TrackSegmentForSynthesis(testInstrumentForNoteE4, 0.125f)),
+                                                BoundedWaveform(testInstrumentForNoteE4, 0.125f)),
                                         volume = 1.0f))),
                 actual = preprocessedTestSong)
     }

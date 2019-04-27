@@ -19,7 +19,7 @@ val Song.durationInSeconds: Float
     get() = this.preprocessForSynthesis().durationInSeconds
 
 val SongForSynthesis.durationInSeconds: Float
-    get() = this.tracks.map { it.segments.map { it.durationInSeconds }.sum() }.max() ?: 0.0f
+    get() = this.tracks.map { it.segments.map { it.duration }.sum() }.max() ?: 0.0f
 
 private fun List<TrackForSynthesis>.buildBucketedTracks(): List<BucketedTrack> =
         this.map { track ->
@@ -60,7 +60,7 @@ private fun BucketedTrack.getWaveformValue(time: Float): Float {
 }
 
 private infix fun PositionedTrackSegment.playsFor(time: Float) =
-        time >= startTimeInSeconds && time <= (startTimeInSeconds + trackSegment.durationInSeconds)
+        time >= startTimeInSeconds && time <= (startTimeInSeconds + trackSegment.duration)
 
 private fun BucketedTrack.containsBucketWithIndex(whichBucket: Int) =
         whichBucket < buckets.size

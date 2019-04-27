@@ -2,16 +2,16 @@ package it.krzeminski.fsynth.synthesis.caching.bucketing
 
 import it.krzeminski.fsynth.silence
 import it.krzeminski.fsynth.synthesis.types.TrackForSynthesis
-import it.krzeminski.fsynth.synthesis.types.TrackSegmentForSynthesis
+import it.krzeminski.fsynth.types.BoundedWaveform
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class BucketedTrackBuildingTest {
     @Test
     fun simpleTrack() {
-        val segment1 = TrackSegmentForSynthesis(silence, 0.5f)
-        val segment2 = TrackSegmentForSynthesis(silence, 0.5f)
-        val segment3 = TrackSegmentForSynthesis(silence, 0.5f)
+        val segment1 = BoundedWaveform(silence, 0.5f)
+        val segment2 = BoundedWaveform(silence, 0.5f)
+        val segment3 = BoundedWaveform(silence, 0.5f)
         val trackToBeCached = TrackForSynthesis(
                 segments = listOf(segment1, segment2, segment3),
                 volume = 1.0f)
@@ -34,8 +34,8 @@ class BucketedTrackBuildingTest {
 
     @Test
     fun segmentSpanningOverThreeBuckets() {
-        val segment1 = TrackSegmentForSynthesis(silence, 0.5f)
-        val segment2 = TrackSegmentForSynthesis(silence, 2.0f)
+        val segment1 = BoundedWaveform(silence, 0.5f)
+        val segment2 = BoundedWaveform(silence, 2.0f)
         val trackToBeCached = TrackForSynthesis(
                 segments = listOf(segment1, segment2),
                 volume = 1.0f)
@@ -60,7 +60,7 @@ class BucketedTrackBuildingTest {
 
     @Test
     fun segmentLengthEqualToBucketLength() {
-        val segment1 = TrackSegmentForSynthesis(silence, 1.0f)
+        val segment1 = BoundedWaveform(silence, 1.0f)
         val trackToBeCached = TrackForSynthesis(
                 segments = listOf(segment1),
                 volume = 1.0f)

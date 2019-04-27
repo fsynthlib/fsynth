@@ -1,7 +1,7 @@
 package it.krzeminski.fsynth.synthesis.caching.bucketing
 
 import it.krzeminski.fsynth.synthesis.types.TrackForSynthesis
-import it.krzeminski.fsynth.synthesis.types.TrackSegmentForSynthesis
+import it.krzeminski.fsynth.types.BoundedWaveform
 import kotlin.math.ceil
 
 fun TrackForSynthesis.buildBucketedTrack(bucketSizeInSeconds: Float): BucketedTrack {
@@ -16,7 +16,7 @@ fun TrackForSynthesis.buildBucketedTrack(bucketSizeInSeconds: Float): BucketedTr
     return BucketedTrack(buckets, bucketSizeInSeconds, volume)
 }
 
-private fun positionedTrackSegmentsFrom(segments: List<TrackSegmentForSynthesis>): List<PositionedTrackSegment> {
+private fun positionedTrackSegmentsFrom(segments: List<BoundedWaveform>): List<PositionedTrackSegment> {
     return segments.fold(emptyList()) { positionedTrackSegmentsSoFar, currentTrackSegment ->
         val last = positionedTrackSegmentsSoFar.lastOrNull()
         positionedTrackSegmentsSoFar.plus(PositionedTrackSegment(currentTrackSegment, last?.endTimeInSeconds ?: 0.0f))
@@ -27,7 +27,7 @@ private fun TrackForSynthesis.calculateNumberOfBuckets(bucketSizeInSeconds: Floa
         ceil(durationInSeconds / bucketSizeInSeconds).toInt()
 
 private val TrackForSynthesis.durationInSeconds: Float
-    get() = this.segments.map { it.durationInSeconds }.sum()
+    get() = this.segments.map { it.duration }.sum()
 
 private fun segmentsForBucket(
     positionedTrackSegments: List<PositionedTrackSegment>,

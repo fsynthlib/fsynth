@@ -2,7 +2,7 @@ package it.krzeminski.fsynth
 
 import it.krzeminski.fsynth.synthesis.types.SongForSynthesis
 import it.krzeminski.fsynth.synthesis.types.TrackForSynthesis
-import it.krzeminski.fsynth.synthesis.types.TrackSegmentForSynthesis
+import it.krzeminski.fsynth.types.BoundedWaveform
 import it.krzeminski.testutils.plotassert.assertFunctionConformsTo
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -16,7 +16,7 @@ class RenderingTest {
                 tracks = listOf(
                         TrackForSynthesis(
                                 segments = listOf(
-                                        TrackSegmentForSynthesis(sineWave(1.0f), 3.0f)),
+                                        BoundedWaveform(sineWave(1.0f), 3.0f)),
                                 volume = 1.0f)))
 
         val songSamples = testSong.renderWithSampleRate(8, 0.0f).toList().toFloatArray()
@@ -50,7 +50,7 @@ class RenderingTest {
                 tracks = listOf(
                         TrackForSynthesis(
                                 segments = listOf(
-                                        TrackSegmentForSynthesis(sineWave(1.0f), 3.0f)),
+                                        BoundedWaveform(sineWave(1.0f), 3.0f)),
                                 volume = 1.0f)))
 
         val songSamples = testSong.renderWithSampleRate(8, 2.0f).toList().toFloatArray()
@@ -84,7 +84,7 @@ class RenderingTest {
                 tracks = listOf(
                         TrackForSynthesis(
                                 segments = listOf(
-                                        TrackSegmentForSynthesis(sineWave(1.0f), 3.0f)),
+                                        BoundedWaveform(sineWave(1.0f), 3.0f)),
                                 volume = 1.0f)))
 
         val songSamples = testSong.renderWithSampleRate(8, 10.0f).toList().toFloatArray()

@@ -1,11 +1,11 @@
 package it.krzeminski.fsynth.synthesis.caching.bucketing
 
-import it.krzeminski.fsynth.synthesis.types.TrackSegmentForSynthesis
+import it.krzeminski.fsynth.types.BoundedWaveform
 
 data class PositionedTrackSegment(
-    val trackSegment: TrackSegmentForSynthesis,
+    val trackSegment: BoundedWaveform,
     val startTimeInSeconds: Float
 )
 
 val PositionedTrackSegment.endTimeInSeconds: Float
-    get() = startTimeInSeconds + trackSegment.durationInSeconds
+    get() = startTimeInSeconds + trackSegment.duration
