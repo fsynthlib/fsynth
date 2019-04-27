@@ -3,9 +3,11 @@ package it.krzeminski.fsynth.envelope
 import it.krzeminski.fsynth.effects.envelope.AdsrEnvelopeDefinition
 import it.krzeminski.fsynth.effects.envelope.adsrEnvelope
 import it.krzeminski.testutils.plotassert.assertFunctionConformsTo
+import kotlin.math.abs
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertTrue
 
 /* ktlint-disable no-multi-spaces paren-spacing */
 
@@ -60,8 +62,8 @@ class AdsrEnvelopeTest {
             row(        "       IIIIII                          ")
             row(        "  I          IIIII                     ")
             row(0.25f,  "                  IIIIIII              ")
-            row(        " I                       IIIII         ")
-            row(        "                              IIIIII   ")
+            row(        " I                      IIIIII         ")
+            row(        "                              IIIIIII  ")
             row(0.0f,   "X                                   III")
             xAxis {
                 markers("|     |     |     |     |     |     |  ")
@@ -81,7 +83,7 @@ class AdsrEnvelopeTest {
 
         val envelope = adsrEnvelope(keyPressDuration = 2.0f, definition = envelopeDefinition)
 
-        assertEquals(actual = envelope.duration, expected = 5.3f)
+        assertTrue(abs(envelope.duration - 5.3f) < 0.000001f, message = "Was: ${envelope.duration}")
         assertFunctionConformsTo(envelope.waveform) {
             row(1.0f,   "      XI                                                           ")
             row(        "        IIII                                                       ")
