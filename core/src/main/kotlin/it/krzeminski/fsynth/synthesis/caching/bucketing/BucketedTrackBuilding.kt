@@ -1,5 +1,6 @@
 package it.krzeminski.fsynth.synthesis.caching.bucketing
 
+import it.krzeminski.fsynth.synthesis.durationInSeconds
 import it.krzeminski.fsynth.synthesis.types.TrackForSynthesis
 import it.krzeminski.fsynth.types.BoundedWaveform
 import it.krzeminski.fsynth.types.PositionedBoundedWaveform
@@ -27,9 +28,6 @@ private fun positionedBoundedWaveformsFrom(segments: List<BoundedWaveform>): Lis
 
 private fun TrackForSynthesis.calculateNumberOfBuckets(bucketSizeInSeconds: Float) =
         ceil(durationInSeconds / bucketSizeInSeconds).toInt()
-
-private val TrackForSynthesis.durationInSeconds: Float
-    get() = this.segments.map { it.duration }.sum()
 
 private fun segmentsForBucket(
     positionedBoundedWaveforms: List<PositionedBoundedWaveform>,
