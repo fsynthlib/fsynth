@@ -1,6 +1,7 @@
 package it.krzeminski.fsynth.synthesis
 
 import it.krzeminski.fsynth.effects.envelope.AdsrEnvelopeDefinition
+import it.krzeminski.fsynth.effects.envelope.buildEnvelopeFunction
 import it.krzeminski.fsynth.instruments.Instrument
 import it.krzeminski.fsynth.silence
 import it.krzeminski.fsynth.sineWave
@@ -33,11 +34,12 @@ class PreprocessingTest {
                         else -> throw IllegalStateException("Only the tree above notes should be used in this test!")
                     }
                 },
-                envelope = AdsrEnvelopeDefinition(
-                        attackTime = 0.0f,
-                        decayTime = 0.0f,
-                        sustainLevel = 1.0f,
-                        releaseTime = 0.0f))
+                envelope = buildEnvelopeFunction(
+                        AdsrEnvelopeDefinition(
+                                attackTime = 0.0f,
+                                decayTime = 0.0f,
+                                sustainLevel = 1.0f,
+                                releaseTime = 0.0f)))
     }
 
     @Test

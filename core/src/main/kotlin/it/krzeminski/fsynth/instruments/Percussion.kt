@@ -1,6 +1,7 @@
 package it.krzeminski.fsynth.instruments
 
 import it.krzeminski.fsynth.effects.envelope.AdsrEnvelopeDefinition
+import it.krzeminski.fsynth.effects.envelope.buildEnvelopeFunction
 import kotlin.random.Random
 
 val cymbals = Instrument(
@@ -9,9 +10,10 @@ val cymbals = Instrument(
                 { _ -> this.nextFloat() }
             }
         },
-        envelope = AdsrEnvelopeDefinition(
-                attackTime = 0.0f,
-                decayTime = 0.0f,
-                sustainLevel = 1.0f,
-                releaseTime = 0.0f)
+        envelope = buildEnvelopeFunction(
+                AdsrEnvelopeDefinition(
+                        attackTime = 0.0f,
+                        decayTime = 0.0f,
+                        sustainLevel = 1.0f,
+                        releaseTime = 0.0f))
 )

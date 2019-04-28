@@ -1,6 +1,7 @@
 package it.krzeminski.fsynth.instruments
 
 import it.krzeminski.fsynth.effects.envelope.AdsrEnvelopeDefinition
+import it.krzeminski.fsynth.effects.envelope.buildEnvelopeFunction
 import it.krzeminski.fsynth.effects.simpleDecayEnvelope
 import it.krzeminski.fsynth.sineWave
 import it.krzeminski.fsynth.squareWave
@@ -13,11 +14,12 @@ val synthesizer = Instrument(
             0.2 * squareWave(frequency*2) +
             0.5 * sineWave(frequency)
         },
-        envelope = AdsrEnvelopeDefinition(
-                attackTime = 0.0f,
-                decayTime = 0.0f,
-                sustainLevel = 1.0f,
-                releaseTime = 0.0f)
+        envelope = buildEnvelopeFunction(
+                AdsrEnvelopeDefinition(
+                        attackTime = 0.0f,
+                        decayTime = 0.0f,
+                        sustainLevel = 1.0f,
+                        releaseTime = 0.0f))
 )
 
 val simpleDecayEnvelopeSynthesizer = Instrument(
@@ -26,9 +28,10 @@ val simpleDecayEnvelopeSynthesizer = Instrument(
                     0.2 * squareWave(frequency*2) +
                     0.5 * sineWave(frequency)
         },
-        envelope = AdsrEnvelopeDefinition(
-                attackTime = 0.0f,
-                decayTime = 0.0f,
-                sustainLevel = 1.0f,
-                releaseTime = 0.0f)
+        envelope = buildEnvelopeFunction(
+                AdsrEnvelopeDefinition(
+                        attackTime = 0.0f,
+                        decayTime = 0.0f,
+                        sustainLevel = 1.0f,
+                        releaseTime = 0.0f))
 )
