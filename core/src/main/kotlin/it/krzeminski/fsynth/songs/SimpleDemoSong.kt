@@ -10,7 +10,7 @@ import it.krzeminski.fsynth.types.song
 val simpleDemoSong = song(
         name = "Simple demo song",
         beatsPerMinute = 120) {
-    track(instrument = ::organs, volume = 0.3f) {
+    track(instrument = organs, volume = 0.3f) {
         note(1 by 8, D4)
         note(1 by 16, Csharp4)
         note(1 by 16, D4)

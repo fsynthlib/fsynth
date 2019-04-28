@@ -7,7 +7,7 @@ import kotlin.test.assertEquals
 
 class SongBuildingDslTest {
     companion object {
-        val testInstrument = ::organs
+        val testInstrument = organs
     }
 
     @Test

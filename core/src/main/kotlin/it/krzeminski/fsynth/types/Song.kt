@@ -1,10 +1,12 @@
 package it.krzeminski.fsynth.types
 
+import it.krzeminski.fsynth.instruments.Instrument
+
 data class Song(val name: String, val beatsPerMinute: Int, val tracks: List<Track>)
 
 data class Track(
     val name: String?,
-    val instrument: (Float) -> Waveform,
+    val instrument: Instrument,
     val volume: Float,
     val segments: List<TrackSegment>
 )

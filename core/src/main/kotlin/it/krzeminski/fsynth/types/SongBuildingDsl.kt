@@ -1,5 +1,7 @@
 package it.krzeminski.fsynth.types
 
+import it.krzeminski.fsynth.instruments.Instrument
+
 fun song(name: String, beatsPerMinute: Int, init: SongBuilder.() -> Unit): Song {
     val songBuilder = SongBuilder(name, beatsPerMinute)
     songBuilder.init()
@@ -18,7 +20,7 @@ class SongBuilder(
 
     fun track(
         name: String? = null,
-        instrument: (Float) -> Waveform,
+        instrument: Instrument,
         volume: Float,
         init: TrackBuilder.() -> Unit
     ) {
@@ -38,7 +40,7 @@ class SongBuilder(
 
 @SongDslMarker
 class TrackBuilder(
-    private val instrument: (Float) -> Waveform,
+    private val instrument: Instrument,
     private val volume: Float,
     private val name: String?
 ) {

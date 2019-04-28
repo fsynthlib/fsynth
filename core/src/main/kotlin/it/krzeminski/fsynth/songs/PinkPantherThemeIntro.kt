@@ -1,7 +1,7 @@
 package it.krzeminski.fsynth.songs
 
-import it.krzeminski.fsynth.effects.simpleDecayEnvelope
 import it.krzeminski.fsynth.instruments.cymbals
+import it.krzeminski.fsynth.instruments.simpleDecayEnvelopeSynthesizer
 import it.krzeminski.fsynth.instruments.synthesizer
 import it.krzeminski.fsynth.types.MusicNote.* // ktlint-disable no-wildcard-imports
 import it.krzeminski.fsynth.types.by
@@ -9,7 +9,7 @@ import it.krzeminski.fsynth.types.to
 import it.krzeminski.fsynth.types.song
 
 val pinkPantherThemeIntro = song(name = "Pink Panther Theme (intro)", beatsPerMinute = 120) {
-    track(name = "Main melody", instrument = ::synthesizer, volume = 0.15f) {
+    track(name = "Main melody", instrument = synthesizer, volume = 0.15f) {
         pause(1 by 1)
         pause(1 by 1)
         pause(1 by 1)
@@ -80,7 +80,7 @@ val pinkPantherThemeIntro = song(name = "Pink Panther Theme (intro)", beatsPerMi
         note(7 by 12, E4)
     }
 
-    track(name = "Chord background", instrument = ::synthesizer, volume = 0.05f) {
+    track(name = "Chord background", instrument = synthesizer, volume = 0.05f) {
         repeat(2) {
             pause(8 by 12)
             chord(1 by 12, Csharp3, Gsharp3)
@@ -118,7 +118,7 @@ val pinkPantherThemeIntro = song(name = "Pink Panther Theme (intro)", beatsPerMi
         chord(1 by 1, E3, B3)
     }
 
-    track(name = "Bass", instrument = simpleDecayEnvelope(::synthesizer), volume = 0.05f) {
+    track(name = "Bass", instrument = simpleDecayEnvelopeSynthesizer, volume = 0.05f) {
         pause(1 by 1)
 
         repeat(2) {
@@ -141,7 +141,7 @@ val pinkPantherThemeIntro = song(name = "Pink Panther Theme (intro)", beatsPerMi
         }
     }
 
-    track(name = "Percussion", instrument = ::cymbals, volume = 0.05f) {
+    track(name = "Percussion", instrument = cymbals, volume = 0.05f) {
         fun repeatingPattern() {
             note(1 by 12, A4)
             pause(2 by 12)

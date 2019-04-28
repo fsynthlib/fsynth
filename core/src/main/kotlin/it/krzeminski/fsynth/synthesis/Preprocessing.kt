@@ -38,7 +38,7 @@ private fun List<BoundedWaveform>.addPositions(): List<PositionedBoundedWaveform
 private fun TrackSegment.toBoundedWaveform(song: Song, track: Track): BoundedWaveform {
     when (this) {
         is TrackSegment.SingleNote -> {
-            return BoundedWaveform(track.instrument(pitch.frequency), value.toSeconds(song.beatsPerMinute))
+            return BoundedWaveform(track.instrument.waveform(pitch.frequency), value.toSeconds(song.beatsPerMinute))
         }
         is TrackSegment.Glissando -> {
             return BoundedWaveform(
@@ -48,7 +48,7 @@ private fun TrackSegment.toBoundedWaveform(song: Song, track: Track): BoundedWav
                                 transition.endPitch.midiNoteNumber,
                                 value.toSeconds(song.beatsPerMinute),
                                 t)
-                        track.instrument(1.0f)(stretchedTime)
+                        track.instrument.waveform(1.0f)(stretchedTime)
                     },
                     duration = value.toSeconds(song.beatsPerMinute))
         }
@@ -56,7 +56,7 @@ private fun TrackSegment.toBoundedWaveform(song: Song, track: Track): BoundedWav
             return BoundedWaveform(
                     waveform = pitches
                             .map { it.frequency }
-                            .map(track.instrument)
+                            .map(track.instrument.waveform)
                             .reduce { accumulator, current -> accumulator + current },
                     duration = value.toSeconds(song.beatsPerMinute))
         }

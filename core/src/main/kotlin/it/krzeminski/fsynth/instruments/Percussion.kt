@@ -1,10 +1,17 @@
 package it.krzeminski.fsynth.instruments
 
-import it.krzeminski.fsynth.types.Waveform
+import it.krzeminski.fsynth.effects.envelope.AdsrEnvelopeDefinition
 import kotlin.random.Random
 
-fun cymbals(@Suppress("UNUSED_PARAMETER") frequencyUnused: Float): Waveform {
-    with(Random(0)) {
-        return { _ -> this.nextFloat() }
-    }
-}
+val cymbals = Instrument(
+        waveform = { _: Frequency ->
+            with(Random(0)) {
+                { _ -> this.nextFloat() }
+            }
+        },
+        envelope = AdsrEnvelopeDefinition(
+                attackTime = 0.0f,
+                decayTime = 0.0f,
+                sustainLevel = 1.0f,
+                releaseTime = 0.0f)
+)

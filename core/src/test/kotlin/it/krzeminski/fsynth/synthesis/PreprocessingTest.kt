@@ -1,5 +1,7 @@
 package it.krzeminski.fsynth.synthesis
 
+import it.krzeminski.fsynth.effects.envelope.AdsrEnvelopeDefinition
+import it.krzeminski.fsynth.instruments.Instrument
 import it.krzeminski.fsynth.silence
 import it.krzeminski.fsynth.sineWave
 import it.krzeminski.fsynth.synthesis.types.SongForSynthesis
@@ -21,15 +23,21 @@ class PreprocessingTest {
         val testInstrumentForNoteC4 = { _: Float -> 123.0f }
         val testInstrumentForNoteE4 = { _: Float -> 456.0f }
         val testInstrumentForNoteG4 = { _: Float -> 789.0f }
-        val testInstrument = { frequency: Float ->
-            when (frequency) {
-                1.0f -> sineWave(1.0f)
-                C4.frequency -> testInstrumentForNoteC4
-                E4.frequency -> testInstrumentForNoteE4
-                G4.frequency -> testInstrumentForNoteG4
-                else -> throw IllegalStateException("Only the tree above notes should be used in this test!")
-            }
-        }
+        val testInstrument = Instrument(
+                waveform = { frequency: Float ->
+                    when (frequency) {
+                        1.0f -> sineWave(1.0f)
+                        C4.frequency -> testInstrumentForNoteC4
+                        E4.frequency -> testInstrumentForNoteE4
+                        G4.frequency -> testInstrumentForNoteG4
+                        else -> throw IllegalStateException("Only the tree above notes should be used in this test!")
+                    }
+                },
+                envelope = AdsrEnvelopeDefinition(
+                        attackTime = 0.0f,
+                        decayTime = 0.0f,
+                        sustainLevel = 1.0f,
+                        releaseTime = 0.0f))
     }
 
     @Test

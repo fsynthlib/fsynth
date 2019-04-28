@@ -11,7 +11,7 @@ import it.krzeminski.fsynth.types.TrackSegment
 fun Song.add4by4MetronomeTrackForDevelopment(trackSegments: Int) =
         this.copy(tracks = tracks + Track(
                 name = "Metronome",
-                instrument = ::synthesizer,
+                instrument = synthesizer,
                 volume = 0.15f,
                 segments = generateTrackSegments(trackSegments)))
 
