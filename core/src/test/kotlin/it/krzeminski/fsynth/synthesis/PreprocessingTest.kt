@@ -13,6 +13,7 @@ import it.krzeminski.fsynth.types.NoteValue
 import it.krzeminski.fsynth.types.Song
 import it.krzeminski.fsynth.types.Track
 import it.krzeminski.fsynth.types.TrackSegment
+import it.krzeminski.fsynth.types.times
 import it.krzeminski.testutils.plotassert.assertFunctionConformsTo
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -38,6 +39,13 @@ class PreprocessingTest {
                                 decayTime = 0.0f,
                                 sustainLevel = 1.0f,
                                 releaseTime = 0.0f)))
+        val testInstrumentWithRelease = testInstrument.copy(
+                envelope = buildEnvelopeFunction(
+                        AdsrEnvelopeDefinition(
+                                attackTime = 0.0f,
+                                decayTime = 0.0f,
+                                sustainLevel = 1.0f,
+                                releaseTime = 0.5f)))
     }
 
     @Test
@@ -76,6 +84,52 @@ class PreprocessingTest {
             with(segments[2]) {
                 assertEquals(startTime, 0.375f)
                 assertValuesEqual(boundedWaveform, BoundedWaveform(testInstrumentForNoteG4, 0.5f), delta = 0.001f)
+            }
+        }
+    }
+
+    @Test
+    fun severalOverlappingNotes() {
+        val testSong = Song(
+                name = "Test song",
+                beatsPerMinute = 240,
+                tracks = listOf(
+                        Track(
+                                name = "Test track",
+                                instrument = testInstrumentWithRelease,
+                                segments = listOf(
+                                        TrackSegment.SingleNote(NoteValue(1, 4), C4),
+                                        TrackSegment.SingleNote(NoteValue(1, 8), E4),
+                                        TrackSegment.SingleNote(NoteValue(1, 2), G4)
+                                ),
+                                volume = 1.0f
+                        )
+                )
+        )
+
+        val preprocessedTestSong = testSong.preprocessForSynthesis()
+
+        assertEquals(preprocessedTestSong.tracks.size, 1)
+        assertEquals(preprocessedTestSong.tracks[0].volume, 1.0f)
+        assertEquals(preprocessedTestSong.tracks[0].segments.size, 3)
+        with(preprocessedTestSong.tracks[0]) {
+            with(segments[0]) {
+                assertEquals(startTime, 0.0f)
+                assertValuesEqual(boundedWaveform,
+                        testInstrumentForNoteC4 * testInstrumentWithRelease.envelope(0.25f),
+                        delta = 0.001f)
+            }
+            with(segments[1]) {
+                assertEquals(startTime, 0.25f)
+                assertValuesEqual(boundedWaveform,
+                        testInstrumentForNoteE4 * testInstrumentWithRelease.envelope(0.125f),
+                        delta = 0.001f)
+            }
+            with(segments[2]) {
+                assertEquals(startTime, 0.375f)
+                assertValuesEqual(boundedWaveform,
+                        testInstrumentForNoteG4 * testInstrumentWithRelease.envelope(0.5f),
+                        delta = 0.001f)
             }
         }
     }

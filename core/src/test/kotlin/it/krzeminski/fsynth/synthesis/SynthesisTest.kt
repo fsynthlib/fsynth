@@ -35,7 +35,7 @@ class SynthesisTest {
     }
 
     @Test
-    fun durationIsCorrectlyCalculated() {
+    fun durationIsCorrectlyCalculatedAmongMultipleTracksForNonOverlappingSegments() {
         val testSong = SongForSynthesis(
                 tracks = listOf(
                         TrackForSynthesis(
@@ -58,6 +58,20 @@ class SynthesisTest {
                                 volume = 1.0f)))
 
         assertEquals(0.5f + 2.5f + 1.2f, testSong.durationInSeconds)
+    }
+
+    @Test
+    fun durationIsCorrectlyCalculatedForOverlappingSegments() {
+        val testSong = SongForSynthesis(
+                tracks = listOf(
+                        TrackForSynthesis(
+                                segments = listOf(
+                                        PositionedBoundedWaveform(BoundedWaveform(squareWave(4.0f), 0.5f), 0.0f),
+                                        PositionedBoundedWaveform(BoundedWaveform(squareWave(4.0f), 2.0f), 0.25f),
+                                        PositionedBoundedWaveform(BoundedWaveform(squareWave(4.0f), 0.5f), 0.5f)),
+                                volume = 1.0f)))
+
+        assertEquals(2.0f + 0.25f, testSong.durationInSeconds)
     }
 
     @Test
@@ -91,6 +105,27 @@ class SynthesisTest {
             xAxis {
                 markers("|                             |                             |")
                 values( 0.0f,                         0.5f,                         1.0f)
+            }
+        }
+    }
+
+    @Test
+    fun overlappingSegmentsAreAreCorrectlySynthesized() {
+        val testSong = SongForSynthesis(
+                tracks = listOf(
+                        TrackForSynthesis(
+                                segments = listOf(
+                                        PositionedBoundedWaveform(BoundedWaveform({ 1.0f }, 0.75f), 0.0f),
+                                        PositionedBoundedWaveform(BoundedWaveform({ 0.5f }, 0.25f), 0.25f)),
+                                volume = 1.0f)))
+
+        val songEvaluationFunction = testSong.buildSongEvaluationFunction()
+        assertFunctionConformsTo(songEvaluationFunction) {
+            row(1.5f,   "               XXXXXXXXXXXXXXXX               ")
+            row(1.0f,   "XXXXXXXXXXXXXXX                XXXXXXXXXXXXXXX")
+            xAxis {
+                markers("|              |              |              |")
+                values( 0.0f,          0.25f,         0.5f,          0.75f)
             }
         }
     }

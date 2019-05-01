@@ -53,14 +53,10 @@ private fun BucketedTrack.getWaveformValue(time: Float): Float {
     if (!containsBucketWithIndex(whichBucket))
         return 0.0f
 
-    for (segmentInBucket in buckets[whichBucket]) {
-        if (segmentInBucket playsFor time) {
-            val timeRelativeToThisSegment = time - segmentInBucket.startTime
-            return segmentInBucket.boundedWaveform.waveform(timeRelativeToThisSegment) * volume
-        }
-    }
-
-    return 0.0f
+    return buckets[whichBucket]
+            .filter { it playsFor time }
+            .map { it.boundedWaveform.waveform(time - it.startTime) }
+            .sum() * volume
 }
 
 private infix fun PositionedBoundedWaveform.playsFor(time: Float) =

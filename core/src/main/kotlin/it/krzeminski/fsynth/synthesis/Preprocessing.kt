@@ -9,8 +9,8 @@ import it.krzeminski.fsynth.types.PositionedBoundedWaveform
 import it.krzeminski.fsynth.types.Song
 import it.krzeminski.fsynth.types.Track
 import it.krzeminski.fsynth.types.TrackSegment
-import it.krzeminski.fsynth.types.endTime
 import it.krzeminski.fsynth.types.plus
+import it.krzeminski.fsynth.types.times
 import kotlin.math.ln
 import kotlin.math.pow
 
@@ -22,46 +22,60 @@ private fun Track.preprocess(song: Song) =
         TrackForSynthesis(segments = segments.preprocess(song, this), volume = this.volume)
 
 private fun List<TrackSegment>.preprocess(song: Song, track: Track) =
-        map { it.toBoundedWaveform(song, track) }
-                .addPositions()
+        preprocess(song, track, segmentsProcessed = emptyList(), segmentsToProcess = this, filledDuration = 0.0f)
 
-private fun List<BoundedWaveform>.addPositions(): List<PositionedBoundedWaveform> {
-    // An assumption is made here that the N-th BoundedWaveform's end is N+1-th BoundedWaveform's beginning.
-    // It will change when BoundedWaveform's length is not equal to TrackSegment's length, which is the case for
-    // envelopes, when the sound still plays after a note is released.
-    return this.fold(emptyList()) { positionedBoundedWaveformsSoFar, currentTrackSegment ->
-        val last = positionedBoundedWaveformsSoFar.lastOrNull()
-        positionedBoundedWaveformsSoFar + PositionedBoundedWaveform(currentTrackSegment, last?.endTime ?: 0.0f)
-    }
+private tailrec fun preprocess(
+    song: Song,
+    track: Track,
+    segmentsProcessed: List<PositionedBoundedWaveform>,
+    segmentsToProcess: List<TrackSegment>,
+    filledDuration: Float
+): List<PositionedBoundedWaveform> {
+    if (segmentsToProcess.isEmpty())
+        return segmentsProcessed
+
+    // This implementation has memory complexity of O(n^2).
+    // TODO: use data structures that allow O(n) complexity, in scope of #42.
+    val (newBoundedWaveform, noteDuration) =
+            segmentsToProcess.first().toBoundedWaveformWithNoteDuration(song, track)
+    val newPositionedBoundedWaveform = PositionedBoundedWaveform(newBoundedWaveform, startTime = filledDuration)
+    return preprocess(song, track, segmentsProcessed + newPositionedBoundedWaveform,
+            segmentsToProcess.drop(1), filledDuration + noteDuration)
 }
 
-private fun TrackSegment.toBoundedWaveform(song: Song, track: Track): BoundedWaveform {
+private fun TrackSegment.toBoundedWaveformWithNoteDuration(song: Song, track: Track): Pair<BoundedWaveform, Float> {
     when (this) {
         is TrackSegment.SingleNote -> {
-            return BoundedWaveform(track.instrument.waveform(pitch.frequency), value.toSeconds(song.beatsPerMinute))
+            val noteDuration = value.toSeconds(song.beatsPerMinute)
+            return Pair(track.instrument.waveform(pitch.frequency) *
+                    track.instrument.envelope(noteDuration), noteDuration)
         }
         is TrackSegment.Glissando -> {
-            return BoundedWaveform(
-                    waveform = { t: Float ->
+            val noteDuration = value.toSeconds(song.beatsPerMinute)
+            return Pair(
+                    { t: Float ->
                         val stretchedTime = stretchTimeForGlissando(
                                 transition.startPitch.midiNoteNumber,
                                 transition.endPitch.midiNoteNumber,
                                 value.toSeconds(song.beatsPerMinute),
                                 t)
                         track.instrument.waveform(1.0f)(stretchedTime)
-                    },
-                    duration = value.toSeconds(song.beatsPerMinute))
+                    } * track.instrument.envelope(noteDuration),
+                    noteDuration)
         }
         is TrackSegment.Chord -> {
-            return BoundedWaveform(
-                    waveform = pitches
+            val noteDuration = value.toSeconds(song.beatsPerMinute)
+            return Pair(
+                    (pitches
                             .map { it.frequency }
                             .map(track.instrument.waveform)
-                            .reduce { accumulator, current -> accumulator + current },
-                    duration = value.toSeconds(song.beatsPerMinute))
+                            .reduce { accumulator, current -> accumulator + current }
+                            ) * track.instrument.envelope(noteDuration),
+                    noteDuration)
         }
         is TrackSegment.Pause -> {
-            return BoundedWaveform(silence, value.toSeconds(song.beatsPerMinute))
+            val noteDuration = value.toSeconds(song.beatsPerMinute)
+            return Pair(BoundedWaveform(silence, noteDuration), noteDuration)
         }
     }
 }
