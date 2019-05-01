@@ -5,13 +5,11 @@ import it.krzeminski.fsynth.effects.envelope.buildEnvelopeFunction
 import it.krzeminski.fsynth.instruments.Instrument
 import it.krzeminski.fsynth.silence
 import it.krzeminski.fsynth.sineWave
-import it.krzeminski.fsynth.synthesis.types.SongForSynthesis
-import it.krzeminski.fsynth.synthesis.types.TrackForSynthesis
+import it.krzeminski.fsynth.testutils.assertValuesEqual
 import it.krzeminski.fsynth.types.BoundedWaveform
 import it.krzeminski.fsynth.types.MusicNote.* // ktlint-disable no-wildcard-imports
 import it.krzeminski.fsynth.types.MusicNoteTransition
 import it.krzeminski.fsynth.types.NoteValue
-import it.krzeminski.fsynth.types.PositionedBoundedWaveform
 import it.krzeminski.fsynth.types.Song
 import it.krzeminski.fsynth.types.Track
 import it.krzeminski.fsynth.types.TrackSegment
@@ -63,22 +61,23 @@ class PreprocessingTest {
 
         val preprocessedTestSong = testSong.preprocessForSynthesis()
 
-        assertEquals(
-                expected = SongForSynthesis(
-                        tracks = listOf(
-                                TrackForSynthesis(
-                                        segments = listOf(
-                                                PositionedBoundedWaveform(
-                                                        BoundedWaveform(testInstrumentForNoteC4, 0.25f),
-                                                        0.0f),
-                                                PositionedBoundedWaveform(
-                                                        BoundedWaveform(testInstrumentForNoteE4, 0.125f),
-                                                        0.25f),
-                                                PositionedBoundedWaveform(
-                                                        BoundedWaveform(testInstrumentForNoteG4, 0.5f),
-                                                        0.375f)),
-                                        volume = 1.0f))),
-                actual = preprocessedTestSong)
+        assertEquals(preprocessedTestSong.tracks.size, 1)
+        assertEquals(preprocessedTestSong.tracks[0].volume, 1.0f)
+        assertEquals(preprocessedTestSong.tracks[0].segments.size, 3)
+        with(preprocessedTestSong.tracks[0]) {
+            with(segments[0]) {
+                assertEquals(startTime, 0.0f)
+                assertValuesEqual(boundedWaveform, BoundedWaveform(testInstrumentForNoteC4, 0.25f), delta = 0.001f)
+            }
+            with(segments[1]) {
+                assertEquals(startTime, 0.25f)
+                assertValuesEqual(boundedWaveform, BoundedWaveform(testInstrumentForNoteE4, 0.125f), delta = 0.001f)
+            }
+            with(segments[2]) {
+                assertEquals(startTime, 0.375f)
+                assertValuesEqual(boundedWaveform, BoundedWaveform(testInstrumentForNoteG4, 0.5f), delta = 0.001f)
+            }
+        }
     }
 
     /* ktlint-disable no-multi-spaces paren-spacing */
@@ -181,14 +180,15 @@ class PreprocessingTest {
 
         val preprocessedTestSong = testSong.preprocessForSynthesis()
 
-        assertEquals(
-                expected = SongForSynthesis(
-                        tracks = listOf(
-                                TrackForSynthesis(
-                                        segments = listOf(
-                                                PositionedBoundedWaveform(BoundedWaveform(silence, 0.25f), 0.0f)),
-                                        volume = 1.0f))),
-                actual = preprocessedTestSong)
+        assertEquals(preprocessedTestSong.tracks.size, 1)
+        assertEquals(preprocessedTestSong.tracks[0].volume, 1.0f)
+        assertEquals(preprocessedTestSong.tracks[0].segments.size, 1)
+        with(preprocessedTestSong.tracks[0]) {
+            with(segments[0]) {
+                assertEquals(startTime, 0.0f)
+                assertValuesEqual(boundedWaveform, BoundedWaveform(silence, 0.25f), delta = 0.001f)
+            }
+        }
     }
 
     @Test
@@ -218,19 +218,22 @@ class PreprocessingTest {
 
         val preprocessedTestSong = testSong.preprocessForSynthesis()
 
-        assertEquals(
-                expected = SongForSynthesis(
-                        tracks = listOf(
-                                TrackForSynthesis(
-                                        segments = listOf(
-                                                PositionedBoundedWaveform(
-                                                        BoundedWaveform(testInstrumentForNoteC4, 0.25f), 0.0f)),
-                                        volume = 1.0f),
-                                TrackForSynthesis(
-                                        segments = listOf(
-                                                PositionedBoundedWaveform(
-                                                        BoundedWaveform(testInstrumentForNoteE4, 0.125f), 0.0f)),
-                                        volume = 1.0f))),
-                actual = preprocessedTestSong)
+        assertEquals(preprocessedTestSong.tracks.size, 2)
+        with(preprocessedTestSong.tracks[0]) {
+            assertEquals(volume, 1.0f)
+            assertEquals(segments.size, 1)
+            with(segments[0]) {
+                assertEquals(startTime, 0.0f)
+                assertValuesEqual(boundedWaveform, BoundedWaveform(testInstrumentForNoteC4, 0.25f), delta = 0.001f)
+            }
+        }
+        with(preprocessedTestSong.tracks[1]) {
+            assertEquals(volume, 1.0f)
+            assertEquals(segments.size, 1)
+            with(segments[0]) {
+                assertEquals(startTime, 0.0f)
+                assertValuesEqual(boundedWaveform, BoundedWaveform(testInstrumentForNoteE4, 0.125f), delta = 0.001f)
+            }
+        }
     }
 }
