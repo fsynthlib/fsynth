@@ -27,13 +27,17 @@ fun adsrEnvelope(keyPressDuration: Float, definition: AdsrEnvelopeDefinition): B
 
         fun envelopeForPressedKey(t: Float): Float {
             return when (t) {
-                in 0.0f..attackTime -> t / attackTime
+                in 0.0f..attackTime -> when {
+                    attackTime != 0.0f -> t / attackTime
+                    decayTime != 0.0f -> 1.0f
+                    else -> sustainLevel
+                }
                 in attackTime..(attackTime + decayTime) -> 1.0f - (1.0f - sustainLevel)*(t - attackTime) / decayTime
                 else -> sustainLevel
             }
         }
         val envelopeAtKeyRelease = envelopeForPressedKey(keyPressDuration)
-        val actualReleaseTime = releaseTime * envelopeAtKeyRelease / sustainLevel
+        val actualReleaseTime = if (sustainLevel != 0.0f) releaseTime * envelopeAtKeyRelease / sustainLevel else 0.0f
         val waveform = { t: Float ->
             when (t) {
                 in 0.0f..keyPressDuration -> envelopeForPressedKey(t)
