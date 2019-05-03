@@ -14,8 +14,8 @@ val organs = Instrument(
         },
         envelope = buildEnvelopeFunction(
                 AdsrEnvelopeDefinition(
-                        attackTime = 0.0f,
+                        attackTime = 0.05f,
                         decayTime = 0.0f,
                         sustainLevel = 1.0f,
-                        releaseTime = 0.0f))
+                        releaseTime = 0.3f))
 )
