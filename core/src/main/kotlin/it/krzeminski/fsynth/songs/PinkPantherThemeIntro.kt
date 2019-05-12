@@ -165,6 +165,6 @@ val pinkPantherThemeIntro = song(name = "Pink Panther Theme (intro)", beatsPerMi
             repeatingPattern()
         }
 
-        note(1 by 2, A4)
+        note(1 by 12, A4)
     }
 }
