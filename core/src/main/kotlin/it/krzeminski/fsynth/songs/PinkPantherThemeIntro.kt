@@ -134,9 +134,9 @@ val pinkPantherThemeIntro = song(name = "Pink Panther Theme (intro)", beatsPerMi
             note(1 by 2, E2)
             pause(1 by 2)
 
-            note(1 by 2, C3)
-            note(1 by 2, G2)
-            note(1 by 2, C2)
+            note(1 by 2, Csharp3)
+            note(1 by 2, Gsharp2)
+            note(1 by 2, Csharp2)
             pause(1 by 2)
         }
     }
