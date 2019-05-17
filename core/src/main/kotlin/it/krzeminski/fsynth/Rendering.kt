@@ -19,5 +19,4 @@ fun SongForSynthesis.renderWithSampleRate(sampleRate: Int, startTime: Float): Se
             .map(songEvaluationFunction)
 }
 
-private fun sampleIndexToTimeInSeconds(sampleRate: Int) =
-        { sampleIndex: Int -> sampleIndex.toFloat() / sampleRate.toFloat() }
+private fun sampleIndexToTimeInSeconds(sampleRate: Int) = { sampleIndex: Int -> sampleIndex.toFloat() / sampleRate.toFloat() }

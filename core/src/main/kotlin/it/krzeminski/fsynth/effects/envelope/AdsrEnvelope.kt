@@ -14,8 +14,7 @@ data class AdsrEnvelopeDefinition(
     val releaseTime: Float
 )
 
-fun buildEnvelopeFunction(definition: AdsrEnvelopeDefinition) =
-        { keyPressDuration: Float -> adsrEnvelope(keyPressDuration, definition) }
+fun buildEnvelopeFunction(definition: AdsrEnvelopeDefinition) = { keyPressDuration: Float -> adsrEnvelope(keyPressDuration, definition) }
 
 fun adsrEnvelope(keyPressDuration: Float, definition: AdsrEnvelopeDefinition): BoundedWaveform {
     with(definition) {

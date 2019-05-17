@@ -24,8 +24,7 @@ private fun segmentsForBucket(
     positionedBoundedWaveforms: List<PositionedBoundedWaveform>,
     bucketIndex: Int,
     bucketSizeInSeconds: Float
-): List<PositionedBoundedWaveform>
-{
+): List<PositionedBoundedWaveform> {
     return positionedBoundedWaveforms
             .filter { segment -> segment.belongsToBucket(bucketIndex, bucketSizeInSeconds) }
 }
