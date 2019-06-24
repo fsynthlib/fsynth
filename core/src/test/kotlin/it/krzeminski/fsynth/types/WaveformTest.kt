@@ -12,8 +12,8 @@ class WaveformTest {
     fun addingTwoWaveforms() {
         val waveform1 = squareWave(2.0f)
         assertFunctionConformsTo(waveform1) {
-            row(1.0f,   "XXXXXXXI       IXXXXXXXI       I")
-            row(-1.0f,  "       IXXXXXXXI       IXXXXXXXI")
+            row(1.0f,   "XXXXXXXi       iXXXXXXXi       i")
+            row(-1.0f,  "       iXXXXXXXi       iXXXXXXXi")
             xAxis {
                 markers("|                              |")
                 values( 0.0f,                          1.0f)
@@ -21,8 +21,8 @@ class WaveformTest {
         }
         val waveform2 = squareWave(4.0f)
         assertFunctionConformsTo(waveform2) {
-            row(1.0f,   "XXXI   IXXXI   IXXXI   IXXXI   I")
-            row(-1.0f,  "   IXXXI   IXXXI   IXXXI   IXXXI")
+            row(1.0f,   "XXXi   iXXXi   iXXXi   iXXXi   i")
+            row(-1.0f,  "   iXXXi   iXXXi   iXXXi   iXXXi")
             xAxis {
                 markers("|                              |")
                 values( 0.0f,                          1.0f)
@@ -30,9 +30,9 @@ class WaveformTest {
         }
         val aboveWaveformsAdded = waveform1 + waveform2
         assertFunctionConformsTo(aboveWaveformsAdded) {
-            row(2.0f,   "XXXI           IXXXI           I")
-            row(0.0f,   "   IXXXXXXXI   I   IXXXXXXXI   I")
-            row(-2.0f,  "           IXXXI           IXXXI")
+            row(2.0f,   "XXXi           iXXXi           i")
+            row(0.0f,   "   iXXXXXXXi   i   iXXXXXXXi   i")
+            row(-2.0f,  "           iXXXi           iXXXi")
             xAxis {
                 markers("|                              |")
                 values( 0.0f,                          1.0f)
@@ -44,8 +44,8 @@ class WaveformTest {
     fun multiplyingWaveformByConstant() {
         val waveform = squareWave(2.0f)
         assertFunctionConformsTo(waveform) {
-            row(1.0f,   "XXXXXXXI       IXXXXXXXI       I")
-            row(-1.0f,  "       IXXXXXXXI       IXXXXXXXI")
+            row(1.0f,   "XXXXXXXi       iXXXXXXXi       i")
+            row(-1.0f,  "       iXXXXXXXi       iXXXXXXXi")
             xAxis {
                 markers("|                              |")
                 values( 0.0f,                          1.0f)
@@ -53,8 +53,8 @@ class WaveformTest {
         }
         val aboveWaveformMultiplied = 3.0 * waveform
         assertFunctionConformsTo(aboveWaveformMultiplied) {
-            row(3.0f,   "XXXXXXXI       IXXXXXXXI       I")
-            row(-3.0f,  "       IXXXXXXXI       IXXXXXXXI")
+            row(3.0f,   "XXXXXXXi       iXXXXXXXi       i")
+            row(-3.0f,  "       iXXXXXXXi       iXXXXXXXi")
             xAxis {
                 markers("|                              |")
                 values( 0.0f,                          1.0f)
@@ -66,15 +66,15 @@ class WaveformTest {
     fun multiplyingWaveformByBoundedWaveform() {
         val waveform = squareWave(2.0f)
         assertFunctionConformsTo(waveform) {
-            row(1.0f,   "XXXXXXXI       IXXXXXXXI       I")
-            row(        "       I       I       I       I")
-            row(        "       I       I       I       I")
-            row(        "       I       I       I       I")
-            row(0.0f,   "       I       I       I       I")
-            row(        "       I       I       I       I")
-            row(        "       I       I       I       I")
-            row(        "       I       I       I       I")
-            row(-1.0f,  "       IXXXXXXXI       IXXXXXXXI")
+            row(1.0f,   "XXXXXXXi       iXXXXXXXi       i")
+            row(        "       i       i       i       i")
+            row(        "       i       i       i       i")
+            row(        "       i       i       i       i")
+            row(0.0f,   "       i       i       i       i")
+            row(        "       i       i       i       i")
+            row(        "       i       i       i       i")
+            row(        "       i       i       i       i")
+            row(-1.0f,  "       iXXXXXXXi       iXXXXXXXi")
             xAxis {
                 markers("|              |               |")
                 values( 0.0f,          0.5f,           1.0f)
@@ -103,11 +103,11 @@ class WaveformTest {
         assertFunctionConformsTo(aboveWaveformMultipliedByBoundedWaveform.waveform) {
             row(1.0f,   "XI              ")
             row(        "  IIII          ")
-            row(        "      III       ")
-            row(        "        I       ")
-            row(0.0f,   "        I     IX")
-            row(        "        I IIII  ")
-            row(        "        II      ")
+            row(        "      IIi       ")
+            row(        "        i       ")
+            row(0.0f,   "        i     IX")
+            row(        "        i IIII  ")
+            row(        "        iI      ")
             row(        "                ")
             row(-1.0f,  "                ")
             xAxis {

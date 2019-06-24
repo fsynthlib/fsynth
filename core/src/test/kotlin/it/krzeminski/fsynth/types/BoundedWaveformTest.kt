@@ -13,8 +13,8 @@ class BoundedWaveformTest {
     fun addingTwoBoundedWaveformsWithEqualDurations() {
         val waveform1 = squareWave(2.0f)
         assertFunctionConformsTo(waveform1) {
-            row(1.0f,   "XXXXXXXI       IXXXXXXXI       I")
-            row(-1.0f,  "       IXXXXXXXI       IXXXXXXXI")
+            row(1.0f,   "XXXXXXXi       iXXXXXXXi       i")
+            row(-1.0f,  "       iXXXXXXXi       iXXXXXXXi")
             xAxis {
                 markers("|                              |")
                 values( 0.0f,                          1.0f)
@@ -23,8 +23,8 @@ class BoundedWaveformTest {
         val boundedWaveform1 = BoundedWaveform(waveform1, 1.0f)
         val waveform2 = squareWave(4.0f)
         assertFunctionConformsTo(waveform2) {
-            row(1.0f,   "XXXI   IXXXI   IXXXI   IXXXI   I")
-            row(-1.0f,  "   IXXXI   IXXXI   IXXXI   IXXXI")
+            row(1.0f,   "XXXi   iXXXi   iXXXi   iXXXi   i")
+            row(-1.0f,  "   iXXXi   iXXXi   iXXXi   iXXXi")
             xAxis {
                 markers("|                              |")
                 values( 0.0f,                          1.0f)
@@ -36,9 +36,9 @@ class BoundedWaveformTest {
 
         assertEquals(1.0f, aboveBoundedWaveformsAdded.duration)
         assertFunctionConformsTo(aboveBoundedWaveformsAdded.waveform) {
-            row(2.0f,   "XXXI           IXXXI           I")
-            row(0.0f,   "   IXXXXXXXI   I   IXXXXXXXI   I")
-            row(-2.0f,  "           IXXXI           IXXXI")
+            row(2.0f,   "XXXi           iXXXi           i")
+            row(0.0f,   "   iXXXXXXXi   i   iXXXXXXXi   i")
+            row(-2.0f,  "           iXXXi           iXXXi")
             xAxis {
                 markers("|                              |")
                 values( 0.0f,                          1.0f)
@@ -50,8 +50,8 @@ class BoundedWaveformTest {
     fun addingTwoBoundedWaveformsWithDifferentDuration() {
         val waveform1 = squareWave(2.0f)
         assertFunctionConformsTo(waveform1) {
-            row(1.0f,   "XXXXXXXI       IXXXXXXXI       I")
-            row(-1.0f,  "       IXXXXXXXI       IXXXXXXXI")
+            row(1.0f,   "XXXXXXXi       iXXXXXXXi       i")
+            row(-1.0f,  "       iXXXXXXXi       iXXXXXXXi")
             xAxis {
                 markers("|                              |")
                 values( 0.0f,                          1.0f)
@@ -60,8 +60,8 @@ class BoundedWaveformTest {
         val boundedWaveform1 = BoundedWaveform(waveform1, 0.5f)
         val waveform2 = squareWave(4.0f)
         assertFunctionConformsTo(waveform2) {
-            row(1.0f,   "XXXI   IXXXI   IXXXI   IXXXI   I")
-            row(-1.0f,  "   IXXXI   IXXXI   IXXXI   IXXXI")
+            row(1.0f,   "XXXi   iXXXi   iXXXi   iXXXi   i")
+            row(-1.0f,  "   iXXXi   iXXXi   iXXXi   iXXXi")
             xAxis {
                 markers("|                              |")
                 values( 0.0f,                          1.0f)

@@ -14,7 +14,7 @@ dependencies {
 
     testCompile "org.jetbrains.kotlin:kotlin-test-common:$kotlin_version"
     testCompile "org.jetbrains.kotlin:kotlin-test-annotations-common:$kotlin_version"
-    testCompile "it.krzeminski:PlotAssert:1.0.0"
+    testCompile "it.krzeminski:PlotAssert:0.1.0-beta"
 }
 
 sourceSets.main.kotlin.srcDirs += "${buildDir}/generated/"

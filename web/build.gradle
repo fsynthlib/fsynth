@@ -19,7 +19,7 @@ dependencies {
     expectedBy project(":core")
 
     testCompile "org.jetbrains.kotlin:kotlin-test-js"
-    testCompile "it.krzeminski:PlotAssert:1.0.0"
+    testCompile "it.krzeminski:PlotAssert:0.1.0-beta"
 }
 
 buildscript {
