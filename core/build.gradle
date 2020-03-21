@@ -1,5 +1,5 @@
 plugins {
-    id 'kotlin-platform-common'
+    id 'kotlin-multiplatform'
     id 'org.ajoberstar.grgit' version '3.0.0'
 }
 
@@ -9,15 +9,49 @@ repositories {
     }
 }
 
-dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlin_version"
-
-    testCompile "org.jetbrains.kotlin:kotlin-test-common:$kotlin_version"
-    testCompile "org.jetbrains.kotlin:kotlin-test-annotations-common:$kotlin_version"
-    testCompile "it.krzeminski:PlotAssert:0.1.0-beta"
+kotlin {
+    jvm {
+    }
+    js {
+        browser()
+    }
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation 'org.jetbrains.kotlin:kotlin-stdlib-common'
+            }
+            kotlin.srcDirs += "${buildDir}/generated/"
+        }
+        commonTest {
+            dependencies {
+                implementation 'org.jetbrains.kotlin:kotlin-test-common'
+                implementation 'org.jetbrains.kotlin:kotlin-test-annotations-common'
+                implementation 'it.krzeminski:PlotAssert:0.1.0-beta'
+            }
+        }
+        jvmMain {
+            dependencies {
+                implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+            }
+        }
+        jvmTest {
+            dependencies {
+                implementation 'org.jetbrains.kotlin:kotlin-test'
+                implementation 'org.jetbrains.kotlin:kotlin-test-junit'
+            }
+        }
+        jsMain {
+            dependencies {
+                implementation 'org.jetbrains.kotlin:kotlin-stdlib-js'
+            }
+        }
+        jsTest {
+            dependencies {
+                implementation 'org.jetbrains.kotlin:kotlin-test-js'
+            }
+        }
+    }
 }
-
-sourceSets.main.kotlin.srcDirs += "${buildDir}/generated/"
 
 task generateGitInfo() {
     def fileDirectory = "${buildDir}/generated/it/krzeminski/fsynth/generated"
@@ -44,4 +78,9 @@ task generateGitInfo() {
     }
 }
 
-compileKotlinCommon.dependsOn generateGitInfo
+// There's no easy way to express that 'generateGitInfo' task needs to be executed before any code is compiled.
+// That's why a dependency on this task is added to all known tasks that deal with compiling code, so that this file
+// already exists when code for any platform is about to be compiled.
+compileKotlinJs.dependsOn generateGitInfo
+compileKotlinJvm.dependsOn generateGitInfo
+compileKotlinMetadata.dependsOn generateGitInfo

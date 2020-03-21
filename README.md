@@ -57,4 +57,3 @@ The below dependencies won't be installed by Gradle:
 
 * JDK + path to it in `JAVA_HOME`
   (warning: use Oracle's JDK for now, there are some issue with OpenJDK; see #31 for details)
-* npm + path to its binary in `PATH`
