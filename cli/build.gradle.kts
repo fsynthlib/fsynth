@@ -40,7 +40,7 @@ val jacocoTestReport = tasks.getByName<JacocoReport>("jacocoTestReport") {
     }
 
     afterEvaluate {
-        classDirectories = files(classDirectories.files.map {
+        classDirectories.setFrom(files(classDirectories.files.map {
             fileTree(it) {
                 exclude(
                         // Excluding songs and instruments from code coverage.
@@ -50,7 +50,7 @@ val jacocoTestReport = tasks.getByName<JacocoReport>("jacocoTestReport") {
                         "it/krzeminski/fsynth/songs/**",
                         "it/krzeminski/fsynth/instruments/**")
             }
-        })
+        }))
     }
 }
 
