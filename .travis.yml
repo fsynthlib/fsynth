@@ -1,6 +1,14 @@
-language: java
+language: android
 jdk:
   - openjdk8
+addons:
+  chrome: stable
+android:
+  components:
+    - build-tools-29.0.2
+    - android-29
+before_install:
+  - export CHROME_BIN=google-chrome-stable
 script:
   - ./gradlew build
 deploy:
