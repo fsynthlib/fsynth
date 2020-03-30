@@ -38,7 +38,7 @@ private fun Song.playOnAndroid(sampleRate: Int) {
             AudioFormat.ENCODING_PCM_FLOAT,
             samples.size*java.lang.Float.BYTES,
             AudioTrack.MODE_STATIC)
-    with (audioTrack) {
+    with(audioTrack) {
         write(samples.toFloatArray(), 0, samples.size, WRITE_BLOCKING)
         play()
     }
