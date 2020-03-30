@@ -6,7 +6,7 @@ import it.krzeminski.fsynth.synthesis.preprocessForSynthesis
 import it.krzeminski.fsynth.synthesis.types.SongForSynthesis
 import it.krzeminski.fsynth.types.Song
 
-fun Song.renderWithSampleRate(sampleRate: Int, startTime: Float) =
+fun Song.renderWithSampleRate(sampleRate: Int, startTime: Float = 0.0f) =
         this.preprocessForSynthesis()
                 .renderWithSampleRate(sampleRate, startTime)
 

@@ -22,7 +22,7 @@ fun playSong(song: Song) {
 
 private fun renderSongToArray(song: Song, samplesPerSecond: Int): Float32Array {
     return Float32Array(
-            song.renderWithSampleRate(samplesPerSecond, startTime = 0.0f)
+            song.renderWithSampleRate(samplesPerSecond)
                     .toList()
                     .toTypedArray())
 }

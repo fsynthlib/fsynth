@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
 }
 
 private fun Song.playOnAndroid(sampleRate: Int) {
-    val samples = renderWithSampleRate(sampleRate, 0.0f).toList()
+    val samples = renderWithSampleRate(sampleRate).toList()
     val audioTrack = AudioTrack(
             AudioManager.STREAM_MUSIC,
             sampleRate,

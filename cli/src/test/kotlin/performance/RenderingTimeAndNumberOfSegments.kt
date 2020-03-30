@@ -17,7 +17,7 @@ fun main(args: Array<String>) {
             }
         }
         val timeMillis = measureTimeMillis {
-            testSong.renderWithSampleRate(44100, 0.0f).forEach { }
+            testSong.renderWithSampleRate(44100).forEach { }
         }
         println("Segments: $numberOfSegments, time in ms: $timeMillis")
     }
