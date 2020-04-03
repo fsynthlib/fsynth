@@ -6,8 +6,8 @@ import android.media.AudioTrack
 import android.media.AudioTrack.WRITE_BLOCKING
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import androidx.core.view.plusAssign
+import com.google.android.material.button.MaterialButton
 import it.krzeminski.fsynth.songs.allSongs
 import it.krzeminski.fsynth.types.Song
 import kotlinx.android.synthetic.main.activity_main.*
@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         allSongs.forEach { song ->
-            buttons += Button(this).apply {
+            buttons += MaterialButton(this, null, R.attr.materialButtonOutlinedStyle).apply {
                 text = song.name
                 setOnClickListener {
                     song.playOnAndroid(sampleRate = 44100)
