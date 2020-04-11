@@ -1,0 +1,67 @@
+version: 2
+jobs:
+  android:
+    docker:
+      - image: circleci/android:api-29
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run: ./gradlew :android:build
+  cli:
+    docker:
+      - image: circleci/openjdk:8-jdk
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run: ./gradlew :cli:build
+      - run:
+          name: Publish code coverage info
+          command: bash <(curl -s https://codecov.io/bash)
+  web:
+    docker:
+      - image: circleci/openjdk:8-jdk-node-browsers
+    working_directory: ~/repo
+    environment:
+      CHROME_BIN: "/usr/bin/google-chrome"
+    steps:
+      - checkout
+      - run: ./gradlew :web:build
+      - run:
+          name: Publish to GitHub Pages
+          command: |
+            set -e
+
+            if [ $CIRCLE_BRANCH != "master" ]
+            then
+                echo "Not on master branch - skipping"
+                exit 0
+            fi
+
+            git config --global user.email "builds@circleci.com"
+            git config --global user.name "CircleCI"
+
+            git clone --single-branch --branch gh-pages https://${GITHUB_TOKEN}@github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}.git gh-pages
+            cd gh-pages
+            git checkout --orphan gh-pages-new
+            git rm -rf .
+            mkdir .circleci
+
+            cd ..
+            cp -av web/build/deploy-me gh-pages
+            cp .circleci/config-github-pages.yml gh-pages/.circleci/config.yml
+            cd gh-pages
+            mv deploy-me/* .
+
+            git add -A
+            git commit -m "Circle CI deployment to GitHub Pages: ${CIRCLE_SHA1}" --allow-empty
+            git branch -D gh-pages
+            git branch -m gh-pages-new gh-pages
+            git push --force origin gh-pages
+
+workflows:
+  version: 2
+  Tests:
+    jobs:
+      - android
+      - cli
+      - web
