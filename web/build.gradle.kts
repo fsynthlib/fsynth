@@ -43,19 +43,9 @@ kotlin {
     }
 }
 
-val filesToDeployDestination = "$buildDir/deploy-me"
-
-val copyIndexHtml = tasks.register("copyIndexHtml", Copy::class) {
-    from(file("src/main/resources/index.html"))
-    into(file(filesToDeployDestination))
+val copyFilesToDeploy = tasks.register("copyFilesToDeploy", Copy::class) {
+    from(file("src/main/resources/index.html"), file("$buildDir/distributions/web.js"))
+    into(file("$buildDir/deploy-me"))
 }
 
-val copyJavascriptBundle = tasks.register("copyJavascriptBundle", Copy::class) {
-    from(file("$buildDir/distributions/web.js"))
-    into(file(filesToDeployDestination))
-}
-
-tasks.getByName("assemble") {
-    dependsOn(copyIndexHtml)
-    dependsOn(copyJavascriptBundle)
-}
+tasks.getByName("assemble").dependsOn(copyFilesToDeploy)
