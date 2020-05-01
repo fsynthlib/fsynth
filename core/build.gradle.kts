@@ -54,7 +54,7 @@ kotlin {
 }
 
 val generateGitInfo = tasks.register("generateGitInfo") {
-    val grgit = Grgit.open()
+    val grgit = Grgit.open(mapOf("currentDir" to project.rootDir))
     val fileDirectory = "$buildDir/generated/it/krzeminski/fsynth/generated"
     val fileName = "GitInfo.kt"
 
