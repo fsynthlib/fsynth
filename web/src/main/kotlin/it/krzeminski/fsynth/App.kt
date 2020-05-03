@@ -4,6 +4,7 @@ import it.krzeminski.fsynth.generated.gitInfo
 import it.krzeminski.fsynth.synthesis.durationInSeconds
 import it.krzeminski.fsynth.types.Song
 import it.krzeminski.fsynth.typings.materialAppBar
+import it.krzeminski.fsynth.typings.materialDivider
 import it.krzeminski.fsynth.typings.materialIconButton
 import it.krzeminski.fsynth.typings.materialList
 import it.krzeminski.fsynth.typings.materialListItem
@@ -11,6 +12,7 @@ import it.krzeminski.fsynth.typings.materialListItemSecondaryAction
 import it.krzeminski.fsynth.typings.materialListItemText
 import it.krzeminski.fsynth.typings.materialPaper
 import it.krzeminski.fsynth.typings.materialPlayArrowIcon
+import it.krzeminski.fsynth.typings.materialSlider
 import it.krzeminski.fsynth.typings.materialToolbar
 import it.krzeminski.fsynth.typings.materialTypography
 import kotlinext.js.js
@@ -21,8 +23,13 @@ import react.RProps
 import react.RState
 import react.dom.a
 import react.dom.div
+import react.setState
 
-class App : RComponent<AppProps, RState>() {
+class App(props: AppProps) : RComponent<AppProps, AppState>(props) {
+    override fun AppState.init(props: AppProps) {
+        bitsPerSample = 32 // Full resolution provided by Float.
+    }
+
     override fun RBuilder.render() {
         materialPaper {
             attrs {
@@ -72,11 +79,32 @@ class App : RComponent<AppProps, RState>() {
                         materialListItemSecondaryAction {
                             materialIconButton {
                                 attrs.onClick = {
-                                    playSong(song)
+                                    playSong(song, bitsPerSample = state.bitsPerSample)
                                 }
                                 materialPlayArrowIcon { }
                             }
                         }
+                    }
+                }
+            }
+            materialDivider {}
+            materialTypography {
+                attrs {
+                    style = js {
+                        margin = "10px"
+                    }
+                }
+                +"Bits per sample"
+            }
+            materialSlider {
+                attrs {
+                    min = 1
+                    max = 32
+                    value = state.bitsPerSample
+                    marks = true
+                    valueLabelDisplay = "auto"
+                    onChange = { _, newValue ->
+                        setState { bitsPerSample = newValue.toInt() }
                     }
                 }
             }
@@ -93,6 +121,10 @@ fun RBuilder.app(handler: RHandler<AppProps>) = child(App::class) {
 
 external interface AppProps : RProps {
     var songs: List<Song>
+}
+
+external interface AppState : RState {
+    var bitsPerSample: Int
 }
 
 private fun Song.getHumanFriendlyDuration(): String =

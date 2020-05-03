@@ -3,6 +3,7 @@ package it.krzeminski.fsynth.typings
 import it.krzeminski.fsynth.typings.materialui.icons.PlayArrowIcon
 import it.krzeminski.fsynth.typings.materialui.widgets.AppBar
 import it.krzeminski.fsynth.typings.materialui.widgets.AppBarProps
+import it.krzeminski.fsynth.typings.materialui.widgets.Divider
 import it.krzeminski.fsynth.typings.materialui.widgets.IconButton
 import it.krzeminski.fsynth.typings.materialui.widgets.IconButtonProps
 import it.krzeminski.fsynth.typings.materialui.widgets.List
@@ -12,6 +13,8 @@ import it.krzeminski.fsynth.typings.materialui.widgets.ListItemText
 import it.krzeminski.fsynth.typings.materialui.widgets.ListItemTextProps
 import it.krzeminski.fsynth.typings.materialui.widgets.Paper
 import it.krzeminski.fsynth.typings.materialui.widgets.PaperProps
+import it.krzeminski.fsynth.typings.materialui.widgets.Slider
+import it.krzeminski.fsynth.typings.materialui.widgets.SliderProps
 import it.krzeminski.fsynth.typings.materialui.widgets.Toolbar
 import it.krzeminski.fsynth.typings.materialui.widgets.Typography
 import it.krzeminski.fsynth.typings.materialui.widgets.TypographyProps
@@ -56,5 +59,13 @@ fun RBuilder.materialPaper(handler: RHandler<PaperProps>) = child(Paper::class) 
 }
 
 fun RBuilder.materialPlayArrowIcon(handler: RHandler<RProps>) = child(PlayArrowIcon::class) {
+    handler()
+}
+
+fun RBuilder.materialSlider(handler: RHandler<SliderProps>) = child(Slider::class) {
+    handler()
+}
+
+fun RBuilder.materialDivider(handler: RHandler<RProps>) = child(Divider::class) {
     handler()
 }

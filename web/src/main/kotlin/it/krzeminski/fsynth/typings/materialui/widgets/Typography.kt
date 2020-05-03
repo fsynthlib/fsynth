@@ -14,4 +14,5 @@ external class Typography : react.Component<TypographyProps, RState> {
 external interface TypographyProps : RProps {
     var variant: String
     var color: String
+    var style: dynamic
 }

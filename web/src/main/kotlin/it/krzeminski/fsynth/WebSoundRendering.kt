@@ -1,17 +1,19 @@
 package it.krzeminski.fsynth
 
+import it.krzeminski.fsynth.postprocessing.reduceLevelsPerSample
 import it.krzeminski.fsynth.types.Song
 import it.krzeminski.fsynth.typings.AudioBuffer
 import it.krzeminski.fsynth.typings.AudioContext
 import it.krzeminski.testutils.measureTimeSeconds
 import org.khronos.webgl.Float32Array
+import kotlin.math.pow
 
-fun playSong(song: Song) {
+fun playSong(song: Song, bitsPerSample: Int) {
     val samplesPerSecond = 44100
 
     lateinit var buffer: Float32Array
     val timeInSeconds = measureTimeSeconds {
-        buffer = renderSongToArray(song, samplesPerSecond)
+        buffer = renderSongToArray(song, samplesPerSecond, bitsPerSample)
     }
     println("Synthesized in $timeInSeconds s")
     val context = AudioContext()
@@ -20,12 +22,20 @@ fun playSong(song: Song) {
     startPlayback(context, contextBuffer)
 }
 
-private fun renderSongToArray(song: Song, samplesPerSecond: Int): Float32Array {
+private fun renderSongToArray(song: Song, samplesPerSecond: Int, bitsPerSample: Int): Float32Array {
     return Float32Array(
             song.renderWithSampleRate(samplesPerSecond)
+                    .map { it.applyLevelsPerSampleReduction(bitsPerSample) }
                     .toList()
                     .toTypedArray())
 }
+
+private fun Float.applyLevelsPerSampleReduction(bitsPerSample: Int) =
+        if (bitsPerSample != 32) {
+            reduceLevelsPerSample(2.0f.pow(bitsPerSample).toInt())
+        } else { // No levels-per-sample reduction.
+            this
+        }
 
 private fun createAudioContextBuffer(context: AudioContext, buffer: Float32Array, samplesPerSecond: Int): AudioBuffer {
     val contextBuffer = context.createBuffer(
