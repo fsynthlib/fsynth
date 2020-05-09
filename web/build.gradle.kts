@@ -25,13 +25,13 @@ kotlin {
         val main by getting {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:$kotlinVersion")
-                implementation("org.jetbrains:kotlin-react:16.6.0-pre.68-kotlin-1.3.20")
-                implementation("org.jetbrains:kotlin-react-dom:16.6.0-pre.68-kotlin-1.3.20")
+                implementation("org.jetbrains:kotlin-react:16.13.1-pre.104-kotlin-1.3.72")
+                implementation("org.jetbrains:kotlin-react-dom:16.13.1-pre.104-kotlin-1.3.72")
                 implementation(project(":core"))
-                implementation(npm("react", "16.6.0"))
-                implementation(npm("react-dom", "16.6.0"))
-                implementation(npm("@material-ui/core", "3.3.2"))
-                implementation(npm("@material-ui/icons", "3.0.1"))
+                implementation(npm("react", "16.13.1"))
+                implementation(npm("react-dom", "16.13.1"))
+                implementation(npm("@material-ui/core", "4.9.12"))
+                implementation(npm("@material-ui/icons", "4.9.1"))
             }
         }
         val test by getting {
