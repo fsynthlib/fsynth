@@ -8,12 +8,12 @@ import it.krzeminski.testutils.measureTimeSeconds
 import org.khronos.webgl.Float32Array
 import kotlin.math.pow
 
-fun playSong(song: Song, bitsPerSample: Int) {
+fun playSong(song: Song, downcastToBitsPerSample: Int?) {
     val samplesPerSecond = 44100
 
     lateinit var buffer: Float32Array
     val timeInSeconds = measureTimeSeconds {
-        buffer = renderSongToArray(song, samplesPerSecond, bitsPerSample)
+        buffer = renderSongToArray(song, samplesPerSecond, downcastToBitsPerSample)
     }
     println("Synthesized in $timeInSeconds s")
     val context = AudioContext()
@@ -22,17 +22,17 @@ fun playSong(song: Song, bitsPerSample: Int) {
     startPlayback(context, contextBuffer)
 }
 
-private fun renderSongToArray(song: Song, samplesPerSecond: Int, bitsPerSample: Int): Float32Array {
+private fun renderSongToArray(song: Song, samplesPerSecond: Int, downcastToBitsPerSample: Int?): Float32Array {
     return Float32Array(
             song.renderWithSampleRate(samplesPerSecond)
-                    .map { it.applyLevelsPerSampleReduction(bitsPerSample) }
+                    .map { it.applyLevelsPerSampleReduction(downcastToBitsPerSample) }
                     .toList()
                     .toTypedArray())
 }
 
-private fun Float.applyLevelsPerSampleReduction(bitsPerSample: Int) =
-        if (bitsPerSample != 32) {
-            reduceLevelsPerSample(2.0f.pow(bitsPerSample).toInt())
+private fun Float.applyLevelsPerSampleReduction(downcastToBitsPerSample: Int?) =
+        if (downcastToBitsPerSample != null) {
+            reduceLevelsPerSample(2.0f.pow(downcastToBitsPerSample).toInt())
         } else { // No levels-per-sample reduction.
             this
         }

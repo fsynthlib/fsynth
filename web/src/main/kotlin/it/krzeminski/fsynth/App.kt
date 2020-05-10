@@ -27,7 +27,7 @@ import react.setState
 
 class App(props: AppProps) : RComponent<AppProps, AppState>(props) {
     override fun AppState.init(props: AppProps) {
-        bitsPerSample = 32 // Full resolution provided by Float.
+        downcastToBitsPerSample = null
     }
 
     override fun RBuilder.render() {
@@ -79,7 +79,7 @@ class App(props: AppProps) : RComponent<AppProps, AppState>(props) {
                         materialListItemSecondaryAction {
                             materialIconButton {
                                 attrs.onClick = {
-                                    playSong(song, bitsPerSample = state.bitsPerSample)
+                                    playSong(song, downcastToBitsPerSample = state.downcastToBitsPerSample)
                                 }
                                 materialPlayArrowIcon { }
                             }
@@ -100,11 +100,14 @@ class App(props: AppProps) : RComponent<AppProps, AppState>(props) {
                 attrs {
                     min = 1
                     max = 32
-                    value = state.bitsPerSample
+                    value = state.downcastToBitsPerSample ?: 32
                     marks = true
                     valueLabelDisplay = "auto"
                     onChange = { _, newValue ->
-                        setState { bitsPerSample = newValue.toInt() }
+                        setState {
+                            downcastToBitsPerSample = newValue.toInt()
+                                    .let { if (it != 32) it else null }
+                        }
                     }
                 }
             }
@@ -124,7 +127,10 @@ external interface AppProps : RProps {
 }
 
 external interface AppState : RState {
-    var bitsPerSample: Int
+    /**
+     * Null means downcasting is disabled.
+     */
+    var downcastToBitsPerSample: Int?
 }
 
 private fun Song.getHumanFriendlyDuration(): String =
