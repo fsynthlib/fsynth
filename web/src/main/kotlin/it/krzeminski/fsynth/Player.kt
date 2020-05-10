@@ -25,8 +25,8 @@ import react.dom.a
 import react.dom.div
 import react.setState
 
-class App(props: AppProps) : RComponent<AppProps, AppState>(props) {
-    override fun AppState.init(props: AppProps) {
+class Player(props: PlayerProps) : RComponent<PlayerProps, PlayerState>(props) {
+    override fun PlayerState.init(props: PlayerProps) {
         downcastToBitsPerSample = null
     }
 
@@ -118,15 +118,15 @@ class App(props: AppProps) : RComponent<AppProps, AppState>(props) {
     }
 }
 
-fun RBuilder.app(handler: RHandler<AppProps>) = child(App::class) {
+fun RBuilder.player(handler: RHandler<PlayerProps>) = child(Player::class) {
     handler()
 }
 
-external interface AppProps : RProps {
+external interface PlayerProps : RProps {
     var songs: List<Song>
 }
 
-external interface AppState : RState {
+external interface PlayerState : RState {
     /**
      * Null means downcasting is disabled.
      */

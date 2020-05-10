@@ -7,7 +7,7 @@ import kotlin.browser.document
 fun main(args: Array<String>) {
     try {
         render(document.getElementById("root")) {
-            app {
+            player {
                 attrs {
                     songs = allSongs
                 }
