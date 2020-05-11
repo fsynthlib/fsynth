@@ -44,7 +44,10 @@ kotlin {
 }
 
 val copyFilesToDeploy = tasks.register("copyFilesToDeploy", Copy::class) {
-    from(file("src/main/resources/index.html"), file("$buildDir/distributions/web.js"))
+    from(
+            file("src/main/resources/index.html"),
+            file("$buildDir/distributions/web.js"),
+            file("$buildDir/distributions/web.js.map"))
     into(file("$buildDir/deploy-me"))
 }
 
