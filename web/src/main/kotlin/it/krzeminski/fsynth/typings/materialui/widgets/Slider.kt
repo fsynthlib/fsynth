@@ -2,6 +2,7 @@
 
 package it.krzeminski.fsynth.typings.materialui.widgets
 
+import it.krzeminski.fsynth.typings.materialui.widgets.types.Mark
 import react.RProps
 import react.RState
 import react.ReactElement
@@ -15,7 +16,8 @@ external interface SliderProps : RProps {
     var min: Number
     var max: Number
     var value: Number?
-    var marks: Boolean?
+    var marks: Array<Mark>?
     var valueLabelDisplay: String?
     var onChange: ((dynamic, Number) -> Unit)?
+    var style: dynamic
 }
