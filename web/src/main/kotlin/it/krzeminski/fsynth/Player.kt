@@ -12,10 +12,8 @@ import it.krzeminski.fsynth.typings.materialListItemSecondaryAction
 import it.krzeminski.fsynth.typings.materialListItemText
 import it.krzeminski.fsynth.typings.materialPaper
 import it.krzeminski.fsynth.typings.materialPlayArrowIcon
-import it.krzeminski.fsynth.typings.materialSlider
 import it.krzeminski.fsynth.typings.materialToolbar
 import it.krzeminski.fsynth.typings.materialTypography
-import it.krzeminski.fsynth.typings.materialui.widgets.types.Mark
 import kotlinext.js.js
 import react.RBuilder
 import react.RComponent
@@ -89,35 +87,11 @@ class Player(props: PlayerProps) : RComponent<PlayerProps, PlayerState>(props) {
                 }
             }
             materialDivider {}
-            materialTypography {
+            playbackCustomization {
                 attrs {
-                    style = js {
-                        margin = "10px"
-                    }
-                }
-                +"Bits per sample (downcasting)"
-            }
-            materialSlider {
-                attrs {
-                    min = 1
-                    max = 32
-                    value = state.downcastToBitsPerSample ?: 32
-                    marks = arrayOf(
-                            Mark(1, "1 bit"),
-                            Mark(8, "8 bits"),
-                            Mark(16, "16 bits"),
-                            Mark(24, "24 bits"),
-                            Mark(32, "original"))
-                    valueLabelDisplay = "auto"
-                    onChange = { _, newValue ->
-                        setState {
-                            downcastToBitsPerSample = newValue.toInt()
-                                    .let { if (it != 32) it else null }
-                        }
-                    }
-                    style = js {
-                        marginLeft = "20px"
-                        width = "350px"
+                    downcastToBitsPerSample = state.downcastToBitsPerSample
+                    onDowncastToBitsPerSampleChange = { newValue ->
+                        setState { downcastToBitsPerSample = newValue }
                     }
                 }
             }
