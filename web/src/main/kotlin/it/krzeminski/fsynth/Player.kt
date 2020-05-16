@@ -14,18 +14,22 @@ import it.krzeminski.fsynth.typings.materialPaper
 import it.krzeminski.fsynth.typings.materialPlayArrowIcon
 import it.krzeminski.fsynth.typings.materialToolbar
 import it.krzeminski.fsynth.typings.materialTypography
+import it.krzeminski.fsynth.typings.toWav
 import kotlinext.js.js
+import kotlinx.html.style
 import react.RBuilder
 import react.RComponent
 import react.RHandler
 import react.RProps
 import react.RState
 import react.dom.a
+import react.dom.audio
 import react.dom.div
 import react.setState
 
 class Player(props: PlayerProps) : RComponent<PlayerProps, PlayerState>(props) {
     override fun PlayerState.init(props: PlayerProps) {
+        lastSynthesizedSongAsBase64Wav = null
         downcastToBitsPerSample = null
     }
 
@@ -66,6 +70,18 @@ class Player(props: PlayerProps) : RComponent<PlayerProps, PlayerState>(props) {
                     +"."
                 }
             }
+            state.lastSynthesizedSongAsBase64Wav?.let { lastSongInBase64 ->
+                audio {
+                    attrs {
+                        src = lastSongInBase64
+                        controls = true
+                        autoPlay = true
+                        style = js {
+                            width = "100%"
+                        }
+                    }
+                }
+            }
             props.songs.forEach { song ->
                 materialList {
                     materialListItem {
@@ -78,7 +94,12 @@ class Player(props: PlayerProps) : RComponent<PlayerProps, PlayerState>(props) {
                         materialListItemSecondaryAction {
                             materialIconButton {
                                 attrs.onClick = {
-                                    playSong(song, downcastToBitsPerSample = state.downcastToBitsPerSample)
+                                    val songAsAudioBuffer = song.renderToAudioBuffer(
+                                            downcastToBitsPerSample = state.downcastToBitsPerSample)
+                                    val songAsWav = toWav(songAsAudioBuffer)
+                                    setState {
+                                        lastSynthesizedSongAsBase64Wav = songAsWav.toBase64().base64WavAsDataUrl()
+                                    }
                                 }
                                 materialPlayArrowIcon { }
                             }
@@ -111,6 +132,10 @@ external interface PlayerProps : RProps {
 }
 
 external interface PlayerState : RState {
+    /**
+     * Null if no song has been synthesized yet.
+     */
+    var lastSynthesizedSongAsBase64Wav: String?
     /**
      * Null means downcasting is disabled.
      */
