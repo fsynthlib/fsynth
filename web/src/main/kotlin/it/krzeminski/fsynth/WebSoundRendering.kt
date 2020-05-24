@@ -5,11 +5,7 @@ import it.krzeminski.fsynth.types.Song
 import it.krzeminski.fsynth.typings.AudioBuffer
 import it.krzeminski.fsynth.typings.AudioContext
 import it.krzeminski.testutils.measureTimeSeconds
-import org.khronos.webgl.ArrayBuffer
 import org.khronos.webgl.Float32Array
-import org.khronos.webgl.Uint8Array
-import org.khronos.webgl.get
-import kotlin.browser.window
 import kotlin.math.pow
 
 fun Song.renderToAudioBuffer(downcastToBitsPerSample: Int?): AudioBuffer {
@@ -24,16 +20,6 @@ fun Song.renderToAudioBuffer(downcastToBitsPerSample: Int?): AudioBuffer {
 
     return createAudioContextBuffer(context, buffer, samplesPerSecond)
 }
-
-fun ArrayBuffer.toBase64(): String {
-    val bytes = Uint8Array(this)
-    val binary = (0..bytes.byteLength).map {
-        bytes[it].toChar()
-    }.joinToString(separator = "")
-    return window.btoa(binary)
-}
-
-fun String.base64WavAsDataUrl() = "data:audio/wav;base64,$this"
 
 private fun renderSongToArray(song: Song, samplesPerSecond: Int, downcastToBitsPerSample: Int?): Float32Array {
     return Float32Array(

@@ -33,6 +33,7 @@ kotlin {
                 implementation(npm("@material-ui/core", "4.9.12"))
                 implementation(npm("@material-ui/icons", "4.9.1"))
                 implementation(npm("audiobuffer-to-wav", "1.0.0"))
+                implementation(npm("wavesurfer.js", "3.3.3"))
             }
         }
         val test by getting {
