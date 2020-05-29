@@ -11,7 +11,6 @@ import react.RHandler
 import react.RProps
 import react.RState
 import react.dom.div
-import kotlin.browser.window
 
 class Wavesurfer(props: WavesurferProps) : RComponent<WavesurferProps, RState>(props) {
     lateinit var waveSurfer: WaveSurfer
@@ -27,8 +26,9 @@ class Wavesurfer(props: WavesurferProps) : RComponent<WavesurferProps, RState>(p
         waveSurfer.init()
         props.waveData.let {
             waveSurfer.loadBlob(it)
-            // HACK: if there's no timeout, the playback doesn't start. Maybe because the component isn't rendered yet.
-            window.setTimeout({ waveSurfer.play() }, 300)
+            waveSurfer.on("ready") {
+                waveSurfer.play()
+            }
         }
     }
 
@@ -37,8 +37,9 @@ class Wavesurfer(props: WavesurferProps) : RComponent<WavesurferProps, RState>(p
             return
         }
         waveSurfer.loadBlob(props.waveData)
-        // HACK: if there's no timeout, the playback starts for a fraction of a second and the stops.
-        window.setTimeout({ waveSurfer.play() }, 300)
+        waveSurfer.on("ready") {
+            waveSurfer.play()
+        }
     }
 
     override fun RBuilder.render() {
