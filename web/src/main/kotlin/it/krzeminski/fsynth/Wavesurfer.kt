@@ -33,6 +33,9 @@ class Wavesurfer(props: WavesurferProps) : RComponent<WavesurferProps, RState>(p
     }
 
     override fun componentDidUpdate(prevProps: WavesurferProps, prevState: RState, snapshot: Any) {
+        if (!shouldReloadAudio(prevProps)) {
+            return
+        }
         waveSurfer.loadBlob(props.waveData)
         // HACK: if there's no timeout, the playback starts for a fraction of a second and the stops.
         window.setTimeout({ waveSurfer.play() }, 300)
@@ -50,6 +53,10 @@ class Wavesurfer(props: WavesurferProps) : RComponent<WavesurferProps, RState>(p
                 }
             }
         }
+    }
+
+    private fun shouldReloadAudio(prevProps: WavesurferProps): Boolean {
+        return prevProps.waveData != props.waveData
     }
 }
 
