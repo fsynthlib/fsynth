@@ -48,7 +48,8 @@ class Wavesurfer(props: WavesurferProps) : RComponent<WavesurferProps, RState>(p
                 attrs {
                     id = "waveform"
                     style = js {
-                        width = "100%"
+                        width = "380px"
+                        margin = "0 10px"
                         height = "80px"
                     }
                 }
