@@ -29,3 +29,4 @@ build/
 !**/testData/**/*.iml
 .idea/
 target/
+local.properties
