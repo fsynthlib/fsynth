@@ -31,6 +31,8 @@ class Player(props: PlayerProps) : RComponent<PlayerProps, PlayerState>(props) {
         lastSynthesizedAsWaveBlob = null
         downcastToBitsPerSample = null
         tempoOffset = 0
+        synthesisSamplesPerSecondMultiplier = 1.0f
+        playbackSamplesPerSecondMultiplier = 1.0f
     }
 
     override fun RBuilder.render() {
@@ -93,6 +95,10 @@ class Player(props: PlayerProps) : RComponent<PlayerProps, PlayerState>(props) {
                                     val songAsAudioBuffer = song
                                             .copy(beatsPerMinute = song.beatsPerMinute + state.tempoOffset)
                                             .renderToAudioBuffer(
+                                                    synthesisSamplesPerSecond = (44100.toFloat() *
+                                                            state.synthesisSamplesPerSecondMultiplier).toInt(),
+                                                    playbackSamplesPerSecond = (44100.toFloat() *
+                                                            state.playbackSamplesPerSecondMultiplier).toInt(),
                                                     downcastToBitsPerSample = state.downcastToBitsPerSample)
                                     val songAsWavBlob = Blob(arrayOf(toWav(songAsAudioBuffer)))
                                     setState {
@@ -110,11 +116,19 @@ class Player(props: PlayerProps) : RComponent<PlayerProps, PlayerState>(props) {
                 attrs {
                     downcastToBitsPerSample = state.downcastToBitsPerSample
                     tempoOffset = state.tempoOffset
+                    synthesisSamplesPerSecondMultiplier = state.synthesisSamplesPerSecondMultiplier
+                    playbackSamplesPerSecondMultiplier = state.playbackSamplesPerSecondMultiplier
                     onDowncastToBitsPerSampleChange = { newValue ->
                         setState { downcastToBitsPerSample = newValue }
                     }
                     onTempoOffsetChange = { newValue ->
                         setState { tempoOffset = newValue }
+                    }
+                    onSynthesisSamplesPerSecondMultiplierChange = { newValue ->
+                        setState { synthesisSamplesPerSecondMultiplier = newValue }
+                    }
+                    onPlaybackSamplesPerSecondMultiplierChange = { newValue ->
+                        setState { playbackSamplesPerSecondMultiplier = newValue }
                     }
                 }
             }
@@ -143,6 +157,8 @@ external interface PlayerState : RState {
      */
     var downcastToBitsPerSample: Int?
     var tempoOffset: Int
+    var synthesisSamplesPerSecondMultiplier: Float
+    var playbackSamplesPerSecondMultiplier: Float
 }
 
 private fun Song.getHumanFriendlyDuration(): String =

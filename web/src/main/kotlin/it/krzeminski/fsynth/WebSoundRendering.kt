@@ -8,17 +8,19 @@ import it.krzeminski.testutils.measureTimeSeconds
 import org.khronos.webgl.Float32Array
 import kotlin.math.pow
 
-fun Song.renderToAudioBuffer(downcastToBitsPerSample: Int?): AudioBuffer {
-    val samplesPerSecond = 44100
-
+fun Song.renderToAudioBuffer(
+    synthesisSamplesPerSecond: Int,
+    playbackSamplesPerSecond: Int,
+    downcastToBitsPerSample: Int?
+): AudioBuffer {
     lateinit var buffer: Float32Array
     val timeInSeconds = measureTimeSeconds {
-        buffer = renderSongToArray(this, samplesPerSecond, downcastToBitsPerSample)
+        buffer = renderSongToArray(this, synthesisSamplesPerSecond, downcastToBitsPerSample)
     }
     println("Synthesized in $timeInSeconds s")
     val context = AudioContext()
 
-    return createAudioContextBuffer(context, buffer, samplesPerSecond)
+    return createAudioContextBuffer(context, buffer, playbackSamplesPerSecond)
 }
 
 private fun renderSongToArray(song: Song, samplesPerSecond: Int, downcastToBitsPerSample: Int?): Float32Array {

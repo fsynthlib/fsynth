@@ -18,6 +18,7 @@ external interface SliderProps : RProps {
     var value: Number?
     var marks: Array<Mark>?
     var valueLabelDisplay: String?
+    var valueLabelFormat: ((Number) -> String)?
     var onChange: ((dynamic, Number) -> Unit)?
     var style: dynamic
 }
