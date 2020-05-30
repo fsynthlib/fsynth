@@ -60,7 +60,7 @@ class PlaybackCustomization(props: PlaybackCustomizationProps) : RComponent<Play
             attrs {
                 min = -100
                 max = 100
-                value = props.tempoOffset ?: 0
+                value = props.tempoOffset
                 marks = arrayOf(
                         Mark(-100, "-100"),
                         Mark(-50, "-50"),
