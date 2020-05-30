@@ -30,6 +30,7 @@ class Player(props: PlayerProps) : RComponent<PlayerProps, PlayerState>(props) {
     override fun PlayerState.init(props: PlayerProps) {
         lastSynthesizedAsWaveBlob = null
         downcastToBitsPerSample = null
+        tempoOffset = 0
     }
 
     override fun RBuilder.render() {
@@ -89,8 +90,10 @@ class Player(props: PlayerProps) : RComponent<PlayerProps, PlayerState>(props) {
                         materialListItemSecondaryAction {
                             materialIconButton {
                                 attrs.onClick = {
-                                    val songAsAudioBuffer = song.renderToAudioBuffer(
-                                            downcastToBitsPerSample = state.downcastToBitsPerSample)
+                                    val songAsAudioBuffer = song
+                                            .copy(beatsPerMinute = song.beatsPerMinute + state.tempoOffset)
+                                            .renderToAudioBuffer(
+                                                    downcastToBitsPerSample = state.downcastToBitsPerSample)
                                     val songAsWavBlob = Blob(arrayOf(toWav(songAsAudioBuffer)))
                                     setState {
                                         lastSynthesizedAsWaveBlob = songAsWavBlob
@@ -106,8 +109,12 @@ class Player(props: PlayerProps) : RComponent<PlayerProps, PlayerState>(props) {
             playbackCustomization {
                 attrs {
                     downcastToBitsPerSample = state.downcastToBitsPerSample
+                    tempoOffset = state.tempoOffset
                     onDowncastToBitsPerSampleChange = { newValue ->
                         setState { downcastToBitsPerSample = newValue }
+                    }
+                    onTempoOffsetChange = { newValue ->
+                        setState { tempoOffset = newValue }
                     }
                 }
             }
@@ -135,6 +142,7 @@ external interface PlayerState : RState {
      * Null means downcasting is disabled.
      */
     var downcastToBitsPerSample: Int?
+    var tempoOffset: Int
 }
 
 private fun Song.getHumanFriendlyDuration(): String =

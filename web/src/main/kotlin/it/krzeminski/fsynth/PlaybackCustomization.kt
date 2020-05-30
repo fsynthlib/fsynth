@@ -12,6 +12,7 @@ import react.RState
 class PlaybackCustomization(props: PlaybackCustomizationProps) : RComponent<PlaybackCustomizationProps, RState>(props) {
     override fun RBuilder.render() {
         bitsPerSampleDowncasting()
+        tempoChange()
     }
 
     private fun RBuilder.bitsPerSampleDowncasting() {
@@ -45,11 +46,45 @@ class PlaybackCustomization(props: PlaybackCustomizationProps) : RComponent<Play
             }
         }
     }
+
+    private fun RBuilder.tempoChange() {
+        materialTypography {
+            attrs {
+                style = kotlinext.js.js {
+                    margin = "10px"
+                }
+            }
+            +"Tempo change (beats-per-second offset)"
+        }
+        materialSlider {
+            attrs {
+                min = -100
+                max = 100
+                value = props.tempoOffset ?: 0
+                marks = arrayOf(
+                        Mark(-100, "-100"),
+                        Mark(-50, "-50"),
+                        Mark(0, "original"),
+                        Mark(50, "+50"),
+                        Mark(100, "+100"))
+                valueLabelDisplay = "auto"
+                onChange = { _, newValue ->
+                    props.onTempoOffsetChange(newValue.toInt())
+                }
+                style = kotlinext.js.js {
+                    marginLeft = "20px"
+                    width = "350px"
+                }
+            }
+        }
+    }
 }
 
 external interface PlaybackCustomizationProps : RProps {
     var downcastToBitsPerSample: Int?
+    var tempoOffset: Int
     var onDowncastToBitsPerSampleChange: (Int?) -> Unit
+    var onTempoOffsetChange: (Int) -> Unit
 }
 
 fun RBuilder.playbackCustomization(handler: RHandler<PlaybackCustomizationProps>) =
