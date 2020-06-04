@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.tasks.factory.dependsOn
+
 plugins {
     kotlin("js")
 }
@@ -44,3 +46,10 @@ kotlin {
         }
     }
 }
+
+val copyWorkerDistributionFiles = tasks.register("copyWorkerDistributionFiles", Copy::class) {
+    from("worker/build/distributions")
+    into("$buildDir/distributions")
+}.dependsOn(":web:worker:build")
+
+tasks.named("assemble").dependsOn(copyWorkerDistributionFiles)

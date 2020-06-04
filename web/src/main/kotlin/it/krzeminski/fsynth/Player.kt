@@ -94,10 +94,11 @@ class Player(props: PlayerProps) : RComponent<PlayerProps, PlayerState>(props) {
                         materialListItemSecondaryAction {
                             materialIconButton {
                                 attrs.onClick = {
-                                    val songAsAudioBuffer = song.renderToAudioBuffer(state.synthesisParameters)
-                                    val songAsWavBlob = Blob(arrayOf(toWav(songAsAudioBuffer)))
-                                    setState {
-                                        lastSynthesizedAsWaveBlob = songAsWavBlob
+                                    song.renderToAudioBuffer(state.synthesisParameters) {
+                                        val songAsWavBlob = Blob(arrayOf(toWav(it)))
+                                        setState {
+                                            lastSynthesizedAsWaveBlob = songAsWavBlob
+                                        }
                                     }
                                 }
                                 materialPlayArrowIcon { }
