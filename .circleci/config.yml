@@ -50,10 +50,10 @@ jobs:
             mkdir .circleci
 
             cd ..
-            cp -av web/build/deploy-me gh-pages
+            cp -av web/build/distributions gh-pages
             cp .circleci/config-github-pages.yml gh-pages/.circleci/config.yml
             cd gh-pages
-            mv deploy-me/* .
+            mv distributions/* .
 
             git add -A
             git commit -m "Circle CI deployment to GitHub Pages: ${CIRCLE_SHA1}" --allow-empty
