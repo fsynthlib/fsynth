@@ -93,13 +93,13 @@ class Player(props: PlayerProps) : RComponent<PlayerProps, PlayerState>(props) {
                             materialIconButton {
                                 attrs.onClick = {
                                     val songAsAudioBuffer = song
-                                            .copy(beatsPerMinute = song.beatsPerMinute + state.tempoOffset)
                                             .renderToAudioBuffer(
                                                     synthesisSamplesPerSecond = (44100.toFloat() *
                                                             state.synthesisSamplesPerSecondMultiplier).toInt(),
                                                     playbackSamplesPerSecond = (44100.toFloat() *
                                                             state.playbackSamplesPerSecondMultiplier).toInt(),
-                                                    downcastToBitsPerSample = state.downcastToBitsPerSample)
+                                                    downcastToBitsPerSample = state.downcastToBitsPerSample,
+                                                    tempoOffset = state.tempoOffset)
                                     val songAsWavBlob = Blob(arrayOf(toWav(songAsAudioBuffer)))
                                     setState {
                                         lastSynthesizedAsWaveBlob = songAsWavBlob

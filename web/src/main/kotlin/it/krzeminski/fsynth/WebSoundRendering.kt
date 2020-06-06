@@ -11,11 +11,13 @@ import kotlin.math.pow
 fun Song.renderToAudioBuffer(
     synthesisSamplesPerSecond: Int,
     playbackSamplesPerSecond: Int,
-    downcastToBitsPerSample: Int?
+    downcastToBitsPerSample: Int?,
+    tempoOffset: Int
 ): AudioBuffer {
     lateinit var buffer: Float32Array
+    val songAfterTempoAdjustment = this.copy(beatsPerMinute = beatsPerMinute + tempoOffset)
     val timeInSeconds = measureTimeSeconds {
-        buffer = renderSongToArray(this, synthesisSamplesPerSecond, downcastToBitsPerSample)
+        buffer = renderSongToArray(songAfterTempoAdjustment, synthesisSamplesPerSecond, downcastToBitsPerSample)
     }
     println("Synthesized in $timeInSeconds s")
     val context = AudioContext()
