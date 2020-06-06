@@ -2,22 +2,21 @@ package it.krzeminski.fsynth
 
 import it.krzeminski.fsynth.postprocessing.reduceLevelsPerSample
 import it.krzeminski.fsynth.types.Song
+import it.krzeminski.fsynth.types.SynthesisParameters
 import it.krzeminski.fsynth.typings.AudioBuffer
 import it.krzeminski.fsynth.typings.AudioContext
 import it.krzeminski.testutils.measureTimeSeconds
 import org.khronos.webgl.Float32Array
 import kotlin.math.pow
 
-fun Song.renderToAudioBuffer(
-    synthesisSamplesPerSecond: Int,
-    playbackSamplesPerSecond: Int,
-    downcastToBitsPerSample: Int?,
-    tempoOffset: Int
-): AudioBuffer {
+fun Song.renderToAudioBuffer(synthesisParameters: SynthesisParameters): AudioBuffer {
     lateinit var buffer: Float32Array
-    val songAfterTempoAdjustment = this.copy(beatsPerMinute = beatsPerMinute + tempoOffset)
+    val songAfterTempoAdjustment = this.copy(beatsPerMinute = beatsPerMinute + synthesisParameters.tempoOffset)
+    val playbackSamplesPerSecond = (44100.toFloat() * synthesisParameters.playbackSamplesPerSecondMultiplier).toInt()
+    val synthesisSamplesPerSecond = (44100.toFloat() * synthesisParameters.synthesisSamplesPerSecondMultiplier).toInt()
     val timeInSeconds = measureTimeSeconds {
-        buffer = renderSongToArray(songAfterTempoAdjustment, synthesisSamplesPerSecond, downcastToBitsPerSample)
+        buffer = renderSongToArray(
+                songAfterTempoAdjustment, synthesisSamplesPerSecond, synthesisParameters.downcastToBitsPerSample)
     }
     println("Synthesized in $timeInSeconds s")
     val context = AudioContext()

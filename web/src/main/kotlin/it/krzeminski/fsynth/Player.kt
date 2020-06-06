@@ -3,6 +3,7 @@ package it.krzeminski.fsynth
 import it.krzeminski.fsynth.generated.gitInfo
 import it.krzeminski.fsynth.synthesis.durationInSeconds
 import it.krzeminski.fsynth.types.Song
+import it.krzeminski.fsynth.types.SynthesisParameters
 import it.krzeminski.fsynth.typings.materialAppBar
 import it.krzeminski.fsynth.typings.materialDivider
 import it.krzeminski.fsynth.typings.materialIconButton
@@ -29,10 +30,11 @@ import react.setState
 class Player(props: PlayerProps) : RComponent<PlayerProps, PlayerState>(props) {
     override fun PlayerState.init(props: PlayerProps) {
         lastSynthesizedAsWaveBlob = null
-        downcastToBitsPerSample = null
-        tempoOffset = 0
-        synthesisSamplesPerSecondMultiplier = 1.0f
-        playbackSamplesPerSecondMultiplier = 1.0f
+        synthesisParameters = SynthesisParameters(
+                downcastToBitsPerSample = null,
+                tempoOffset = 0,
+                synthesisSamplesPerSecondMultiplier = 1.0f,
+                playbackSamplesPerSecondMultiplier = 1.0f)
     }
 
     override fun RBuilder.render() {
@@ -92,14 +94,7 @@ class Player(props: PlayerProps) : RComponent<PlayerProps, PlayerState>(props) {
                         materialListItemSecondaryAction {
                             materialIconButton {
                                 attrs.onClick = {
-                                    val songAsAudioBuffer = song
-                                            .renderToAudioBuffer(
-                                                    synthesisSamplesPerSecond = (44100.toFloat() *
-                                                            state.synthesisSamplesPerSecondMultiplier).toInt(),
-                                                    playbackSamplesPerSecond = (44100.toFloat() *
-                                                            state.playbackSamplesPerSecondMultiplier).toInt(),
-                                                    downcastToBitsPerSample = state.downcastToBitsPerSample,
-                                                    tempoOffset = state.tempoOffset)
+                                    val songAsAudioBuffer = song.renderToAudioBuffer(state.synthesisParameters)
                                     val songAsWavBlob = Blob(arrayOf(toWav(songAsAudioBuffer)))
                                     setState {
                                         lastSynthesizedAsWaveBlob = songAsWavBlob
@@ -114,21 +109,9 @@ class Player(props: PlayerProps) : RComponent<PlayerProps, PlayerState>(props) {
             materialDivider {}
             playbackCustomization {
                 attrs {
-                    downcastToBitsPerSample = state.downcastToBitsPerSample
-                    tempoOffset = state.tempoOffset
-                    synthesisSamplesPerSecondMultiplier = state.synthesisSamplesPerSecondMultiplier
-                    playbackSamplesPerSecondMultiplier = state.playbackSamplesPerSecondMultiplier
-                    onDowncastToBitsPerSampleChange = { newValue ->
-                        setState { downcastToBitsPerSample = newValue }
-                    }
-                    onTempoOffsetChange = { newValue ->
-                        setState { tempoOffset = newValue }
-                    }
-                    onSynthesisSamplesPerSecondMultiplierChange = { newValue ->
-                        setState { synthesisSamplesPerSecondMultiplier = newValue }
-                    }
-                    onPlaybackSamplesPerSecondMultiplierChange = { newValue ->
-                        setState { playbackSamplesPerSecondMultiplier = newValue }
+                    synthesisParameters = state.synthesisParameters
+                    onSynthesisParametersChange = { newValue ->
+                        setState { synthesisParameters = newValue }
                     }
                 }
             }
@@ -152,13 +135,7 @@ external interface PlayerState : RState {
      * Null if no song has been synthesized yet.
      */
     var lastSynthesizedAsWaveBlob: Blob?
-    /**
-     * Null means downcasting is disabled.
-     */
-    var downcastToBitsPerSample: Int?
-    var tempoOffset: Int
-    var synthesisSamplesPerSecondMultiplier: Float
-    var playbackSamplesPerSecondMultiplier: Float
+    var synthesisParameters: SynthesisParameters
 }
 
 private fun Song.getHumanFriendlyDuration(): String =

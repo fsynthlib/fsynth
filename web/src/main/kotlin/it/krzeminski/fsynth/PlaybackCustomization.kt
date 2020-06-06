@@ -1,5 +1,6 @@
 package it.krzeminski.fsynth
 
+import it.krzeminski.fsynth.types.SynthesisParameters
 import it.krzeminski.fsynth.typings.materialSlider
 import it.krzeminski.fsynth.typings.materialTypography
 import it.krzeminski.fsynth.typings.materialui.widgets.types.Mark
@@ -32,7 +33,7 @@ class PlaybackCustomization(props: PlaybackCustomizationProps) : RComponent<Play
             attrs {
                 min = 1
                 max = 32
-                value = props.downcastToBitsPerSample ?: 32
+                value = props.synthesisParameters.downcastToBitsPerSample ?: 32
                 marks = arrayOf(
                         Mark(1, "1 bit"),
                         Mark(8, "8 bits"),
@@ -41,7 +42,8 @@ class PlaybackCustomization(props: PlaybackCustomizationProps) : RComponent<Play
                         Mark(32, "original"))
                 valueLabelDisplay = "auto"
                 onChange = { _, newValue ->
-                    props.onDowncastToBitsPerSampleChange(newValue.toInt().let { if (it != 32) it else null })
+                    props.onSynthesisParametersChange(props.synthesisParameters.copy(
+                            downcastToBitsPerSample = newValue.toInt().let { if (it != 32) it else null }))
                 }
                 style = kotlinext.js.js {
                     marginLeft = "20px"
@@ -64,7 +66,7 @@ class PlaybackCustomization(props: PlaybackCustomizationProps) : RComponent<Play
             attrs {
                 min = -100
                 max = 100
-                value = props.tempoOffset
+                value = props.synthesisParameters.tempoOffset
                 marks = arrayOf(
                         Mark(-100, "-100"),
                         Mark(-50, "-50"),
@@ -73,7 +75,8 @@ class PlaybackCustomization(props: PlaybackCustomizationProps) : RComponent<Play
                         Mark(100, "+100"))
                 valueLabelDisplay = "auto"
                 onChange = { _, newValue ->
-                    props.onTempoOffsetChange(newValue.toInt())
+                    props.onSynthesisParametersChange(props.synthesisParameters.copy(
+                            tempoOffset = newValue.toInt()))
                 }
                 style = kotlinext.js.js {
                     marginLeft = "20px"
@@ -96,7 +99,8 @@ class PlaybackCustomization(props: PlaybackCustomizationProps) : RComponent<Play
             attrs {
                 min = -2
                 max = 2
-                value = fromMultiplierToLogarithmicSliderValue(props.synthesisSamplesPerSecondMultiplier)
+                value = fromMultiplierToLogarithmicSliderValue(
+                        props.synthesisParameters.synthesisSamplesPerSecondMultiplier)
                 marks = arrayOf(
                         Mark(-2, "0.25x"),
                         Mark(-1, "0.5x"),
@@ -106,8 +110,9 @@ class PlaybackCustomization(props: PlaybackCustomizationProps) : RComponent<Play
                 valueLabelDisplay = "auto"
                 valueLabelFormat = { value -> "${fromLogarithmicSliderValueToMultiplier(value.toInt())}x" }
                 onChange = { _, newValue ->
-                    props.onSynthesisSamplesPerSecondMultiplierChange(
-                            fromLogarithmicSliderValueToMultiplier(newValue.toInt()))
+                    props.onSynthesisParametersChange(props.synthesisParameters.copy(
+                            synthesisSamplesPerSecondMultiplier =
+                            fromLogarithmicSliderValueToMultiplier(newValue.toInt())))
                 }
                 style = kotlinext.js.js {
                     marginLeft = "20px"
@@ -130,7 +135,8 @@ class PlaybackCustomization(props: PlaybackCustomizationProps) : RComponent<Play
             attrs {
                 min = -2
                 max = 2
-                value = fromMultiplierToLogarithmicSliderValue(props.playbackSamplesPerSecondMultiplier)
+                value = fromMultiplierToLogarithmicSliderValue(
+                        props.synthesisParameters.playbackSamplesPerSecondMultiplier)
                 marks = arrayOf(
                         Mark(-2, "0.25x"),
                         Mark(-1, "0.5x"),
@@ -140,8 +146,9 @@ class PlaybackCustomization(props: PlaybackCustomizationProps) : RComponent<Play
                 valueLabelDisplay = "auto"
                 valueLabelFormat = { value -> "${fromLogarithmicSliderValueToMultiplier(value.toInt())}x" }
                 onChange = { _, newValue ->
-                    props.onPlaybackSamplesPerSecondMultiplierChange(
-                            fromLogarithmicSliderValueToMultiplier(newValue.toInt()))
+                    props.onSynthesisParametersChange(props.synthesisParameters.copy(
+                            playbackSamplesPerSecondMultiplier =
+                            fromLogarithmicSliderValueToMultiplier(newValue.toInt())))
                 }
                 style = kotlinext.js.js {
                     marginLeft = "20px"
@@ -159,14 +166,8 @@ class PlaybackCustomization(props: PlaybackCustomizationProps) : RComponent<Play
 }
 
 external interface PlaybackCustomizationProps : RProps {
-    var downcastToBitsPerSample: Int?
-    var tempoOffset: Int
-    var synthesisSamplesPerSecondMultiplier: Float
-    var playbackSamplesPerSecondMultiplier: Float
-    var onDowncastToBitsPerSampleChange: (Int?) -> Unit
-    var onTempoOffsetChange: (Int) -> Unit
-    var onSynthesisSamplesPerSecondMultiplierChange: (Float) -> Unit
-    var onPlaybackSamplesPerSecondMultiplierChange: (Float) -> Unit
+    var synthesisParameters: SynthesisParameters
+    var onSynthesisParametersChange: (SynthesisParameters) -> Unit
 }
 
 fun RBuilder.playbackCustomization(handler: RHandler<PlaybackCustomizationProps>) =
