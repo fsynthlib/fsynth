@@ -7,14 +7,15 @@ import it.krzeminski.fsynth.types.SynthesisParameters
 import it.krzeminski.fsynth.web.worker.testutils.measureTimeSeconds
 import kotlin.math.pow
 
-fun Song.renderToArray(synthesisParameters: SynthesisParameters): Array<Float> {
+fun Song.renderToArray(synthesisParameters: SynthesisParameters, onProgressChange: (Int) -> Unit): Array<Float> {
     lateinit var songAsArray: Array<Float>
 
     val songAfterTempoAdjustment = this.copy(beatsPerMinute = beatsPerMinute + synthesisParameters.tempoOffset)
     val synthesisSamplesPerSecond = (44100.toFloat() * synthesisParameters.synthesisSamplesPerSecondMultiplier).toInt()
 
     val timeInSeconds = measureTimeSeconds {
-        songAsArray = songAfterTempoAdjustment.renderWithSampleRate(synthesisSamplesPerSecond)
+        songAsArray = songAfterTempoAdjustment.renderWithSampleRate(
+                synthesisSamplesPerSecond, startTime = 0.0f, onProgressChange = onProgressChange)
                 .map { it.applyLevelsPerSampleReduction(synthesisParameters.downcastToBitsPerSample) }
                 .toList()
                 .toTypedArray()

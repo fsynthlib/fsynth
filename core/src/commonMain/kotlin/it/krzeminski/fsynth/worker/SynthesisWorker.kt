@@ -16,4 +16,6 @@ data class SynthesisRequest(
         val synthesisParameters: SynthesisParameters)
 
 data class SynthesisResponse(
-        val songData: Array<Float>)
+        val type: String,
+        val songData: Array<Float>? = null,
+        val progress: Int? = null)

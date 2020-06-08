@@ -3,6 +3,8 @@ package it.krzeminski.fsynth.typings
 import it.krzeminski.fsynth.typings.materialui.icons.PlayArrowIcon
 import it.krzeminski.fsynth.typings.materialui.widgets.AppBar
 import it.krzeminski.fsynth.typings.materialui.widgets.AppBarProps
+import it.krzeminski.fsynth.typings.materialui.widgets.CircularProgress
+import it.krzeminski.fsynth.typings.materialui.widgets.CircularProgressProps
 import it.krzeminski.fsynth.typings.materialui.widgets.Divider
 import it.krzeminski.fsynth.typings.materialui.widgets.IconButton
 import it.krzeminski.fsynth.typings.materialui.widgets.IconButtonProps
@@ -67,5 +69,9 @@ fun RBuilder.materialSlider(handler: RHandler<SliderProps>) = child(Slider::clas
 }
 
 fun RBuilder.materialDivider(handler: RHandler<RProps>) = child(Divider::class) {
+    handler()
+}
+
+fun RBuilder.materialCircularProgress(handler: RHandler<CircularProgressProps>) = child(CircularProgress::class) {
     handler()
 }

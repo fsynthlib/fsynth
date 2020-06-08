@@ -5,6 +5,7 @@ import it.krzeminski.fsynth.synthesis.durationInSeconds
 import it.krzeminski.fsynth.types.Song
 import it.krzeminski.fsynth.types.SynthesisParameters
 import it.krzeminski.fsynth.typings.materialAppBar
+import it.krzeminski.fsynth.typings.materialCircularProgress
 import it.krzeminski.fsynth.typings.materialDivider
 import it.krzeminski.fsynth.typings.materialIconButton
 import it.krzeminski.fsynth.typings.materialList
@@ -23,13 +24,13 @@ import react.RComponent
 import react.RHandler
 import react.RProps
 import react.RState
-import react.dom.a
-import react.dom.div
 import react.setState
 
 class Player(props: PlayerProps) : RComponent<PlayerProps, PlayerState>(props) {
     override fun PlayerState.init(props: PlayerProps) {
         lastSynthesizedAsWaveBlob = null
+        currentlySynthesizedSong = null
+        currentSynthesisProgress = 0
         synthesisParameters = SynthesisParameters(
                 downcastToBitsPerSample = null,
                 tempoOffset = 0,
@@ -59,21 +60,6 @@ class Player(props: PlayerProps) : RComponent<PlayerProps, PlayerState>(props) {
                     }
                 }
             }
-            materialPaper {
-                attrs.style = js {
-                    margin = "10px"
-                    padding = "10px"
-                    backgroundColor = "#B00020"
-                    color = "white"
-                }
-                div { +"The sound is synthesized and played after clicking the 'play' button next to the chosen song." }
-                div { +"The synthesis may take several seconds, and blocks the UI, so please be patient." }
-                div {
-                    +"Making this UI non-blocking is in scope of "
-                    a("https://github.com/krzema12/fsynth/issues/14") { +"issue #14" }
-                    +"."
-                }
-            }
             state.lastSynthesizedAsWaveBlob?.let { lastSongInBase64 ->
                 wavesurfer {
                     attrs {
@@ -92,16 +78,34 @@ class Player(props: PlayerProps) : RComponent<PlayerProps, PlayerState>(props) {
                             }
                         }
                         materialListItemSecondaryAction {
-                            materialIconButton {
-                                attrs.onClick = {
-                                    song.renderToAudioBuffer(state.synthesisParameters) {
-                                        val songAsWavBlob = Blob(arrayOf(toWav(it)))
-                                        setState {
-                                            lastSynthesizedAsWaveBlob = songAsWavBlob
-                                        }
+                            if (state.currentlySynthesizedSong == song) {
+                                materialCircularProgress {
+                                    attrs {
+                                        value = state.currentSynthesisProgress
+                                        variant = "static"
                                     }
                                 }
-                                materialPlayArrowIcon { }
+                            } else {
+                                materialIconButton {
+                                    attrs.onClick = {
+                                        setState {
+                                            currentlySynthesizedSong = song
+                                            currentSynthesisProgress = 0
+                                        }
+                                        song.renderToAudioBuffer(state.synthesisParameters, progressHandler = {
+                                            setState {
+                                                currentSynthesisProgress = it
+                                            }
+                                        }, resultHandler = {
+                                            val songAsWavBlob = Blob(arrayOf(toWav(it)))
+                                            setState {
+                                                lastSynthesizedAsWaveBlob = songAsWavBlob
+                                                currentlySynthesizedSong = null
+                                            }
+                                        })
+                                    }
+                                    materialPlayArrowIcon { }
+                                }
                             }
                         }
                     }
@@ -136,6 +140,12 @@ external interface PlayerState : RState {
      * Null if no song has been synthesized yet.
      */
     var lastSynthesizedAsWaveBlob: Blob?
+
+    /**
+     * Null if no song is currently being synthesized.
+     */
+    var currentlySynthesizedSong: Song?
+    var currentSynthesisProgress: Int
     var synthesisParameters: SynthesisParameters
 }
 

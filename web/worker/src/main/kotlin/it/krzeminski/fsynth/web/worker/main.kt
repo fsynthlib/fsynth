@@ -25,9 +25,11 @@ object SynthesisWorkerImpl : SynthesisWorker {
         val song = allSongs.find { it.name == synthesisRequest.songName }
         song?.let {
             println("Song found, synthesizing")
-            val renderedSong = it.renderToArray(synthesisRequest.synthesisParameters)
+            val renderedSong = it.renderToArray(synthesisRequest.synthesisParameters, onProgressChange = { progress ->
+                responseCallback(SynthesisResponse(type = "progress", progress = progress))
+            })
             println("Synthesis done")
-            responseCallback(SynthesisResponse(renderedSong))
+            responseCallback(SynthesisResponse(type = "result", songData = renderedSong))
             println("Response message posted")
         }
     }
