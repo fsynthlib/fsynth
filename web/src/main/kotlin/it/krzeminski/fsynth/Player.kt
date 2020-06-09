@@ -62,7 +62,7 @@ class Player(props: PlayerProps) : RComponent<PlayerProps, PlayerState>(props) {
                             variant = "h5"
                             color = "inherit"
                         }
-                        +"fsynth player"
+                        +"fsynth"
                     }
                 }
             }
