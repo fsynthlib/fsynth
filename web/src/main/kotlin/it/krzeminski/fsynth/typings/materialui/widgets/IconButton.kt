@@ -13,4 +13,5 @@ external class IconButton : react.Component<IconButtonProps, RState> {
 
 external interface IconButtonProps : RProps {
     var onClick: () -> Unit
+    var disabled: Boolean
 }

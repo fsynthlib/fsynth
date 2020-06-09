@@ -105,6 +105,7 @@ class Player(props: PlayerProps) : RComponent<PlayerProps, PlayerState>(props) {
                                                 }
                                             })
                                         }
+                                        disabled = state.currentlySynthesizedSong != null
                                     }
                                     materialPlayArrowIcon { }
                                 }
