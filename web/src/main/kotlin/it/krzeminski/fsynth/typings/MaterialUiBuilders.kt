@@ -1,11 +1,16 @@
 package it.krzeminski.fsynth.typings
 
+import it.krzeminski.fsynth.typings.materialui.icons.ExpandMoreIcon
 import it.krzeminski.fsynth.typings.materialui.icons.PlayArrowIcon
 import it.krzeminski.fsynth.typings.materialui.widgets.AppBar
 import it.krzeminski.fsynth.typings.materialui.widgets.AppBarProps
 import it.krzeminski.fsynth.typings.materialui.widgets.CircularProgress
 import it.krzeminski.fsynth.typings.materialui.widgets.CircularProgressProps
 import it.krzeminski.fsynth.typings.materialui.widgets.Divider
+import it.krzeminski.fsynth.typings.materialui.widgets.ExpansionPanel
+import it.krzeminski.fsynth.typings.materialui.widgets.ExpansionPanelDetails
+import it.krzeminski.fsynth.typings.materialui.widgets.ExpansionPanelSummary
+import it.krzeminski.fsynth.typings.materialui.widgets.ExpansionPanelSummaryProps
 import it.krzeminski.fsynth.typings.materialui.widgets.IconButton
 import it.krzeminski.fsynth.typings.materialui.widgets.IconButtonProps
 import it.krzeminski.fsynth.typings.materialui.widgets.List
@@ -64,6 +69,10 @@ fun RBuilder.materialPlayArrowIcon(handler: RHandler<RProps>) = child(PlayArrowI
     handler()
 }
 
+fun RBuilder.materialExpandMoreIcon(handler: RHandler<RProps>) = child(ExpandMoreIcon::class) {
+    handler()
+}
+
 fun RBuilder.materialSlider(handler: RHandler<SliderProps>) = child(Slider::class) {
     handler()
 }
@@ -73,5 +82,17 @@ fun RBuilder.materialDivider(handler: RHandler<RProps>) = child(Divider::class) 
 }
 
 fun RBuilder.materialCircularProgress(handler: RHandler<CircularProgressProps>) = child(CircularProgress::class) {
+    handler()
+}
+
+fun RBuilder.materialExpansionPanel(handler: RHandler<RProps>) = child(ExpansionPanel::class) {
+    handler()
+}
+
+fun RBuilder.materialExpansionPanelSummary(handler: RHandler<ExpansionPanelSummaryProps>) = child(ExpansionPanelSummary::class) {
+    handler()
+}
+
+fun RBuilder.materialExpansionPanelDetails(handler: RHandler<RProps>) = child(ExpansionPanelDetails::class) {
     handler()
 }

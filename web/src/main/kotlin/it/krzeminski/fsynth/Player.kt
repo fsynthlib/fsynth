@@ -7,6 +7,10 @@ import it.krzeminski.fsynth.types.SynthesisParameters
 import it.krzeminski.fsynth.typings.materialAppBar
 import it.krzeminski.fsynth.typings.materialCircularProgress
 import it.krzeminski.fsynth.typings.materialDivider
+import it.krzeminski.fsynth.typings.materialExpandMoreIcon
+import it.krzeminski.fsynth.typings.materialExpansionPanel
+import it.krzeminski.fsynth.typings.materialExpansionPanelDetails
+import it.krzeminski.fsynth.typings.materialExpansionPanelSummary
 import it.krzeminski.fsynth.typings.materialIconButton
 import it.krzeminski.fsynth.typings.materialList
 import it.krzeminski.fsynth.typings.materialListItem
@@ -24,6 +28,8 @@ import react.RComponent
 import react.RHandler
 import react.RProps
 import react.RState
+import react.buildElement
+import react.dom.div
 import react.setState
 
 class Player(props: PlayerProps) : RComponent<PlayerProps, PlayerState>(props) {
@@ -115,11 +121,23 @@ class Player(props: PlayerProps) : RComponent<PlayerProps, PlayerState>(props) {
                 }
             }
             materialDivider {}
-            playbackCustomization {
-                attrs {
-                    synthesisParameters = state.synthesisParameters
-                    onSynthesisParametersChange = { newValue ->
-                        setState { synthesisParameters = newValue }
+            materialExpansionPanel {
+                materialExpansionPanelSummary {
+                    attrs {
+                        expandIcon = buildElement { materialExpandMoreIcon { } }
+                    }
+                    +"Playback customization"
+                }
+                materialExpansionPanelDetails {
+                    div {
+                        playbackCustomization {
+                            attrs {
+                                synthesisParameters = state.synthesisParameters
+                                onSynthesisParametersChange = { newValue ->
+                                    setState { synthesisParameters = newValue }
+                                }
+                            }
+                        }
                     }
                 }
             }

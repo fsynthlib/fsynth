@@ -47,7 +47,6 @@ class PlaybackCustomization(props: PlaybackCustomizationProps) : RComponent<Play
                 }
                 style = kotlinext.js.js {
                     marginLeft = "20px"
-                    width = "350px"
                 }
             }
         }
@@ -80,7 +79,6 @@ class PlaybackCustomization(props: PlaybackCustomizationProps) : RComponent<Play
                 }
                 style = kotlinext.js.js {
                     marginLeft = "20px"
-                    width = "350px"
                 }
             }
         }
@@ -116,7 +114,6 @@ class PlaybackCustomization(props: PlaybackCustomizationProps) : RComponent<Play
                 }
                 style = kotlinext.js.js {
                     marginLeft = "20px"
-                    width = "350px"
                 }
             }
         }
@@ -152,7 +149,6 @@ class PlaybackCustomization(props: PlaybackCustomizationProps) : RComponent<Play
                 }
                 style = kotlinext.js.js {
                     marginLeft = "20px"
-                    width = "350px"
                 }
             }
         }
