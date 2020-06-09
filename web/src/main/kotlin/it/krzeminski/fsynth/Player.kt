@@ -87,22 +87,24 @@ class Player(props: PlayerProps) : RComponent<PlayerProps, PlayerState>(props) {
                                 }
                             } else {
                                 materialIconButton {
-                                    attrs.onClick = {
-                                        setState {
-                                            currentlySynthesizedSong = song
-                                            currentSynthesisProgress = 0
+                                    attrs {
+                                        onClick = {
+                                            setState {
+                                                currentlySynthesizedSong = song
+                                                currentSynthesisProgress = 0
+                                            }
+                                            song.renderToAudioBuffer(state.synthesisParameters, progressHandler = {
+                                                setState {
+                                                    currentSynthesisProgress = it
+                                                }
+                                            }, resultHandler = {
+                                                val songAsWavBlob = Blob(arrayOf(toWav(it)))
+                                                setState {
+                                                    lastSynthesizedAsWaveBlob = songAsWavBlob
+                                                    currentlySynthesizedSong = null
+                                                }
+                                            })
                                         }
-                                        song.renderToAudioBuffer(state.synthesisParameters, progressHandler = {
-                                            setState {
-                                                currentSynthesisProgress = it
-                                            }
-                                        }, resultHandler = {
-                                            val songAsWavBlob = Blob(arrayOf(toWav(it)))
-                                            setState {
-                                                lastSynthesizedAsWaveBlob = songAsWavBlob
-                                                currentlySynthesizedSong = null
-                                            }
-                                        })
                                     }
                                     materialPlayArrowIcon { }
                                 }
