@@ -3,7 +3,7 @@ package it.krzeminski.fsynth.worker
 import it.krzeminski.fsynth.types.SynthesisParameters
 
 interface SynthesisWorker {
-    fun synthesizeAsync(synthesisRequest: SynthesisRequest, responseCallback: (SynthesisResponse) -> Unit)
+    suspend fun synthesize(synthesisRequest: SynthesisRequest, progressHandler: (Int) -> Unit): Array<Float>
 }
 
 data class SynthesisRequest(

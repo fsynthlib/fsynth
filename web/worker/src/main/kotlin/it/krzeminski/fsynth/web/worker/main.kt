@@ -4,6 +4,8 @@ import it.krzeminski.fsynth.songs.allSongs
 import it.krzeminski.fsynth.worker.SynthesisRequest
 import it.krzeminski.fsynth.worker.SynthesisResponse
 import it.krzeminski.fsynth.worker.SynthesisWorker
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.w3c.dom.DedicatedWorkerGlobalScope
 
 external val self: DedicatedWorkerGlobalScope
@@ -12,25 +14,31 @@ fun main() {
     println("Worker starts!")
 
     self.onmessage = { e ->
-        println("Worker got such request: ${JSON.stringify(e.data)}")
-        val request = e.data.unsafeCast<SynthesisRequest>()
-        SynthesisWorkerImpl.synthesizeAsync(request) { synthesisResponse ->
-            self.postMessage(synthesisResponse)
+        GlobalScope.launch {
+            println("Worker got such request: ${JSON.stringify(e.data)}")
+            val request = e.data.unsafeCast<SynthesisRequest>()
+            val songData = SynthesisWorkerImpl.synthesize(request) { progress ->
+                self.postMessage(SynthesisResponse(type = "progress", progress = progress))
+            }
+            self.postMessage(SynthesisResponse(type = "result", songData = songData))
+            println("Response message posted")
         }
     }
 }
 
 object SynthesisWorkerImpl : SynthesisWorker {
-    override fun synthesizeAsync(synthesisRequest: SynthesisRequest, responseCallback: (SynthesisResponse) -> Unit) {
+    override suspend fun synthesize(
+        synthesisRequest: SynthesisRequest,
+        progressHandler: (Int) -> Unit
+    ): Array<Float> {
         val song = allSongs.find { it.name == synthesisRequest.songName }
-        song?.let {
+        return song?.let {
             println("Song found, synthesizing")
             val renderedSong = it.renderToArray(synthesisRequest.synthesisParameters, onProgressChange = { progress ->
-                responseCallback(SynthesisResponse(type = "progress", progress = progress))
+                progressHandler(progress)
             })
             println("Synthesis done")
-            responseCallback(SynthesisResponse(type = "result", songData = renderedSong))
-            println("Response message posted")
-        }
+            return renderedSong
+        } ?: emptyArray() // TODO: proper error handling on the worker side.
     }
 }

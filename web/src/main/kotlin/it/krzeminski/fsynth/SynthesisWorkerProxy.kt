@@ -10,47 +10,44 @@ import it.krzeminski.fsynth.worker.SynthesisWorker
 import org.khronos.webgl.Float32Array
 import org.w3c.dom.Worker
 import kotlin.browser.window
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
-fun Song.renderToAudioBuffer(
+suspend fun Song.renderToAudioBuffer(
     synthesisParameters: SynthesisParameters,
-    progressHandler: (Int) -> Unit,
-    resultHandler: (AudioBuffer) -> Unit
-) {
+    progressHandler: (Int) -> Unit
+): AudioBuffer {
     val synthesisRequest = SynthesisRequest(name, synthesisParameters)
     val startTime = window.performance.now()
-    SynthesisWorkerProxy.synthesizeAsync(synthesisRequest) { response ->
-        when (response.type) {
-            "progress" -> {
-                progressHandler(response.progress!!)
-            }
-            "result" -> {
-                val renderedSong = Float32Array(response.songData!!)
-                val context = AudioContext()
-                val playbackSamplesPerSecond =
-                        (44100.toFloat() * synthesisParameters.playbackSamplesPerSecondMultiplier).toInt()
-                val audioContextBuffer = createAudioContextBuffer(context, renderedSong, playbackSamplesPerSecond)
+    val songData = SynthesisWorkerProxy.synthesize(synthesisRequest, progressHandler)
 
-                println("Synthesis time with worker overhead: ${(window.performance.now() - startTime) / 1000.0} s")
+    val renderedSong = Float32Array(songData)
+    val context = AudioContext()
+    val playbackSamplesPerSecond =
+            (44100.toFloat() * synthesisParameters.playbackSamplesPerSecondMultiplier).toInt()
+    val audioContextBuffer = createAudioContextBuffer(context, renderedSong, playbackSamplesPerSecond)
 
-                resultHandler(audioContextBuffer)
-            }
-            else -> throw IllegalArgumentException("${response.type} not handled!")
-        }
-    }
+    println("Synthesis time with worker overhead: ${(window.performance.now() - startTime) / 1000.0} s")
+
+    return audioContextBuffer
 }
 
 private object SynthesisWorkerProxy : SynthesisWorker {
     private val workerJs = Worker("worker.js")
 
-    override fun synthesizeAsync(
+    override suspend fun synthesize(
         synthesisRequest: SynthesisRequest,
-        responseCallback: (SynthesisResponse) -> Unit
-    ) {
+        progressHandler: (Int) -> Unit
+    ): Array<Float> = suspendCoroutine { continuation ->
         with(workerJs) {
             postMessage(synthesisRequest)
             onmessage = { event ->
                 val response = event.data.unsafeCast<SynthesisResponse>()
-                responseCallback(response)
+                when (response.type) {
+                    "progress" -> progressHandler(response.progress!!)
+                    "result" -> continuation.resume(response.songData!!)
+                    else -> throw IllegalArgumentException("${response.type} not handled!")
+                }
             }
         }
     }

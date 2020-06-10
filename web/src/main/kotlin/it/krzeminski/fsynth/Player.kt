@@ -22,6 +22,9 @@ import it.krzeminski.fsynth.typings.materialToolbar
 import it.krzeminski.fsynth.typings.materialTypography
 import it.krzeminski.fsynth.typings.toWav
 import kotlinext.js.js
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import org.w3c.files.Blob
 import react.RBuilder
 import react.RComponent
@@ -32,7 +35,7 @@ import react.buildElement
 import react.dom.div
 import react.setState
 
-class Player(props: PlayerProps) : RComponent<PlayerProps, PlayerState>(props) {
+class Player(props: PlayerProps) : RComponent<PlayerProps, PlayerState>(props), CoroutineScope by MainScope() {
     override fun PlayerState.init(props: PlayerProps) {
         lastSynthesizedAsWaveBlob = null
         currentlySynthesizedSong = null
@@ -95,21 +98,23 @@ class Player(props: PlayerProps) : RComponent<PlayerProps, PlayerState>(props) {
                                 materialIconButton {
                                     attrs {
                                         onClick = {
-                                            setState {
-                                                currentlySynthesizedSong = song
-                                                currentSynthesisProgress = 0
-                                            }
-                                            song.renderToAudioBuffer(state.synthesisParameters, progressHandler = {
+                                            launch {
                                                 setState {
-                                                    currentSynthesisProgress = it
+                                                    currentlySynthesizedSong = song
+                                                    currentSynthesisProgress = 0
                                                 }
-                                            }, resultHandler = {
-                                                val songAsWavBlob = Blob(arrayOf(toWav(it)))
+                                                val renderedSong = song.renderToAudioBuffer(state.synthesisParameters,
+                                                        progressHandler = {
+                                                            setState {
+                                                                currentSynthesisProgress = it
+                                                            }
+                                                        })
+                                                val songAsWavBlob = Blob(arrayOf(toWav(renderedSong)))
                                                 setState {
                                                     lastSynthesizedAsWaveBlob = songAsWavBlob
                                                     currentlySynthesizedSong = null
                                                 }
-                                            })
+                                            }
                                         }
                                         disabled = state.currentlySynthesizedSong != null
                                     }
