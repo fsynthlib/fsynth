@@ -18,10 +18,13 @@ fun main() {
             println("Worker got such request: ${JSON.stringify(e.data)}")
             val request = e.data.unsafeCast<SynthesisRequest>()
             val songData = SynthesisWorkerImpl.synthesize(request) { progress ->
-                self.postMessage(SynthesisResponse(type = "progress", progress = progress))
+                val responseMessage = SynthesisResponse(type = "progress", progress = progress)
+                self.postMessage(responseMessage)
+                println("Response message posted: $responseMessage")
             }
-            self.postMessage(SynthesisResponse(type = "result", songData = songData))
-            println("Response message posted")
+            val responseMessage = SynthesisResponse(type = "result", songData = songData)
+            self.postMessage(responseMessage)
+            println("Response message posted: $responseMessage")
         }
     }
 }
