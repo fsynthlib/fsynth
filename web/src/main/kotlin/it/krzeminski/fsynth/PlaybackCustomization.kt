@@ -22,11 +22,6 @@ class PlaybackCustomization(props: PlaybackCustomizationProps) : RComponent<Play
 
     private fun RBuilder.bitsPerSampleDowncasting() {
         materialTypography {
-            attrs {
-                style = kotlinext.js.js {
-                    margin = "10px"
-                }
-            }
             +"Bits per sample (downcasting)"
         }
         materialSlider {
@@ -46,7 +41,7 @@ class PlaybackCustomization(props: PlaybackCustomizationProps) : RComponent<Play
                             downcastToBitsPerSample = newValue.toInt().let { if (it != 32) it else null }))
                 }
                 style = kotlinext.js.js {
-                    marginLeft = "20px"
+                    marginLeft = "35px"
                 }
             }
         }
@@ -54,11 +49,6 @@ class PlaybackCustomization(props: PlaybackCustomizationProps) : RComponent<Play
 
     private fun RBuilder.tempoChange() {
         materialTypography {
-            attrs {
-                style = kotlinext.js.js {
-                    margin = "10px"
-                }
-            }
             +"Tempo change (beats-per-second offset)"
         }
         materialSlider {
@@ -78,7 +68,7 @@ class PlaybackCustomization(props: PlaybackCustomizationProps) : RComponent<Play
                             tempoOffset = newValue.toInt()))
                 }
                 style = kotlinext.js.js {
-                    marginLeft = "20px"
+                    marginLeft = "35px"
                 }
             }
         }
@@ -86,11 +76,6 @@ class PlaybackCustomization(props: PlaybackCustomizationProps) : RComponent<Play
 
     private fun RBuilder.synthesisSamplesPerSecondMultiplier() {
         materialTypography {
-            attrs {
-                style = kotlinext.js.js {
-                    margin = "10px"
-                }
-            }
             +"Synthesis samples-per-second multiplier"
         }
         materialSlider {
@@ -113,7 +98,7 @@ class PlaybackCustomization(props: PlaybackCustomizationProps) : RComponent<Play
                             fromLogarithmicSliderValueToMultiplier(newValue.toInt())))
                 }
                 style = kotlinext.js.js {
-                    marginLeft = "20px"
+                    marginLeft = "35px"
                 }
             }
         }
@@ -121,11 +106,6 @@ class PlaybackCustomization(props: PlaybackCustomizationProps) : RComponent<Play
 
     private fun RBuilder.playbackSamplesPerSecondMultiplier() {
         materialTypography {
-            attrs {
-                style = kotlinext.js.js {
-                    margin = "10px"
-                }
-            }
             +"Playback samples-per-second multiplier"
         }
         materialSlider {
@@ -148,7 +128,7 @@ class PlaybackCustomization(props: PlaybackCustomizationProps) : RComponent<Play
                             fromLogarithmicSliderValueToMultiplier(newValue.toInt())))
                 }
                 style = kotlinext.js.js {
-                    marginLeft = "20px"
+                    marginLeft = "35px"
                 }
             }
         }
