@@ -1,9 +1,10 @@
 package it.krzeminski.fsynth
 
+import com.ccfraser.muirwik.components.MSliderMark
+import com.ccfraser.muirwik.components.MSliderValueLabelDisplay
+import com.ccfraser.muirwik.components.mSlider
+import com.ccfraser.muirwik.components.mTypography
 import it.krzeminski.fsynth.types.SynthesisParameters
-import it.krzeminski.fsynth.typings.materialSlider
-import it.krzeminski.fsynth.typings.materialTypography
-import it.krzeminski.fsynth.typings.materialui.widgets.types.Mark
 import react.RBuilder
 import react.RComponent
 import react.RHandler
@@ -11,6 +12,11 @@ import react.RProps
 import react.RState
 import kotlin.math.log
 import kotlin.math.pow
+import styled.StyleSheet
+import kotlinx.css.margin
+import kotlinx.css.marginLeft
+import kotlinx.css.px
+import styled.css
 
 class PlaybackCustomization(props: PlaybackCustomizationProps) : RComponent<PlaybackCustomizationProps, RState>(props) {
     override fun RBuilder.render() {
@@ -20,117 +26,114 @@ class PlaybackCustomization(props: PlaybackCustomizationProps) : RComponent<Play
         playbackSamplesPerSecondMultiplier()
     }
 
-    private fun RBuilder.bitsPerSampleDowncasting() {
-        materialTypography {
-            +"Bits per sample (downcasting)"
+    private object Styles : StyleSheet("PlaybackCustomization", isStatic = true) {
+        val sectionHeader by css {
+            margin(10.px)
         }
-        materialSlider {
-            attrs {
-                min = 1
-                max = 32
-                value = props.synthesisParameters.downcastToBitsPerSample ?: 32
-                marks = arrayOf(
-                        Mark(1, "1 bit"),
-                        Mark(8, "8 bits"),
-                        Mark(16, "16 bits"),
-                        Mark(24, "24 bits"),
-                        Mark(32, "original"))
-                valueLabelDisplay = "auto"
+        val slider by css {
+            marginLeft = 35.px
+        }
+    }
+
+    private fun RBuilder.bitsPerSampleDowncasting() {
+        mTypography("Bits per sample (downcasting)") {
+            css(Styles.sectionHeader)
+        }
+        mSlider(
+                min = 1,
+                max = 32,
+                value = props.synthesisParameters.downcastToBitsPerSample ?: 32,
+                showMarks = true,
+                marks = listOf(
+                        MSliderMark(1, "1 bit"),
+                        MSliderMark(8, "8 bits"),
+                        MSliderMark(16, "16 bits"),
+                        MSliderMark(24, "24 bits"),
+                        MSliderMark(32, "original")),
+                valueLabelDisplay = MSliderValueLabelDisplay.auto,
                 onChange = { _, newValue ->
                     props.onSynthesisParametersChange(props.synthesisParameters.copy(
                             downcastToBitsPerSample = newValue.toInt().let { if (it != 32) it else null }))
-                }
-                style = kotlinext.js.js {
-                    marginLeft = "35px"
-                }
-            }
+                }) {
+            css(Styles.slider)
         }
     }
 
     private fun RBuilder.tempoChange() {
-        materialTypography {
-            +"Tempo change (beats-per-second offset)"
+        mTypography("Tempo change (beats-per-second offset)") {
+            css(Styles.sectionHeader)
         }
-        materialSlider {
-            attrs {
-                min = -100
-                max = 100
-                value = props.synthesisParameters.tempoOffset
-                marks = arrayOf(
-                        Mark(-100, "-100"),
-                        Mark(-50, "-50"),
-                        Mark(0, "original"),
-                        Mark(50, "+50"),
-                        Mark(100, "+100"))
-                valueLabelDisplay = "auto"
+        mSlider(
+                min = -100,
+                max = 100,
+                value = props.synthesisParameters.tempoOffset,
+                showMarks = true,
+                marks = listOf(
+                        MSliderMark(-100, "-100"),
+                        MSliderMark(-50, "-50"),
+                        MSliderMark(0, "original"),
+                        MSliderMark(50, "+50"),
+                        MSliderMark(100, "+100")),
+                valueLabelDisplay = MSliderValueLabelDisplay.auto,
                 onChange = { _, newValue ->
                     props.onSynthesisParametersChange(props.synthesisParameters.copy(
                             tempoOffset = newValue.toInt()))
-                }
-                style = kotlinext.js.js {
-                    marginLeft = "35px"
-                }
-            }
+                }) {
+            css(Styles.slider)
         }
     }
 
     private fun RBuilder.synthesisSamplesPerSecondMultiplier() {
-        materialTypography {
-            +"Synthesis samples-per-second multiplier"
+        mTypography("Synthesis samples-per-second multiplier") {
+            css(Styles.sectionHeader)
         }
-        materialSlider {
-            attrs {
-                min = -2
-                max = 2
+        mSlider(
+                min = -2,
+                max = 2,
                 value = fromMultiplierToLogarithmicSliderValue(
-                        props.synthesisParameters.synthesisSamplesPerSecondMultiplier)
-                marks = arrayOf(
-                        Mark(-2, "0.25x"),
-                        Mark(-1, "0.5x"),
-                        Mark(0, "original"),
-                        Mark(1, "2x"),
-                        Mark(2, "4x"))
-                valueLabelDisplay = "auto"
-                valueLabelFormat = { value -> "${fromLogarithmicSliderValueToMultiplier(value.toInt())}x" }
+                        props.synthesisParameters.synthesisSamplesPerSecondMultiplier),
+                showMarks = true,
+                marks = listOf(
+                        MSliderMark(-2, "0.25x"),
+                        MSliderMark(-1, "0.5x"),
+                        MSliderMark(0, "original"),
+                        MSliderMark(1, "2x"),
+                        MSliderMark(2, "4x")),
+                valueLabelDisplay = MSliderValueLabelDisplay.auto,
+                valueLabelFormat = { value, _ -> "${fromLogarithmicSliderValueToMultiplier(value.toInt())}x" },
                 onChange = { _, newValue ->
                     props.onSynthesisParametersChange(props.synthesisParameters.copy(
                             synthesisSamplesPerSecondMultiplier =
                             fromLogarithmicSliderValueToMultiplier(newValue.toInt())))
-                }
-                style = kotlinext.js.js {
-                    marginLeft = "35px"
-                }
-            }
+                }) {
+            css(Styles.slider)
         }
     }
 
     private fun RBuilder.playbackSamplesPerSecondMultiplier() {
-        materialTypography {
-            +"Playback samples-per-second multiplier"
+        mTypography("Playback samples-per-second multiplier") {
+            css(Styles.sectionHeader)
         }
-        materialSlider {
-            attrs {
-                min = -2
-                max = 2
+        mSlider(
+                min = -2,
+                max = 2,
                 value = fromMultiplierToLogarithmicSliderValue(
-                        props.synthesisParameters.playbackSamplesPerSecondMultiplier)
-                marks = arrayOf(
-                        Mark(-2, "0.25x"),
-                        Mark(-1, "0.5x"),
-                        Mark(0, "original"),
-                        Mark(1, "2x"),
-                        Mark(2, "4x"))
-                valueLabelDisplay = "auto"
-                valueLabelFormat = { value -> "${fromLogarithmicSliderValueToMultiplier(value.toInt())}x" }
+                        props.synthesisParameters.playbackSamplesPerSecondMultiplier),
+                showMarks = true,
+                marks = listOf(
+                        MSliderMark(-2, "0.25x"),
+                        MSliderMark(-1, "0.5x"),
+                        MSliderMark(0, "original"),
+                        MSliderMark(1, "2x"),
+                        MSliderMark(2, "4x")),
+                valueLabelDisplay = MSliderValueLabelDisplay.auto,
+                valueLabelFormat = { value, _ -> "${fromLogarithmicSliderValueToMultiplier(value.toInt())}x" },
                 onChange = { _, newValue ->
                     props.onSynthesisParametersChange(props.synthesisParameters.copy(
                             playbackSamplesPerSecondMultiplier =
                             fromLogarithmicSliderValueToMultiplier(newValue.toInt())))
-                }
-                style = kotlinext.js.js {
-                    marginLeft = "35px"
-                }
-            }
+                }) {
+            css(Styles.slider)
         }
     }
 

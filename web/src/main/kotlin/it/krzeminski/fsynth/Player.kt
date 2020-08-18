@@ -1,30 +1,39 @@
 package it.krzeminski.fsynth
 
+import com.ccfraser.muirwik.components.MAppBarPosition
+import com.ccfraser.muirwik.components.MCircularProgressVariant
+import com.ccfraser.muirwik.components.MIconColor
+import com.ccfraser.muirwik.components.MTypographyColor
+import com.ccfraser.muirwik.components.MTypographyVariant
+import com.ccfraser.muirwik.components.button.mIconButton
+import com.ccfraser.muirwik.components.expansionpanel.mExpansionPanel
+import com.ccfraser.muirwik.components.expansionpanel.mExpansionPanelDetails
+import com.ccfraser.muirwik.components.expansionpanel.mExpansionPanelSummary
+import com.ccfraser.muirwik.components.list.mList
+import com.ccfraser.muirwik.components.list.mListItem
+import com.ccfraser.muirwik.components.list.mListItemSecondaryAction
+import com.ccfraser.muirwik.components.list.mListItemText
+import com.ccfraser.muirwik.components.mAppBar
+import com.ccfraser.muirwik.components.mCircularProgress
+import com.ccfraser.muirwik.components.mDivider
+import com.ccfraser.muirwik.components.mIcon
+import com.ccfraser.muirwik.components.mPaper
+import com.ccfraser.muirwik.components.mToolbar
+import com.ccfraser.muirwik.components.mTypography
 import it.krzeminski.fsynth.generated.gitInfo
 import it.krzeminski.fsynth.synthesis.durationInSeconds
 import it.krzeminski.fsynth.types.Song
 import it.krzeminski.fsynth.types.SynthesisParameters
-import it.krzeminski.fsynth.typings.materialAppBar
-import it.krzeminski.fsynth.typings.materialCircularProgress
-import it.krzeminski.fsynth.typings.materialDivider
-import it.krzeminski.fsynth.typings.materialExpandMoreIcon
-import it.krzeminski.fsynth.typings.materialExpansionPanel
-import it.krzeminski.fsynth.typings.materialExpansionPanelDetails
-import it.krzeminski.fsynth.typings.materialExpansionPanelSummary
-import it.krzeminski.fsynth.typings.materialIconButton
-import it.krzeminski.fsynth.typings.materialList
-import it.krzeminski.fsynth.typings.materialListItem
-import it.krzeminski.fsynth.typings.materialListItemSecondaryAction
-import it.krzeminski.fsynth.typings.materialListItemText
-import it.krzeminski.fsynth.typings.materialPaper
-import it.krzeminski.fsynth.typings.materialPlayArrowIcon
-import it.krzeminski.fsynth.typings.materialToolbar
-import it.krzeminski.fsynth.typings.materialTypography
 import it.krzeminski.fsynth.typings.toWav
-import kotlinext.js.js
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import kotlinx.css.LinearDimension
+import kotlinx.css.margin
+import kotlinx.css.maxWidth
+import kotlinx.css.pc
+import kotlinx.css.px
+import kotlinx.css.width
 import org.w3c.files.Blob
 import react.RBuilder
 import react.RComponent
@@ -34,6 +43,8 @@ import react.RState
 import react.buildElement
 import react.dom.div
 import react.setState
+import styled.StyleSheet
+import styled.css
 
 class Player(props: PlayerProps) : RComponent<PlayerProps, PlayerState>(props), CoroutineScope by MainScope() {
     override fun PlayerState.init(props: PlayerProps) {
@@ -47,26 +58,20 @@ class Player(props: PlayerProps) : RComponent<PlayerProps, PlayerState>(props), 
                 playbackSamplesPerSecondMultiplier = 1.0f)
     }
 
+    private object Styles : StyleSheet("Player", isStatic = true) {
+        val backgroundPaper by css {
+            width = 100.pc
+            maxWidth = 400.px
+            margin(vertical = 0.px, horizontal = LinearDimension.auto)
+        }
+    }
+
     override fun RBuilder.render() {
-        materialPaper {
-            attrs {
-                style = js {
-                    width = "100%"
-                    maxWidth = "400px"
-                    margin = "0 auto"
-                }
-                elevation = 6
-            }
-            materialAppBar {
-                attrs.position = "static"
-                materialToolbar {
-                    materialTypography {
-                        attrs {
-                            variant = "h5"
-                            color = "inherit"
-                        }
-                        +"fsynth"
-                    }
+        mPaper(elevation = 6) {
+            css(Styles.backgroundPaper)
+            mAppBar(position = MAppBarPosition.static) {
+                mToolbar {
+                    mTypography("fsynth", variant = MTypographyVariant.h5, color = MTypographyColor.inherit)
                 }
             }
             state.lastSynthesizedAsWaveBlob?.let { lastSongInBase64 ->
@@ -76,64 +81,51 @@ class Player(props: PlayerProps) : RComponent<PlayerProps, PlayerState>(props), 
                     }
                 }
             }
-            materialDivider {}
+            mDivider()
             props.songs.forEach { song ->
-                materialList {
-                    materialListItem {
-                        materialListItemText {
-                            attrs {
-                                primary = song.name
-                                secondary = song.getHumanFriendlyDuration()
-                            }
-                        }
-                        materialListItemSecondaryAction {
+                mList {
+                    mListItem {
+                        mListItemText(primary = song.name, secondary = song.getHumanFriendlyDuration())
+                        mListItemSecondaryAction {
                             if (state.currentlySynthesizedSong == song) {
-                                materialCircularProgress {
-                                    attrs {
-                                        value = state.currentSynthesisProgress
-                                        variant = "static"
-                                    }
-                                }
+                                mCircularProgress(
+                                        value = state.currentSynthesisProgress.toDouble(),
+                                        variant = MCircularProgressVariant.static)
                             } else {
-                                materialIconButton {
-                                    attrs {
+                                mIconButton(
+                                        "play_arrow",
+                                        disabled = state.currentlySynthesizedSong != null,
+                                        iconColor = if (state.currentlySynthesizedSong == null) null else MIconColor.disabled,
                                         onClick = {
-                                            launch {
-                                                setState {
-                                                    currentlySynthesizedSong = song
-                                                    currentSynthesisProgress = 0
-                                                }
-                                                val renderedSong = song.renderToAudioBuffer(state.synthesisParameters,
-                                                        progressHandler = {
-                                                            setState {
-                                                                currentSynthesisProgress = it
-                                                            }
-                                                        })
-                                                val songAsWavBlob = Blob(arrayOf(toWav(renderedSong)))
-                                                setState {
-                                                    lastSynthesizedAsWaveBlob = songAsWavBlob
-                                                    currentlySynthesizedSong = null
-                                                }
-                                            }
+                                    launch {
+                                        setState {
+                                            currentlySynthesizedSong = song
+                                            currentSynthesisProgress = 0
                                         }
-                                        disabled = state.currentlySynthesizedSong != null
+                                        val renderedSong = song.renderToAudioBuffer(state.synthesisParameters,
+                                                progressHandler = {
+                                                    setState {
+                                                        currentSynthesisProgress = it
+                                                    }
+                                                })
+                                        val songAsWavBlob = Blob(arrayOf(toWav(renderedSong)))
+                                        setState {
+                                            lastSynthesizedAsWaveBlob = songAsWavBlob
+                                            currentlySynthesizedSong = null
+                                        }
                                     }
-                                    materialPlayArrowIcon { }
-                                }
+                                })
                             }
                         }
                     }
                 }
             }
-            materialDivider {}
-            materialExpansionPanel {
-                materialExpansionPanelSummary {
-                    attrs {
-                        expandIcon = buildElement { materialExpandMoreIcon { } }
-                    }
+            mDivider()
+            mExpansionPanel {
+                mExpansionPanelSummary(expandIcon = buildElement { mIcon("expand_more") }) {
                     +"Playback customization"
                 }
-                materialExpansionPanelDetails {
+                mExpansionPanelDetails {
                     div {
                         playbackCustomization {
                             attrs {
