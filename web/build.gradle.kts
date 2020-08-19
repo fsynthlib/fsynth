@@ -11,7 +11,11 @@ repositories {
     maven("https://dl.bintray.com/cfraser/muirwik")
 }
 
+// The below versions cannot be freely changed independently. Only certain combinations are valid and map to the actual
+// existing versions in the repositories.
 val kotlinVersion: String by rootProject.extra
+val reactVersion = "16.13.1"
+val jsWrappersVersion = "pre.104"
 
 kotlin {
     target {
@@ -28,14 +32,14 @@ kotlin {
         val main by getting {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:$kotlinVersion")
-                implementation("org.jetbrains:kotlin-react:16.13.1-pre.104-kotlin-1.3.72")
-                implementation("org.jetbrains:kotlin-react-dom:16.13.1-pre.104-kotlin-1.3.72")
-                implementation("org.jetbrains:kotlin-styled:1.0.0-pre.104-kotlin-1.3.72")
-                implementation("org.jetbrains:kotlin-css-js:1.0.0-pre.104-kotlin-1.3.72")
+                implementation("org.jetbrains:kotlin-react:$reactVersion-$jsWrappersVersion-kotlin-$kotlinVersion")
+                implementation("org.jetbrains:kotlin-react-dom:$reactVersion-$jsWrappersVersion-kotlin-$kotlinVersion")
+                implementation("org.jetbrains:kotlin-styled:1.0.0-$jsWrappersVersion-kotlin-$kotlinVersion")
+                implementation("org.jetbrains:kotlin-css-js:1.0.0-$jsWrappersVersion-kotlin-$kotlinVersion")
                 implementation("com.ccfraser.muirwik:muirwik-components:0.5.1")
                 implementation(project(":core"))
-                implementation(npm("react", "16.13.1"))
-                implementation(npm("react-dom", "16.13.1"))
+                implementation(npm("react", reactVersion))
+                implementation(npm("react-dom", reactVersion))
                 implementation(npm("@material-ui/core", "4.9.12"))
                 implementation(npm("audiobuffer-to-wav", "1.0.0"))
                 implementation(npm("wavesurfer.js", "3.3.3"))
