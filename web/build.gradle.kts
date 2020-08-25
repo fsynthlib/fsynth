@@ -15,7 +15,7 @@ repositories {
 // existing versions in the repositories.
 val kotlinVersion: String by rootProject.extra
 val reactVersion = "16.13.1"
-val jsWrappersVersion = "pre.104"
+val jsWrappersVersion = "pre.112"
 
 kotlin {
     target {
@@ -36,7 +36,7 @@ kotlin {
                 implementation("org.jetbrains:kotlin-react-dom:$reactVersion-$jsWrappersVersion-kotlin-$kotlinVersion")
                 implementation("org.jetbrains:kotlin-styled:1.0.0-$jsWrappersVersion-kotlin-$kotlinVersion")
                 implementation("org.jetbrains:kotlin-css-js:1.0.0-$jsWrappersVersion-kotlin-$kotlinVersion")
-                implementation("com.ccfraser.muirwik:muirwik-components:0.5.1")
+                implementation("com.ccfraser.muirwik:muirwik-components:0.6.0")
                 implementation(project(":core"))
                 implementation(npm("react", reactVersion))
                 implementation(npm("react-dom", reactVersion))
