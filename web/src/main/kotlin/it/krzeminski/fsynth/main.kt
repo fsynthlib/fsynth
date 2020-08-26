@@ -4,7 +4,7 @@ import it.krzeminski.fsynth.songs.allSongs
 import react.dom.render
 import kotlin.browser.document
 
-fun main(args: Array<String>) {
+fun main() {
     render(document.getElementById("root")) {
         player {
             attrs {
