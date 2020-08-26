@@ -40,7 +40,7 @@ kotlin {
                 implementation(project(":core"))
                 implementation(npm("react", reactVersion))
                 implementation(npm("react-dom", reactVersion))
-                implementation(npm("@material-ui/core", "4.9.14"))
+                implementation(npm("@material-ui/core", "4.11.0"))
                 implementation(npm("audiobuffer-to-wav", "1.0.0"))
                 implementation(npm("wavesurfer.js", "3.3.3"))
             }
