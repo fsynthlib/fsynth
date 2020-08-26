@@ -7,9 +7,9 @@ import it.krzeminski.fsynth.typings.AudioContext
 import it.krzeminski.fsynth.worker.SynthesisRequest
 import it.krzeminski.fsynth.worker.SynthesisResponse
 import it.krzeminski.fsynth.worker.SynthesisWorker
+import kotlinx.browser.window
 import org.khronos.webgl.Float32Array
 import org.w3c.dom.Worker
-import kotlin.browser.window
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 

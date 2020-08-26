@@ -1,6 +1,6 @@
 package it.krzeminski.testutils
 
-import kotlin.browser.window
+import kotlinx.browser.window
 
 inline fun measureTimeSeconds(block: () -> Unit): Double {
     val start = window.performance.now()

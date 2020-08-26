@@ -20,10 +20,10 @@ val Song.durationInSeconds: Float
     get() = this.preprocessForSynthesis().durationInSeconds
 
 val SongForSynthesis.durationInSeconds: Float
-    get() = this.tracks.map { it.durationInSeconds }.max() ?: 0.0f
+    get() = this.tracks.map { it.durationInSeconds }.maxOrNull() ?: 0.0f
 
 val TrackForSynthesis.durationInSeconds: Float
-    get() = this.segments.map { it.endTime }.max() ?: 0.0f
+    get() = this.segments.map { it.endTime }.maxOrNull() ?: 0.0f
 
 private fun List<TrackForSynthesis>.buildBucketedTracks(): List<BucketedTrack> =
         this.map { track ->
