@@ -5,10 +5,10 @@ import com.ccfraser.muirwik.components.MCircularProgressVariant
 import com.ccfraser.muirwik.components.MIconColor
 import com.ccfraser.muirwik.components.MTypographyColor
 import com.ccfraser.muirwik.components.MTypographyVariant
+import com.ccfraser.muirwik.components.accordion.mAccordion
+import com.ccfraser.muirwik.components.accordion.mAccordionDetails
+import com.ccfraser.muirwik.components.accordion.mAccordionSummary
 import com.ccfraser.muirwik.components.button.mIconButton
-import com.ccfraser.muirwik.components.expansionpanel.mExpansionPanel
-import com.ccfraser.muirwik.components.expansionpanel.mExpansionPanelDetails
-import com.ccfraser.muirwik.components.expansionpanel.mExpansionPanelSummary
 import com.ccfraser.muirwik.components.list.mList
 import com.ccfraser.muirwik.components.list.mListItem
 import com.ccfraser.muirwik.components.list.mListItemSecondaryAction
@@ -121,11 +121,11 @@ class Player(props: PlayerProps) : RComponent<PlayerProps, PlayerState>(props), 
                 }
             }
             mDivider()
-            mExpansionPanel {
-                mExpansionPanelSummary(expandIcon = buildElement { mIcon("expand_more") }) {
+            mAccordion {
+                mAccordionSummary(expandIcon = buildElement { mIcon("expand_more") }) {
                     +"Playback customization"
                 }
-                mExpansionPanelDetails {
+                mAccordionDetails {
                     div {
                         playbackCustomization {
                             attrs {
