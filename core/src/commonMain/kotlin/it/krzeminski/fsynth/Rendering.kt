@@ -19,7 +19,7 @@ fun SongForSynthesis.renderWithSampleRate(
     val endSample = (sampleRate.toFloat() * durationInSeconds).toInt()
     val samplesToRender = endSample - startSample
     val songEvaluationFunction = buildSongEvaluationFunction()
-    return (startSample..endSample).asSequence().chunked(samplesToRender / 10).map { chunk ->
+    return (startSample..endSample).asSequence().chunked((samplesToRender / 10).coerceAtLeast(1)).map { chunk ->
         onProgressChange((chunk[0] - startSample)*100 / samplesToRender)
         chunk
                 .map(sampleIndexToTimeInSeconds(sampleRate))
