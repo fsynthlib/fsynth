@@ -18,7 +18,7 @@ dependencies {
     testImplementation("junit:junit:4.12")
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
-    testImplementation("it.krzeminski:PlotAssert:0.1.0-beta")
+    testImplementation("it.krzeminski:PlotAssert:0.2.0-beta")
 }
 
 application {

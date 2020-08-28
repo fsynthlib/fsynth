@@ -48,7 +48,7 @@ kotlin {
         val test by getting {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
-                implementation("it.krzeminski:PlotAssert:0.1.0-beta")
+                implementation("it.krzeminski:PlotAssert:0.2.0-beta")
             }
         }
     }
