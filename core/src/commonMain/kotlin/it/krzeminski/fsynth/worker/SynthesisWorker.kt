@@ -12,10 +12,12 @@ data class SynthesisRequest(
         // serializable. It also means that only songs defined in 'allSongs' constant in the 'core' project can be
         // synthesized now.
         // See https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm
-        val songName: String,
-        val synthesisParameters: SynthesisParameters)
+    val songName: String,
+    val synthesisParameters: SynthesisParameters
+)
 
 data class SynthesisResponse(
-        val type: String,
-        val songData: Array<Float>? = null,
-        val progress: Int? = null)
+    val type: String,
+    val songData: Array<Float>? = null,
+    val progress: Int? = null
+)
