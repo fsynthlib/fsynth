@@ -1,7 +1,7 @@
 {
   "name": "fsynth",
   "short_name": "fsynth",
-  "start_url": "/",
+  "start_url": ".",
   "display": "standalone",
   "background_color": "#fff",
   "description": "Music synthesizer, written for fun and to learn stuff.",

@@ -9,7 +9,7 @@ fun main() {
     // Install Progressive Web App worker
     window.addEventListener("load", {
         window.navigator.serviceWorker
-                .register("/serviceworker.js")
+                .register("serviceworker.js")
                 .then { console.log("Service worker registered!") }
                 .catch { console.error("Service worker registration failed: $it") }
     })
