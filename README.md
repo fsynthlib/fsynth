@@ -1,5 +1,7 @@
 [![Build Status](https://circleci.com/gh/krzema12/fsynth.svg?style=svg)](https://app.circleci.com/pipelines/github/krzema12/fsynth) [![codecov](https://codecov.io/gh/krzema12/fsynth/branch/master/graph/badge.svg)](https://codecov.io/gh/krzema12/fsynth) [![Awesome Kotlin Badge](https://kotlin.link/awesome-kotlin.svg)](https://github.com/KotlinBy/awesome-kotlin)
 
+<img src="https://raw.githubusercontent.com/krzema12/fsynth/master/resources/Logo.svg" width="200" height="200" />
+
 # What is fsynth? 
 
 It's a simple music synthesizer. It focuses on generating the waveforms from scratch, no samples are used. You can listen to it via the Web player, or using the cross-platform Java CLI. Read on to learn more.
