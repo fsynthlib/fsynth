@@ -59,4 +59,10 @@ val copyWorkerDistributionFiles = tasks.register("copyWorkerDistributionFiles", 
     into("$buildDir/distributions")
 }.dependsOn(":web:worker:build")
 
+val copyServiceWorkerDistributionFiles = tasks.register("copyServiceWorkerDistributionFiles", Copy::class) {
+    from("serviceworker/build/distributions")
+    into("$buildDir/distributions")
+}.dependsOn(":web:serviceworker:build")
+
 tasks.named("assemble").dependsOn(copyWorkerDistributionFiles)
+tasks.named("assemble").dependsOn(copyServiceWorkerDistributionFiles)
