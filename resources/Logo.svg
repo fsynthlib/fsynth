@@ -30,7 +30,7 @@
      inkscape:cx="189.55784"
      inkscape:cy="189.2647"
      inkscape:document-units="mm"
-     inkscape:current-layer="text918"
+     inkscape:current-layer="layer3"
      showgrid="false"
      inkscape:window-width="1848"
      inkscape:window-height="1016"
@@ -81,8 +81,8 @@
      inkscape:groupmode="layer"
      id="layer3"
      inkscape:label="Lambda outline"
-     sodipodi:insensitive="true"
-     style="display:inline">
+     style="display:inline"
+     sodipodi:insensitive="true">
     <path
        sodipodi:type="inkscape:offset"
        inkscape:radius="2.0924797"
@@ -90,25 +90,14 @@
        xlink:href="#text918-9"
        style="font-style:normal;font-weight:normal;font-size:73.19513702px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.26458341"
        id="path959"
-       inkscape:href="#text918-9"
        d="m 40.923828,22.912109 c -2.509545,0 -4.866924,1.268848 -6.070312,3.408203 -1.070408,1.902949 -1.583985,4.09377 -1.583985,6.441407 v 1.246093 a 2.092689,2.092689 0 0 0 2.091797,2.091797 h 1.390625 a 2.092689,2.092689 0 0 0 2.013672,-1.521484 c 0.306316,-1.082316 0.695396,-1.738824 0.976563,-2.03125 0.281166,-0.292426 0.37788,-0.328125 0.742187,-0.328125 0.521078,0 0.856051,0.113447 1.25,0.402344 a 2.092689,2.092689 0 0 0 0.07813,0.05273 c 0.332611,0.22174 0.674196,0.605025 0.994141,1.351563 a 2.092689,2.092689 0 0 0 0.03516,0.07617 c 0.457178,0.960076 0.78477,1.78236 0.988281,2.433594 a 2.092689,2.092689 0 0 0 0.03906,0.109375 c 0.242763,0.647367 0.519396,1.599673 0.798828,2.810547 0.200812,0.870186 0.308584,1.249435 0.433593,1.71875 L 32.316406,73.570312 a 2.092689,2.092689 0 0 0 1.947266,2.859376 h 6.220703 a 2.092689,2.092689 0 0 0 1.953125,-1.34375 l 7.105469,-18.535157 2.675781,10.472657 c 0.243135,1.019804 0.438205,1.789458 0.607422,2.353515 a 2.092689,2.092689 0 0 0 0.01953,0.06055 c 0.177622,0.532866 0.451554,1.246071 0.847656,2.236328 a 2.092689,2.092689 0 0 0 0.01563,0.03516 c 0.435552,1.034437 0.879579,1.888049 1.462891,2.617188 a 2.092689,2.092689 0 0 0 0.08008,0.09375 c 0.607692,0.675215 1.345423,1.238311 2.177735,1.716797 1.028082,0.613453 2.2099,0.951172 3.402343,0.951172 2.160386,0 4.249216,-1.015631 5.421875,-2.783203 1.17266,-1.767573 1.574219,-4.005558 1.574219,-6.701172 v -2.341797 a 2.092689,2.092689 0 0 0 -2.091797,-2.091797 h -1.46289 a 2.092689,2.092689 0 0 0 -2.089844,1.992187 c -0.03133,0.657956 -0.217329,1.2554 -0.63086,1.910157 a 2.092689,2.092689 0 0 0 -0.01563,0.02539 c -0.226502,0.370641 -0.130206,0.316406 -0.558593,0.316406 -0.428388,0 -0.66371,-0.07651 -1.142578,-0.615234 a 2.092689,2.092689 0 0 0 -0.01367,-0.01367 C 59.4275,66.348837 58.402007,64.294211 57.507812,61.046875 a 2.092689,2.092689 0 0 0 -0.0059,-0.02148 L 50.328125,35.992188 a 2.092689,2.092689 0 0 0 -0.02734,-0.08594 c 0.01662,0.04987 -0.221949,-0.732789 -0.5625,-1.900391 -0.271784,-1.125143 -0.501158,-1.955073 -0.732422,-2.613281 -0.195121,-0.763117 -0.506294,-1.607556 -0.955078,-2.65625 C 47.566682,27.555073 47.072844,26.598363 46.421875,25.802734 45.823742,25.071682 45.088837,24.441597 44.25,23.902344 43.26159,23.266939 42.095929,22.912109 40.923828,22.912109 Z" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:73.19513702px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458341"
-       x="32.506363"
-       y="74.264191"
-       id="text918-9"><tspan
-         sodipodi:role="line"
-         id="tspan916-1"
-         x="32.506363"
-         y="74.264191"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:freeserif;-inkscape-font-specification:freeserif;stroke-width:0.26458341">λ</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="Lambda"
-     sodipodi:insensitive="true">
+     sodipodi:insensitive="true"
+     style="display:inline">
     <g
        aria-label="λ"
        style="font-style:normal;font-weight:normal;font-size:73.19513702px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458335"
