@@ -2,7 +2,7 @@ import org.ajoberstar.grgit.Grgit
 
 plugins {
     kotlin("multiplatform")
-    id("org.ajoberstar.grgit") version "3.0.0"
+    id("org.ajoberstar.grgit") version "4.1.0"
 }
 
 repositories {
