@@ -40,5 +40,5 @@ dependencies {
     implementation(project(":core"))
     testImplementation("junit:junit:4.12")
     androidTestImplementation("androidx.test:runner:1.1.1")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.1.1")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
 }
