@@ -53,6 +53,10 @@ or during development, you can call the CLI through Gradle:
 
 To see a list of available songs, call the CLI without arguments. 
 
+# Talk on [Tricity Kotlin User Group](https://www.facebook.com/groups/tricity.kotlin.user.group)
+
+[![[TKUG #1] Piotr Krzemiński, 'Project fsynth: show and tell'](http://img.youtube.com/vi/mQEIn7Eqsio/0.jpg)](http://www.youtube.com/watch?v=mQEIn7Eqsio "[TKUG #1] Piotr Krzemiński, 'Project fsynth: show and tell'")
+
 # Build prerequisites
 
 The below dependencies won't be installed by Gradle:
