@@ -34,7 +34,7 @@ dependencies {
     implementation(fileTree(Pair("dir", "libs"), Pair("include", listOf("*.jar"))))
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion")
     implementation("androidx.appcompat:appcompat:1.2.0")
-    implementation("androidx.core:core-ktx:1.0.2")
+    implementation("androidx.core:core-ktx:1.3.2")
     implementation("androidx.constraintlayout:constraintlayout:2.0.4")
     implementation("com.google.android.material:material:1.2.1")
     implementation(project(":core"))
