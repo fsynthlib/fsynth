@@ -11,7 +11,7 @@ buildscript {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
         // As a workaround, the root project knows about the Android project.
         // Otherwise, there are some issues with building the Android project.
-        classpath("com.android.tools.build:gradle:3.5.0")
+        classpath("com.android.tools.build:gradle:4.1.1")
     }
 }
 
