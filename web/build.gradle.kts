@@ -7,7 +7,6 @@ plugins {
 repositories {
     jcenter()
     maven("https://kotlin.bintray.com/kotlin-js-wrappers")
-    maven("https://dl.bintray.com/krzema1212/it.krzeminski")
     maven("https://dl.bintray.com/cfraser/muirwik")
 }
 
@@ -48,7 +47,6 @@ kotlin {
         val test by getting {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
-                implementation("it.krzeminski:PlotAssert:0.3.0-beta")
             }
         }
     }
