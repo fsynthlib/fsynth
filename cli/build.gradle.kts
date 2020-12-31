@@ -4,9 +4,6 @@ plugins {
     jacoco
 }
 
-repositories {
-    maven("https://dl.bintray.com/krzema1212/it.krzeminski")
-}
 
 val kotlinVersion: String by rootProject.extra
 
@@ -18,7 +15,6 @@ dependencies {
     testImplementation("junit:junit:4.13.1")
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
-    testImplementation("it.krzeminski:PlotAssert:0.3.0-beta")
 }
 
 application {
