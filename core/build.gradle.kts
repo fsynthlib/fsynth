@@ -5,10 +5,6 @@ plugins {
     id("org.ajoberstar.grgit") version "4.1.0"
 }
 
-repositories {
-    maven("https://dl.bintray.com/krzema1212/it.krzeminski")
-}
-
 kotlin {
     jvm {
     }
@@ -26,7 +22,7 @@ kotlin {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
-                implementation("it.krzeminski:PlotAssert:0.3.0-beta")
+                implementation("it.krzeminski.vis-assert:vis-assert:0.3.0-beta")
             }
         }
         val jvmMain by getting {
