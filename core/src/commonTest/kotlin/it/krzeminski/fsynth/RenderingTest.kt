@@ -4,7 +4,7 @@ import it.krzeminski.fsynth.synthesis.types.SongForSynthesis
 import it.krzeminski.fsynth.synthesis.types.TrackForSynthesis
 import it.krzeminski.fsynth.types.BoundedWaveform
 import it.krzeminski.fsynth.types.PositionedBoundedWaveform
-import it.krzeminski.testutils.plotassert.assertFunctionConformsTo
+import it.krzeminski.visassert.assertFunctionConformsTo
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

@@ -1,7 +1,7 @@
 package it.krzeminski.fsynth.types
 
 import it.krzeminski.fsynth.squareWave
-import it.krzeminski.testutils.plotassert.assertFunctionConformsTo
+import it.krzeminski.visassert.assertFunctionConformsTo
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith

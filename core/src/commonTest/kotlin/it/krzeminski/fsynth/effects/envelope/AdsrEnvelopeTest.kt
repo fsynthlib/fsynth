@@ -1,6 +1,6 @@
 package it.krzeminski.fsynth.effects.envelope
 
-import it.krzeminski.testutils.plotassert.assertFunctionConformsTo
+import it.krzeminski.visassert.assertFunctionConformsTo
 import kotlin.math.abs
 import kotlin.test.Test
 import kotlin.test.assertEquals

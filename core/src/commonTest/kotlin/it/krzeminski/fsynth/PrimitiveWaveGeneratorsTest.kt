@@ -1,6 +1,6 @@
 package it.krzeminski.fsynth
 
-import it.krzeminski.testutils.plotassert.assertFunctionConformsTo
+import it.krzeminski.visassert.assertFunctionConformsTo
 import kotlin.test.Test
 
 /* ktlint-disable no-multi-spaces paren-spacing */

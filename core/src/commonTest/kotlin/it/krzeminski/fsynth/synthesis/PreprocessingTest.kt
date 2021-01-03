@@ -14,7 +14,7 @@ import it.krzeminski.fsynth.types.Song
 import it.krzeminski.fsynth.types.Track
 import it.krzeminski.fsynth.types.TrackSegment
 import it.krzeminski.fsynth.types.times
-import it.krzeminski.testutils.plotassert.assertFunctionConformsTo
+import it.krzeminski.visassert.assertFunctionConformsTo
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

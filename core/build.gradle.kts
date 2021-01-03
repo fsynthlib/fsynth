@@ -22,7 +22,7 @@ kotlin {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
-                implementation("it.krzeminski.vis-assert:vis-assert:0.3.0-beta")
+                implementation("it.krzeminski.vis-assert:vis-assert:0.4.0-beta")
             }
         }
         val jvmMain by getting {
