@@ -12,7 +12,7 @@ dependencies {
     implementation("com.github.ajalt:clikt:1.7.0")
     implementation(project(":core"))
 
-    testImplementation("junit:junit:4.13.1")
+    testImplementation("junit:junit:4.13.2")
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 }
