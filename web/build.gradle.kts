@@ -13,8 +13,8 @@ repositories {
 // The below versions cannot be freely changed independently. Only certain combinations are valid and map to the actual
 // existing versions in the repositories.
 val kotlinVersion: String by rootProject.extra
-val reactVersion = "17.0.0"
-val jsWrappersVersion = "pre.133"
+val reactVersion = "17.0.1"
+val jsWrappersVersion = "pre.148"
 
 kotlin {
     target {
@@ -33,7 +33,7 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:$kotlinVersion")
                 implementation("org.jetbrains:kotlin-react:$reactVersion-$jsWrappersVersion-kotlin-$kotlinVersion")
                 implementation("org.jetbrains:kotlin-react-dom:$reactVersion-$jsWrappersVersion-kotlin-$kotlinVersion")
-                implementation("org.jetbrains:kotlin-styled:5.2.0-$jsWrappersVersion-kotlin-$kotlinVersion")
+                implementation("org.jetbrains:kotlin-styled:5.2.1-$jsWrappersVersion-kotlin-$kotlinVersion")
                 implementation("org.jetbrains:kotlin-css-js:1.0.0-$jsWrappersVersion-kotlin-$kotlinVersion")
                 implementation("com.ccfraser.muirwik:muirwik-components:0.6.7")
                 implementation(project(":core"))
