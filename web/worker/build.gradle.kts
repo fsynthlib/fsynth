@@ -19,7 +19,7 @@ kotlin {
         val main by getting {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:$kotlinVersion")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.4.2-native-mt")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.4.3-native-mt")
                 implementation(project(":core"))
             }
         }
