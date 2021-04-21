@@ -32,7 +32,7 @@ val simpleDemoSong = song(
 
 ## Web
 
-https://krzema12.github.io/fsynth/
+https://fsynthlib.github.io/fsynth/
 
 ## Java CLI
 
