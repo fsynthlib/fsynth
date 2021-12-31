@@ -28,7 +28,7 @@ class VersionInfo : RComponent<VersionInfoProps, RState>() {
                 attrs.style = js {
                     fontFamily = "monospace"
                 }
-                a("https://github.com/krzema12/fsynth/commit/${gitInfo.latestCommit.sha1}") {
+                a("https://github.com/fsynthlib/fsynth/commit/${gitInfo.latestCommit.sha1}") {
                     +gitInfo.latestCommit.sha1.substring(0, 8)
                 }
             }
