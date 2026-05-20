@@ -16,9 +16,7 @@ fun main() {
 
     render(document.getElementById("root")) {
         player {
-            attrs {
-                songs = allSongs
-            }
+            attrs.songs = allSongs
         }
     }
 }

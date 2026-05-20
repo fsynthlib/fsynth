@@ -34,6 +34,7 @@ kotlin {
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-styled:5.3.0-$jsWrappersVersion-kotlin-$kotlinVersion")
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-css-js:1.0.0-$jsWrappersVersion-kotlin-$kotlinVersion")
                 implementation("com.ccfraser.muirwik:muirwik-components:0.7.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
                 implementation(project(":core"))
                 implementation(npm("react", reactVersion))
                 implementation(npm("react-dom", reactVersion))
