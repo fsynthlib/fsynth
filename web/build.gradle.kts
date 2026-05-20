@@ -5,16 +5,14 @@ plugins {
 }
 
 repositories {
-    jcenter()
-    maven("https://kotlin.bintray.com/kotlin-js-wrappers")
-    maven("https://dl.bintray.com/cfraser/muirwik")
+    mavenCentral()
 }
 
 // The below versions cannot be freely changed independently. Only certain combinations are valid and map to the actual
 // existing versions in the repositories.
 val kotlinVersion: String by rootProject.extra
-val reactVersion = "17.0.1"
-val jsWrappersVersion = "pre.148"
+val reactVersion = "17.0.2"
+val jsWrappersVersion = "pre.204"
 
 kotlin {
     target {
@@ -31,11 +29,11 @@ kotlin {
         val main by getting {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:$kotlinVersion")
-                implementation("org.jetbrains:kotlin-react:$reactVersion-$jsWrappersVersion-kotlin-$kotlinVersion")
-                implementation("org.jetbrains:kotlin-react-dom:$reactVersion-$jsWrappersVersion-kotlin-$kotlinVersion")
-                implementation("org.jetbrains:kotlin-styled:5.2.1-$jsWrappersVersion-kotlin-$kotlinVersion")
-                implementation("org.jetbrains:kotlin-css-js:1.0.0-$jsWrappersVersion-kotlin-$kotlinVersion")
-                implementation("com.ccfraser.muirwik:muirwik-components:0.6.8")
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-react:$reactVersion-$jsWrappersVersion-kotlin-$kotlinVersion")
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom:$reactVersion-$jsWrappersVersion-kotlin-$kotlinVersion")
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-styled:5.3.0-$jsWrappersVersion-kotlin-$kotlinVersion")
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-css-js:1.0.0-$jsWrappersVersion-kotlin-$kotlinVersion")
+                implementation("com.ccfraser.muirwik:muirwik-components:0.7.0")
                 implementation(project(":core"))
                 implementation(npm("react", reactVersion))
                 implementation(npm("react-dom", reactVersion))
