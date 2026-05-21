@@ -13,7 +13,7 @@ fun main() {
     val root = document.getElementById("root".unsafeCast<ElementId>())
     if (root != null) {
         val app = FC<Props> {
-            Player.create {
+            Player {
                 songs = allSongs
             }
         }

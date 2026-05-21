@@ -7,7 +7,6 @@ import java.io.File
 import java.net.InetSocketAddress
 import java.nio.file.Files
 import java.time.Duration
-import java.util.logging.Level
 import org.junit.AfterClass
 import org.junit.Assert.assertTrue
 import org.junit.BeforeClass
@@ -15,8 +14,6 @@ import org.junit.Test
 import org.openqa.selenium.By
 import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.chrome.ChromeOptions
-import org.openqa.selenium.logging.LogType
-import org.openqa.selenium.logging.LoggingPreferences
 import org.openqa.selenium.support.ui.WebDriverWait
 
 class SmokeTest {
@@ -33,6 +30,13 @@ class SmokeTest {
                 createContext("/") { exchange: HttpExchange ->
                     val file = File(webDist, exchange.requestURI.path).normalize()
                     if (file.absolutePath.startsWith(File(webDist).absolutePath) && file.isFile) {
+                        exchange.responseHeaders.add("Content-Type", when {
+                            file.name.endsWith(".js") -> "application/javascript"
+                            file.name.endsWith(".html") -> "text/html"
+                            file.name.endsWith(".css") -> "text/css"
+                            file.name.endsWith(".svg") -> "image/svg+xml"
+                            else -> "application/octet-stream"
+                        })
                         exchange.sendResponseHeaders(200, file.length())
                         Files.copy(file.toPath(), exchange.responseBody)
                     } else {
@@ -43,21 +47,13 @@ class SmokeTest {
                 executor = null
             }
             server.start()
-            println("HTTP server started on port $PORT, serving $webDist")
 
             WebDriverManager.chromedriver().setup()
-            val options = ChromeOptions().apply {
+            driver = ChromeDriver(ChromeOptions().apply {
                 addArguments("--headless")
                 addArguments("--no-sandbox")
                 addArguments("--disable-dev-shm-usage")
-                setExperimentalOption("excludeSwitches", listOf("enable-logging"))
-            }
-            val logPrefs = LoggingPreferences().apply {
-                enable(LogType.BROWSER, Level.ALL)
-            }
-            options.setCapability("goog:loggingPrefs", logPrefs)
-            driver = ChromeDriver(options)
-            println("ChromeDriver started")
+            })
         }
 
         @AfterClass
@@ -65,34 +61,17 @@ class SmokeTest {
         fun teardown() {
             driver.quit()
             server.stop(0)
-            println("Cleanup done")
         }
     }
 
     @Test
     fun titleAndSongListAreDisplayed() {
         driver.get("http://localhost:$PORT/index.html")
-        println("Page loaded: " + driver.getCurrentUrl())
-
-        val rootText = driver.findElement(By.id("root")).text
-        println("Root element text: '$rootText'")
 
         var bodyText = ""
-        val consoleLogs = mutableListOf<String>()
-        try {
-            WebDriverWait(driver, Duration.ofSeconds(10)).until {
-                bodyText = driver.findElement(By.tagName("body")).text
-                bodyText.contains("fsynth")
-            }
-        } catch (e: Exception) {
-            println("Body text after wait: '$bodyText'")
-            println("Page source: " + driver.pageSource.take(2000))
-            println("Browser console logs:")
-            driver.manage().logs().get(LogType.BROWSER).forEach { log ->
-                println("  [${log.level}] ${log.message}")
-                consoleLogs.add(log.message)
-            }
-            throw e
+        WebDriverWait(driver, Duration.ofSeconds(10)).until {
+            bodyText = driver.findElement(By.tagName("body")).text
+            bodyText.contains("fsynth")
         }
 
         assertTrue("Page should contain app title", bodyText.contains("fsynth"))

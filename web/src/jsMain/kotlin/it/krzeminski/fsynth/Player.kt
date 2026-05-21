@@ -111,7 +111,7 @@ val Player: FC<PlayerProps> = FC { props ->
             }
             AccordionDetails {
                 PlaybackCustomization {
-                    synthesisParameters = synthesisParameters
+                    this.synthesisParameters = synthesisParameters
                     onSynthesisParametersChange = { synthesisParameters = it }
                 }
             }
