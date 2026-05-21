@@ -83,8 +83,6 @@ tasks.getByName("compileKotlinJs").dependsOn(generateGitInfo)
 tasks.getByName("compileKotlinJvm").dependsOn(generateGitInfo)
 tasks.getByName("compileKotlinMetadata").dependsOn(generateGitInfo)
 
-tasks.withType<Jar>().configureEach {
-    if (name == "metadataSourcesJar") {
-        duplicatesStrategy = DuplicatesStrategy.INCLUDE
-    }
+tasks.named<org.gradle.jvm.tasks.Jar>("metadataSourcesJar") {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }

@@ -1,5 +1,5 @@
 buildscript {
-    val kotlinVersion by extra { "1.4.32" }
+    val kotlinVersion by extra { "1.5.10" }
 
     repositories {
         google()
@@ -20,10 +20,14 @@ allprojects {
         mavenCentral()
     }
 
-    tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>> {
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         kotlinOptions {
             freeCompilerArgs = freeCompilerArgs + "-progressive"
         }
+    }
+
+    tasks.withType<org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinNpmInstallTask> {
+        args.add("--ignore-engines")
     }
 }
 
