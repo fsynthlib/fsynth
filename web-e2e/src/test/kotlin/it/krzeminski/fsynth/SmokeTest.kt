@@ -7,6 +7,7 @@ import java.io.File
 import java.net.InetSocketAddress
 import java.nio.file.Files
 import java.time.Duration
+import java.util.logging.Level
 import org.junit.AfterClass
 import org.junit.Assert.assertTrue
 import org.junit.BeforeClass
@@ -14,6 +15,8 @@ import org.junit.Test
 import org.openqa.selenium.By
 import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.chrome.ChromeOptions
+import org.openqa.selenium.logging.LogType
+import org.openqa.selenium.logging.LoggingPreferences
 import org.openqa.selenium.support.ui.WebDriverWait
 
 class SmokeTest {
@@ -47,7 +50,12 @@ class SmokeTest {
                 addArguments("--headless")
                 addArguments("--no-sandbox")
                 addArguments("--disable-dev-shm-usage")
+                setExperimentalOption("excludeSwitches", listOf("enable-logging"))
             }
+            val logPrefs = LoggingPreferences().apply {
+                enable(LogType.BROWSER, Level.ALL)
+            }
+            options.setCapability("goog:loggingPrefs", logPrefs)
             driver = ChromeDriver(options)
             println("ChromeDriver started")
         }
@@ -70,6 +78,7 @@ class SmokeTest {
         println("Root element text: '$rootText'")
 
         var bodyText = ""
+        val consoleLogs = mutableListOf<String>()
         try {
             WebDriverWait(driver, Duration.ofSeconds(10)).until {
                 bodyText = driver.findElement(By.tagName("body")).text
@@ -78,6 +87,11 @@ class SmokeTest {
         } catch (e: Exception) {
             println("Body text after wait: '$bodyText'")
             println("Page source: " + driver.pageSource.take(2000))
+            println("Browser console logs:")
+            driver.manage().logs().get(LogType.BROWSER).forEach { log ->
+                println("  [${log.level}] ${log.message}")
+                consoleLogs.add(log.message)
+            }
             throw e
         }
 
