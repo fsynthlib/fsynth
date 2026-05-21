@@ -10,9 +10,13 @@ val reactVersion = "19.2.5"
 
 kotlin {
     js {
+        binaries.executable()
         useCommonJs()
         browser {
             webpackTask {
+            }
+            distribution {
+                outputDirectory = file("$projectDir/build/distributions")
             }
         }
     }
@@ -28,8 +32,11 @@ kotlin {
                 implementation(npm("react", reactVersion))
                 implementation(npm("react-dom", reactVersion))
                 implementation(npm("@mui/material", "5.18.0"))
+                implementation(npm("@emotion/react", "11.13.5"))
+                implementation(npm("@emotion/styled", "11.13.5"))
                 implementation(npm("audiobuffer-to-wav", "1.0.0"))
                 implementation(npm("wavesurfer.js", "7.12.7"))
+                implementation(devNpm("html-webpack-plugin", "5.6.3"))
             }
         }
         val jsTest by getting {
@@ -42,13 +49,13 @@ kotlin {
 
 val copyWorkerDistributionFiles = tasks.register<Copy>("copyWorkerDistributionFiles") {
     from("worker/build/distributions")
-    into("$buildDir/distributions")
+    into(layout.buildDirectory.dir("distributions"))
     dependsOn(":web:worker:build")
 }
 
 val copyServiceWorkerDistributionFiles = tasks.register<Copy>("copyServiceWorkerDistributionFiles") {
     from("serviceworker/build/distributions")
-    into("$buildDir/distributions")
+    into(layout.buildDirectory.dir("distributions"))
     dependsOn(":web:serviceworker:build")
 }
 
@@ -56,3 +63,9 @@ tasks.named("assemble") {
     dependsOn(copyWorkerDistributionFiles)
     dependsOn(copyServiceWorkerDistributionFiles)
 }
+
+tasks.named<Sync>("jsBrowserDistribution") {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+
+
