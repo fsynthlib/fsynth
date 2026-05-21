@@ -94,6 +94,21 @@ workflow(
     }
 
     job(
+        id = "web-e2e",
+        runsOn = UbuntuLatest,
+    ) {
+        uses(name = "Check out", action = Checkout())
+        uses(
+            name = "Set up JDK 17",
+            action = SetupJava(
+                javaVersion = "17",
+                distribution = SetupJava.Distribution.Temurin,
+            ),
+        )
+        run(name = "E2E smoke test", command = "./gradlew :web-e2e:test")
+    }
+
+    job(
         id = "web",
         runsOn = UbuntuLatest,
         permissions = mapOf(Permission.Contents to Mode.Write),
