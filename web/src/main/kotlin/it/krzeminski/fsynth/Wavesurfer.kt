@@ -1,6 +1,8 @@
 package it.krzeminski.fsynth
 
 import it.krzeminski.fsynth.typings.WaveSurfer
+import kotlinx.html.id
+import kotlinx.html.style
 import kotlinext.js.js
 import org.w3c.files.Blob
 import react.RBuilder
