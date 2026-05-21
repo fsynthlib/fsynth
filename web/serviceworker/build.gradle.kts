@@ -1,13 +1,11 @@
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackOutput.Target
 
 plugins {
-    kotlin("js")
+    kotlin("multiplatform")
 }
 
-val kotlinVersion: String by rootProject.extra
-
 kotlin {
-    target {
+    js {
         browser {
             webpackTask {
                 output.libraryTarget = Target.SELF
@@ -16,10 +14,8 @@ kotlin {
     }
 
     sourceSets {
-        val main by getting {
-            kotlin.srcDirs("src/jsMain/kotlin")
+        val jsMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlin:kotlin-stdlib-js:$kotlinVersion")
             }
         }
     }

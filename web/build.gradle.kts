@@ -1,67 +1,58 @@
-import com.android.build.gradle.internal.tasks.factory.dependsOn
-
 plugins {
-    kotlin("js")
+    kotlin("multiplatform")
 }
 
 repositories {
     mavenCentral()
 }
 
-// The below versions cannot be freely changed independently. Only certain combinations are valid and map to the actual
-// existing versions in the repositories.
-val kotlinVersion: String by rootProject.extra
-val reactVersion = "17.0.2"
-val jsWrappersVersion = "pre.206"
+val reactVersion = "19.2.5"
 
 kotlin {
-    target {
+    js {
         useCommonJs()
         browser {
             webpackTask {
-                runTask {
-                }
             }
         }
     }
 
     sourceSets {
-        val main by getting {
-            kotlin.srcDirs("src/jsMain/kotlin")
-            resources.srcDirs("src/jsMain/resources")
+        val jsMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlin:kotlin-stdlib-js:$kotlinVersion")
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-react:$reactVersion-$jsWrappersVersion-kotlin-$kotlinVersion")
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom:$reactVersion-$jsWrappersVersion-kotlin-$kotlinVersion")
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-styled:5.3.0-$jsWrappersVersion-kotlin-$kotlinVersion")
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-css-js:1.0.0-$jsWrappersVersion-kotlin-$kotlinVersion")
-                implementation("com.ccfraser.muirwik:muirwik-components:0.7.0")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-react:2026.4.14-19.2.5")
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom:2026.4.14-19.2.5")
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-mui-material:2026.5.1-5.18.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0")
                 implementation(project(":core"))
                 implementation(npm("react", reactVersion))
                 implementation(npm("react-dom", reactVersion))
-                implementation(npm("@material-ui/core", "4.11.0"))
+                implementation(npm("@mui/material", "5.18.0"))
                 implementation(npm("audiobuffer-to-wav", "1.0.0"))
-                implementation(npm("wavesurfer.js", "3.3.3"))
+                implementation(npm("wavesurfer.js", "7.12.7"))
             }
         }
-        val test by getting {
+        val jsTest by getting {
             dependencies {
-                implementation("org.jetbrains.kotlin:kotlin-test-js")
+                implementation(kotlin("test-js"))
             }
         }
     }
 }
 
-val copyWorkerDistributionFiles = tasks.register("copyWorkerDistributionFiles", Copy::class) {
+val copyWorkerDistributionFiles = tasks.register<Copy>("copyWorkerDistributionFiles") {
     from("worker/build/distributions")
     into("$buildDir/distributions")
-}.dependsOn(":web:worker:build")
+    dependsOn(":web:worker:build")
+}
 
-val copyServiceWorkerDistributionFiles = tasks.register("copyServiceWorkerDistributionFiles", Copy::class) {
+val copyServiceWorkerDistributionFiles = tasks.register<Copy>("copyServiceWorkerDistributionFiles") {
     from("serviceworker/build/distributions")
     into("$buildDir/distributions")
-}.dependsOn(":web:serviceworker:build")
+    dependsOn(":web:serviceworker:build")
+}
 
-tasks.named("assemble").dependsOn(copyWorkerDistributionFiles)
-tasks.named("assemble").dependsOn(copyServiceWorkerDistributionFiles)
+tasks.named("assemble") {
+    dependsOn(copyWorkerDistributionFiles)
+    dependsOn(copyServiceWorkerDistributionFiles)
+}
