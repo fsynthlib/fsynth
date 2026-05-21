@@ -12,7 +12,7 @@ repositories {
 // existing versions in the repositories.
 val kotlinVersion: String by rootProject.extra
 val reactVersion = "17.0.2"
-val jsWrappersVersion = "pre.204"
+val jsWrappersVersion = "pre.206"
 
 kotlin {
     target {
