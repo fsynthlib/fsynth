@@ -1,8 +1,11 @@
 package it.krzeminski.fsynth
 
 import it.krzeminski.fsynth.typings.WaveSurfer
+import kotlinx.css.height
+import kotlinx.css.margin
+import kotlinx.css.px
+import kotlinx.css.width
 import kotlinx.html.id
-import kotlinx.html.style
 import kotlinext.js.js
 import org.w3c.files.Blob
 import react.RBuilder
@@ -10,7 +13,8 @@ import react.RComponent
 import react.RHandler
 import react.RProps
 import react.RState
-import react.dom.div
+import styled.css
+import styled.styledDiv
 
 class Wavesurfer(props: WavesurferProps) : RComponent<WavesurferProps, RState>(props) {
     lateinit var waveSurfer: WaveSurfer
@@ -43,11 +47,13 @@ class Wavesurfer(props: WavesurferProps) : RComponent<WavesurferProps, RState>(p
     }
 
     override fun RBuilder.render() {
-        div {
-            div {
-                attrs.id = "waveform"
-                attrs.style = "width: 380px; margin: 0 10px; height: 80px"
+        styledDiv {
+            css {
+                width = 380.px
+                margin(horizontal = 0.px, vertical = 10.px)
+                height = 80.px
             }
+            attrs.id = "waveform"
         }
     }
 
