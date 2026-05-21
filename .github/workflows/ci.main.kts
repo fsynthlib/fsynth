@@ -99,9 +99,9 @@ workflow(
     ) {
         uses(name = "Check out", action = Checkout())
         uses(
-            name = "Set up JDK 8",
+            name = "Set up JDK 17",
             action = SetupJava(
-                javaVersion = "8",
+                javaVersion = "17",
                 distribution = SetupJava.Distribution.Temurin,
             ),
         )
