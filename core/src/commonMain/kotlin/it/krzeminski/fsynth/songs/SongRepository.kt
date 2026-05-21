@@ -11,5 +11,6 @@ val allSongs by lazy {
     listOf(
             simpleDemoSong,
             vanHalenJumpIntro,
-            pinkPantherThemeIntro)
+            pinkPantherThemeIntro,
+            everyBreathYouTake)
 }
