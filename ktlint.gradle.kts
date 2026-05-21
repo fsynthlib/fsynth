@@ -1,5 +1,5 @@
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 val ktlint by configurations.creating

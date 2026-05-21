@@ -2,7 +2,7 @@ import org.ajoberstar.grgit.Grgit
 
 plugins {
     kotlin("multiplatform")
-    id("org.ajoberstar.grgit") version "4.1.0"
+    id("org.ajoberstar.grgit") version "4.1.1"
 }
 
 kotlin {
@@ -82,3 +82,7 @@ val generateGitInfo = tasks.register("generateGitInfo") {
 tasks.getByName("compileKotlinJs").dependsOn(generateGitInfo)
 tasks.getByName("compileKotlinJvm").dependsOn(generateGitInfo)
 tasks.getByName("compileKotlinMetadata").dependsOn(generateGitInfo)
+
+tasks.named<org.gradle.jvm.tasks.Jar>("metadataSourcesJar") {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}

@@ -1,5 +1,5 @@
 buildscript {
-    val kotlinVersion by extra { "1.4.30" }
+    val kotlinVersion by extra { "1.5.10" }
 
     repositories {
         google()
@@ -11,7 +11,7 @@ buildscript {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
         // As a workaround, the root project knows about the Android project.
         // Otherwise, there are some issues with building the Android project.
-        classpath("com.android.tools.build:gradle:3.5.0")
+        classpath("com.android.tools.build:gradle:4.2.0")
     }
 }
 
@@ -20,10 +20,14 @@ allprojects {
         mavenCentral()
     }
 
-    tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>> {
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         kotlinOptions {
             freeCompilerArgs = freeCompilerArgs + "-progressive"
         }
+    }
+
+    tasks.withType<org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinNpmInstallTask> {
+        args.add("--ignore-engines")
     }
 }
 

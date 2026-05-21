@@ -76,9 +76,7 @@ class Player(props: PlayerProps) : RComponent<PlayerProps, PlayerState>(props), 
             }
             state.lastSynthesizedAsWaveBlob?.let { lastSongInBase64 ->
                 wavesurfer {
-                    attrs {
-                        waveData = lastSongInBase64
-                    }
+                    attrs.waveData = lastSongInBase64
                 }
             }
             mDivider()
@@ -128,11 +126,9 @@ class Player(props: PlayerProps) : RComponent<PlayerProps, PlayerState>(props), 
                 mAccordionDetails {
                     div {
                         playbackCustomization {
-                            attrs {
-                                synthesisParameters = state.synthesisParameters
-                                onSynthesisParametersChange = { newValue ->
-                                    setState { synthesisParameters = newValue }
-                                }
+                            attrs.synthesisParameters = state.synthesisParameters
+                            attrs.onSynthesisParametersChange = { newValue ->
+                                setState { synthesisParameters = newValue }
                             }
                         }
                     }

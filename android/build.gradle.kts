@@ -28,7 +28,7 @@ android {
 
 repositories {
     google()
-    jcenter()
+    mavenCentral()
 }
 
 val kotlinVersion: String by rootProject.extra
