@@ -7,6 +7,7 @@ import it.krzeminski.fsynth.types.SynthesisParameters
 import it.krzeminski.fsynth.typings.toWav
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import kotlin.coroutines.EmptyCoroutineContext
 import mui.material.Accordion
 import mui.material.AccordionDetails
 import mui.material.AccordionSummary
@@ -30,12 +31,9 @@ import react.FC
 import react.Fragment
 import react.Props
 import react.create
-import react.useEffectOnce
-import react.useRef
 import react.useState
 
 val Player: FC<PlayerProps> = FC { props ->
-    val scopeRef = useRef<CoroutineScope>(null)
     var lastSynthesizedAsWaveBlob by useState<Blob?>(null)
     var currentlySynthesizedSong by useState<Song?>(null)
     var currentSynthesisProgress by useState(0)
@@ -44,10 +42,6 @@ val Player: FC<PlayerProps> = FC { props ->
             tempoOffset = 0,
             synthesisSamplesPerSecondMultiplier = 1.0f,
             playbackSamplesPerSecondMultiplier = 1.0f))
-
-    useEffectOnce {
-        scopeRef.current = this
-    }
 
     Paper {
         sx = js("({ maxWidth: 400, margin: '0 auto' })").unsafeCast<SxProps<Theme>>()
@@ -84,7 +78,7 @@ val Player: FC<PlayerProps> = FC { props ->
                             IconButton {
                                 disabled = currentlySynthesizedSong != null
                                 onClick = {
-                                    scopeRef.current?.launch {
+                                    CoroutineScope(EmptyCoroutineContext).launch {
                                         currentlySynthesizedSong = song
                                         currentSynthesisProgress = 0
                                         val renderedSong = song.renderToAudioBuffer(synthesisParameters,
