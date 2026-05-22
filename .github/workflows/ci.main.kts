@@ -5,10 +5,13 @@
 @file:Repository("https://bindings.krzeminski.it")
 @file:DependsOn("actions:checkout:v4")
 @file:DependsOn("actions:setup-java:v4")
+@file:DependsOn("android-actions:setup-android:v3")
+@file:DependsOn("codecov:codecov-action:v4")
 
-import io.github.typesafegithub.workflows.domain.actions.CustomAction
 import io.github.typesafegithub.workflows.actions.actions.Checkout
 import io.github.typesafegithub.workflows.actions.actions.SetupJava
+import io.github.typesafegithub.workflows.actions.androidactions.SetupAndroid_Untyped
+import io.github.typesafegithub.workflows.actions.codecov.CodecovAction
 import io.github.typesafegithub.workflows.domain.Mode
 import io.github.typesafegithub.workflows.domain.Permission
 import io.github.typesafegithub.workflows.domain.RunnerType.UbuntuLatest
@@ -54,11 +57,7 @@ workflow(
         )
         uses(
             name = "Set up Android SDK",
-            action = CustomAction(
-                actionOwner = "android-actions",
-                actionName = "setup-android",
-                actionVersion = "v3",
-            ),
+            action = SetupAndroid_Untyped(),
         )
         uses(
             name = "Set up JDK 8",
@@ -85,11 +84,7 @@ workflow(
         run(name = "Build CLI", command = "./gradlew :cli:build")
         uses(
             name = "Upload coverage to Codecov",
-            action = CustomAction(
-                actionOwner = "codecov",
-                actionName = "codecov-action",
-                actionVersion = "v4",
-            ),
+            action = CodecovAction(),
         )
     }
 
