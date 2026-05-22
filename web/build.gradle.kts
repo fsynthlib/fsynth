@@ -51,21 +51,23 @@ val copyWorkerDistributionFiles = tasks.register<Copy>("copyWorkerDistributionFi
     from(File(project(":web:worker").buildDir, "distributions"))
     into(File(project.buildDir, "distributions"))
     dependsOn(":web:worker:build")
+    mustRunAfter("jsBrowserDistribution")
 }
 
 val copyServiceWorkerDistributionFiles = tasks.register<Copy>("copyServiceWorkerDistributionFiles") {
     from(File(project(":web:serviceworker").buildDir, "distributions"))
     into(File(project.buildDir, "distributions"))
     dependsOn(":web:serviceworker:build")
-}
-
-tasks.named("jsBrowserDistribution") {
-    dependsOn(copyWorkerDistributionFiles)
-    dependsOn(copyServiceWorkerDistributionFiles)
+    mustRunAfter("jsBrowserDistribution")
 }
 
 tasks.named<Sync>("jsBrowserDistribution") {
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+
+tasks.named("assemble") {
+    dependsOn(copyWorkerDistributionFiles)
+    dependsOn(copyServiceWorkerDistributionFiles)
 }
 
 
