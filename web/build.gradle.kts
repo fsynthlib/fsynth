@@ -27,6 +27,8 @@ kotlin {
 
     sourceSets {
         val main by getting {
+            kotlin.srcDirs("src/jsMain/kotlin")
+            resources.srcDirs("src/jsMain/resources")
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:$kotlinVersion")
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-react:$reactVersion-$jsWrappersVersion-kotlin-$kotlinVersion")

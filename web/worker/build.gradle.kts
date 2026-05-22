@@ -17,6 +17,7 @@ kotlin {
 
     sourceSets {
         val main by getting {
+            kotlin.srcDirs("src/jsMain/kotlin")
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:$kotlinVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.4.3-native-mt")
