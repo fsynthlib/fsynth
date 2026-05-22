@@ -1,26 +1,26 @@
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackOutput.Target
 
 plugins {
-    kotlin("js")
+    kotlin("multiplatform")
 }
 
-val kotlinVersion: String by rootProject.extra
-
 kotlin {
-    target {
+    js {
+        binaries.executable()
         browser {
             webpackTask {
                 output.libraryTarget = Target.SELF
+            }
+            distribution {
+                outputDirectory = file("$projectDir/build/distributions")
             }
         }
     }
 
     sourceSets {
-        val main by getting {
-            kotlin.srcDirs("src/jsMain/kotlin")
+        val jsMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlin:kotlin-stdlib-js:$kotlinVersion")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.4.3-native-mt")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0")
                 implementation(project(":core"))
             }
         }
