@@ -24,7 +24,9 @@ allprojects {
         }
     }
 
-
+    tasks.withType<org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinNpmInstallTask> {
+        args.add("--ignore-engines")
+    }
 }
 
 subprojects {

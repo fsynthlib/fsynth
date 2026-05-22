@@ -15,7 +15,6 @@ val Wavesurfer: FC<WavesurferProps> = FC { props ->
 
     useEffect {
         val ws = WaveSurfer(js("({ container: '#waveform', height: 80, cursorWidth: 1, progressColor: '#3F51B5', waveColor: '#EFEFEF' })").unsafeCast<WaveSurferOptions>())
-        ws.init()
         ws.loadBlob(props.waveData)
         ws.on("ready") {
             ws.play()
