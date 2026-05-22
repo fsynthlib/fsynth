@@ -11,6 +11,7 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.seleniumhq.selenium:selenium-java:4.15.0")
     testImplementation("io.github.bonigarcia:webdrivermanager:5.6.2")
+    testImplementation("ru.yandex.qatools.ashot:ashot:1.5.4")
 }
 
 tasks.test {
