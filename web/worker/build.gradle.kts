@@ -6,9 +6,13 @@ plugins {
 
 kotlin {
     js {
+        binaries.executable()
         browser {
             webpackTask {
                 output.libraryTarget = Target.SELF
+            }
+            distribution {
+                outputDirectory = file("$projectDir/build/distributions")
             }
         }
     }

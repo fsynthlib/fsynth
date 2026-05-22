@@ -48,14 +48,14 @@ kotlin {
 }
 
 val copyWorkerDistributionFiles = tasks.register<Copy>("copyWorkerDistributionFiles") {
-    from(project(":web:worker").layout.buildDirectory.dir("distributions"))
-    into(layout.buildDirectory.dir("distributions"))
+    from(File(project(":web:worker").buildDir, "distributions"))
+    into(File(project.buildDir, "distributions"))
     dependsOn(":web:worker:build")
 }
 
 val copyServiceWorkerDistributionFiles = tasks.register<Copy>("copyServiceWorkerDistributionFiles") {
-    from(project(":web:serviceworker").layout.buildDirectory.dir("distributions"))
-    into(layout.buildDirectory.dir("distributions"))
+    from(File(project(":web:serviceworker").buildDir, "distributions"))
+    into(File(project.buildDir, "distributions"))
     dependsOn(":web:serviceworker:build")
 }
 
