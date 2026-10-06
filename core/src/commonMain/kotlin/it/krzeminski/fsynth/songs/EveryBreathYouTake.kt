@@ -9,7 +9,7 @@ import it.krzeminski.fsynth.types.by
 import it.krzeminski.fsynth.types.song
 
 val everyBreathYouTake = song(
-        name = "The Police - Every Breath You Take",
+        name = "The Police - Every Breath You Take (OpenCode, Big Pickle)",
         beatsPerMinute = 116) {
     track(name = "Guitar", instrument = synthesizer, volume = 0.12f) {
         fun arpeggio(root: MusicNote, third: MusicNote, fifth: MusicNote, octave: MusicNote) {

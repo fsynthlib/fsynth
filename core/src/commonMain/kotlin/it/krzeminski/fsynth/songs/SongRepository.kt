@@ -12,5 +12,6 @@ val allSongs by lazy {
             simpleDemoSong,
             vanHalenJumpIntro,
             pinkPantherThemeIntro,
-            everyBreathYouTake)
+            everyBreathYouTake,
+            everyBreathYouTakeByClaude)
 }
