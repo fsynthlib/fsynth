@@ -2,8 +2,10 @@ import org.ajoberstar.grgit.Grgit
 
 plugins {
     kotlin("multiplatform")
-    id("org.ajoberstar.grgit") version "4.1.1"
+    id("org.ajoberstar.grgit") version "5.3.2"
 }
+
+val generatedDir = layout.buildDirectory.dir("generated-src").get().asFile
 
 kotlin {
     jvm {
@@ -16,7 +18,7 @@ kotlin {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common")
             }
-            kotlin.srcDirs(kotlin.srcDirs, "$buildDir/generated/")
+            kotlin.srcDirs(kotlin.srcDirs, "$generatedDir/")
         }
         val commonTest by getting {
             dependencies {
@@ -51,7 +53,7 @@ kotlin {
 
 val generateGitInfo = tasks.register("generateGitInfo") {
     val grgit = Grgit.open(mapOf("currentDir" to project.rootDir))
-    val fileDirectory = "$buildDir/generated/it/krzeminski/fsynth/generated"
+    val fileDirectory = "$generatedDir/it/krzeminski/fsynth/generated"
     val fileName = "GitInfo.kt"
 
     val sha1 = grgit.head().id
@@ -76,12 +78,11 @@ val generateGitInfo = tasks.register("generateGitInfo") {
     }
 }
 
-// There's no easy way to express that 'generateGitInfo' task needs to be executed before any code is compiled.
-// That's why a dependency on this task is added to all known tasks that deal with compiling code, so that this file
-// already exists when code for any platform is about to be compiled.
-tasks.getByName("compileKotlinJs").dependsOn(generateGitInfo)
-tasks.getByName("compileKotlinJvm").dependsOn(generateGitInfo)
-tasks.getByName("compileKotlinMetadata").dependsOn(generateGitInfo)
+tasks.configureEach {
+    if (name.startsWith("compileKotlin")) {
+        dependsOn(generateGitInfo)
+    }
+}
 
 tasks.named<org.gradle.jvm.tasks.Jar>("metadataSourcesJar") {
     duplicatesStrategy = DuplicatesStrategy.INCLUDE

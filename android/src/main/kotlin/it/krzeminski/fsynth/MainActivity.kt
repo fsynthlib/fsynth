@@ -4,13 +4,12 @@ import android.media.AudioFormat
 import android.media.AudioManager
 import android.media.AudioTrack
 import android.media.AudioTrack.WRITE_BLOCKING
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.core.view.plusAssign
 import com.google.android.material.button.MaterialButton
 import it.krzeminski.fsynth.songs.allSongs
 import it.krzeminski.fsynth.types.Song
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,13 +17,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val buttons = findViewById<LinearLayout>(R.id.buttons)
+
         allSongs.forEach { song ->
-            buttons += MaterialButton(this, null, R.attr.materialButtonOutlinedStyle).apply {
+            buttons.addView(MaterialButton(this, null, com.google.android.material.R.attr.materialButtonOutlinedStyle).apply {
                 text = song.name
                 setOnClickListener {
                     song.playOnAndroid(sampleRate = 44100)
                 }
-            }
+            })
         }
     }
 }

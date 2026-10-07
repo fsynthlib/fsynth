@@ -1,170 +1,127 @@
 package it.krzeminski.fsynth
 
-import com.ccfraser.muirwik.components.MAppBarPosition
-import com.ccfraser.muirwik.components.MCircularProgressVariant
-import com.ccfraser.muirwik.components.MIconColor
-import com.ccfraser.muirwik.components.MTypographyColor
-import com.ccfraser.muirwik.components.MTypographyVariant
-import com.ccfraser.muirwik.components.accordion.mAccordion
-import com.ccfraser.muirwik.components.accordion.mAccordionDetails
-import com.ccfraser.muirwik.components.accordion.mAccordionSummary
-import com.ccfraser.muirwik.components.button.mIconButton
-import com.ccfraser.muirwik.components.list.mList
-import com.ccfraser.muirwik.components.list.mListItem
-import com.ccfraser.muirwik.components.list.mListItemSecondaryAction
-import com.ccfraser.muirwik.components.list.mListItemText
-import com.ccfraser.muirwik.components.mAppBar
-import com.ccfraser.muirwik.components.mCircularProgress
-import com.ccfraser.muirwik.components.mDivider
-import com.ccfraser.muirwik.components.mIcon
-import com.ccfraser.muirwik.components.mPaper
-import com.ccfraser.muirwik.components.mToolbar
-import com.ccfraser.muirwik.components.mTypography
 import it.krzeminski.fsynth.generated.gitInfo
 import it.krzeminski.fsynth.synthesis.durationInSeconds
 import it.krzeminski.fsynth.types.Song
 import it.krzeminski.fsynth.types.SynthesisParameters
 import it.krzeminski.fsynth.typings.toWav
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import kotlinx.css.LinearDimension
-import kotlinx.css.margin
-import kotlinx.css.maxWidth
-import kotlinx.css.pc
-import kotlinx.css.px
-import kotlinx.css.width
+import kotlin.coroutines.EmptyCoroutineContext
+import mui.material.Accordion
+import mui.material.AccordionDetails
+import mui.material.AccordionSummary
+import mui.material.AppBar
+import mui.material.AppBarPosition
+import mui.material.CircularProgress
+import mui.material.Divider
+import mui.material.Icon
+import mui.material.IconButton
+import mui.material.List as MuiList
+import mui.material.ListItem
+import mui.material.ListItemSecondaryAction
+import mui.material.ListItemText
+import mui.material.Paper
+import mui.material.Toolbar
+import mui.material.Typography
+import mui.system.SxProps
+import mui.system.Theme
 import org.w3c.files.Blob
-import react.RBuilder
-import react.RComponent
-import react.RHandler
-import react.RProps
-import react.RState
-import react.buildElement
-import react.dom.div
-import react.setState
-import styled.StyleSheet
-import styled.css
+import react.FC
+import react.Fragment
+import react.Props
+import react.create
+import react.useState
 
-class Player(props: PlayerProps) : RComponent<PlayerProps, PlayerState>(props), CoroutineScope by MainScope() {
-    override fun PlayerState.init(props: PlayerProps) {
-        lastSynthesizedAsWaveBlob = null
-        currentlySynthesizedSong = null
-        currentSynthesisProgress = 0
-        synthesisParameters = SynthesisParameters(
-                downcastToBitsPerSample = null,
-                tempoOffset = 0,
-                synthesisSamplesPerSecondMultiplier = 1.0f,
-                playbackSamplesPerSecondMultiplier = 1.0f)
-    }
+val Player: FC<PlayerProps> = FC { props ->
+    var lastSynthesizedAsWaveBlob by useState<Blob?>(null)
+    var currentlySynthesizedSong by useState<Song?>(null)
+    var currentSynthesisProgress by useState(0)
+    var synthesisParameters by useState(SynthesisParameters(
+            downcastToBitsPerSample = null,
+            tempoOffset = 0,
+            synthesisSamplesPerSecondMultiplier = 1.0f,
+            playbackSamplesPerSecondMultiplier = 1.0f))
 
-    private object Styles : StyleSheet("Player", isStatic = true) {
-        val backgroundPaper by css {
-            width = 100.pc
-            maxWidth = 400.px
-            margin(vertical = 0.px, horizontal = LinearDimension.auto)
+    Paper {
+        sx = js("({ maxWidth: 400, margin: '0 auto' })").unsafeCast<SxProps<Theme>>()
+        elevation = 6
+        AppBar {
+            position = AppBarPosition.static
+            Toolbar {
+                Typography {
+                    variant = "h5".unsafeCast<Nothing>()
+                    +"fsynth"
+                }
+            }
         }
-    }
-
-    override fun RBuilder.render() {
-        mPaper(elevation = 6) {
-            css(Styles.backgroundPaper)
-            mAppBar(position = MAppBarPosition.static) {
-                mToolbar {
-                    mTypography("fsynth", variant = MTypographyVariant.h5, color = MTypographyColor.inherit)
-                }
+        lastSynthesizedAsWaveBlob?.let { blob ->
+            Wavesurfer {
+                waveData = blob
             }
-            state.lastSynthesizedAsWaveBlob?.let { lastSongInBase64 ->
-                wavesurfer {
-                    attrs.waveData = lastSongInBase64
-                }
-            }
-            mDivider()
-            props.songs.forEach { song ->
-                mList {
-                    mListItem {
-                        mListItemText(primary = song.name, secondary = song.getHumanFriendlyDuration())
-                        mListItemSecondaryAction {
-                            if (state.currentlySynthesizedSong == song) {
-                                mCircularProgress(
-                                        value = state.currentSynthesisProgress.toDouble(),
-                                        variant = MCircularProgressVariant.static)
-                            } else {
-                                mIconButton(
-                                        "play_arrow",
-                                        disabled = state.currentlySynthesizedSong != null,
-                                        iconColor = if (state.currentlySynthesizedSong == null) null else MIconColor.disabled,
-                                        onClick = {
-                                    launch {
-                                        setState {
-                                            currentlySynthesizedSong = song
-                                            currentSynthesisProgress = 0
-                                        }
-                                        val renderedSong = song.renderToAudioBuffer(state.synthesisParameters,
-                                                progressHandler = {
-                                                    setState {
-                                                        currentSynthesisProgress = it
-                                                    }
-                                                })
+        }
+        Divider {}
+        props.songs.forEach { song ->
+            MuiList {
+                ListItem {
+                    ListItemText {
+                        primary = Fragment.create { +song.name }
+                        secondary = Fragment.create { +getHumanFriendlyDuration(song) }
+                    }
+                    ListItemSecondaryAction {
+                        if (currentlySynthesizedSong == song) {
+                            CircularProgress {
+                                variant = "determinate".unsafeCast<Nothing>()
+                                value = currentSynthesisProgress
+                            }
+                        } else {
+                            IconButton {
+                                disabled = currentlySynthesizedSong != null
+                                onClick = {
+                                    CoroutineScope(EmptyCoroutineContext).launch {
+                                        currentlySynthesizedSong = song
+                                        currentSynthesisProgress = 0
+                                        val renderedSong = song.renderToAudioBuffer(synthesisParameters,
+                                                progressHandler = { currentSynthesisProgress = it })
                                         val songAsWavBlob = Blob(arrayOf(toWav(renderedSong)))
-                                        setState {
-                                            lastSynthesizedAsWaveBlob = songAsWavBlob
-                                            currentlySynthesizedSong = null
-                                        }
+                                        lastSynthesizedAsWaveBlob = songAsWavBlob
+                                        currentlySynthesizedSong = null
                                     }
-                                })
-                            }
-                        }
-                    }
-                }
-            }
-            mDivider()
-            mAccordion {
-                mAccordionSummary(expandIcon = buildElement { mIcon("expand_more") }) {
-                    +"Playback customization"
-                }
-                mAccordionDetails {
-                    div {
-                        playbackCustomization {
-                            attrs.synthesisParameters = state.synthesisParameters
-                            attrs.onSynthesisParametersChange = { newValue ->
-                                setState { synthesisParameters = newValue }
+                                }
+                                Icon {
+                                    +"play_arrow"
+                                }
                             }
                         }
                     }
                 }
             }
         }
-        versionInfo {
-            attrs.gitInfo = gitInfo
+        Divider {}
+        Accordion {
+            AccordionSummary {
+                expandIcon = Fragment.create { Icon { +"expand_more" } }
+                +"Playback customization"
+            }
+            AccordionDetails {
+                PlaybackCustomization {
+                    this.synthesisParameters = synthesisParameters
+                    onSynthesisParametersChange = { synthesisParameters = it }
+                }
+            }
         }
+    }
+    VersionInfo {
+        gitInfo = gitInfo
     }
 }
 
-fun RBuilder.player(handler: RHandler<PlayerProps>) = child(Player::class) {
-    handler()
-}
-
-external interface PlayerProps : RProps {
+external interface PlayerProps : Props {
     var songs: List<Song>
 }
 
-external interface PlayerState : RState {
-    /**
-     * Null if no song has been synthesized yet.
-     */
-    var lastSynthesizedAsWaveBlob: Blob?
-
-    /**
-     * Null if no song is currently being synthesized.
-     */
-    var currentlySynthesizedSong: Song?
-    var currentSynthesisProgress: Int
-    var synthesisParameters: SynthesisParameters
-}
-
-private fun Song.getHumanFriendlyDuration(): String =
-        with(durationInSeconds.toInt()) {
+private fun getHumanFriendlyDuration(song: Song): String =
+        with(song.durationInSeconds.toInt()) {
             val seconds = this.rem(60)
             val minutes = this / 60
             return "$minutes:${seconds.toString().padStart(2, '0')}"

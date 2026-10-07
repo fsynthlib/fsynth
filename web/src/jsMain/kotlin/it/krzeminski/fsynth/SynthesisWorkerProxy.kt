@@ -5,7 +5,6 @@ import it.krzeminski.fsynth.types.SynthesisParameters
 import it.krzeminski.fsynth.typings.AudioBuffer
 import it.krzeminski.fsynth.typings.AudioContext
 import it.krzeminski.fsynth.worker.SynthesisRequest
-import it.krzeminski.fsynth.worker.SynthesisResponse
 import it.krzeminski.fsynth.worker.SynthesisWorker
 import kotlinx.browser.window
 import org.khronos.webgl.Float32Array
@@ -40,12 +39,20 @@ private object SynthesisWorkerProxy : SynthesisWorker {
         progressHandler: (Int) -> Unit
     ): Array<Float> = suspendCoroutine { continuation ->
         with(workerJs) {
-            postMessage(synthesisRequest)
+            val req = js("({})")
+            req.songName = synthesisRequest.songName
+            val params = js("({})")
+            params.downcastToBitsPerSample = synthesisRequest.synthesisParameters.downcastToBitsPerSample
+            params.tempoOffset = synthesisRequest.synthesisParameters.tempoOffset
+            params.synthesisSamplesPerSecondMultiplier = synthesisRequest.synthesisParameters.synthesisSamplesPerSecondMultiplier
+            params.playbackSamplesPerSecondMultiplier = synthesisRequest.synthesisParameters.playbackSamplesPerSecondMultiplier
+            req.synthesisParameters = params
+            postMessage(req)
             onmessage = { event ->
-                val response = event.data.unsafeCast<SynthesisResponse>()
+                val response = event.data.unsafeCast<dynamic>()
                 when (response.type) {
-                    "progress" -> progressHandler(response.progress!!)
-                    "result" -> continuation.resume(response.songData!!)
+                    "progress" -> progressHandler(response.progress as Int)
+                    "result" -> continuation.resume(response.songData.unsafeCast<Array<Float>>())
                     else -> throw IllegalArgumentException("${response.type} not handled!")
                 }
             }

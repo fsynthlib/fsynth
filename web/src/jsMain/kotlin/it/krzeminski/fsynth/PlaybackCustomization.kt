@@ -1,155 +1,95 @@
 package it.krzeminski.fsynth
 
-import com.ccfraser.muirwik.components.MSliderMark
-import com.ccfraser.muirwik.components.MSliderValueLabelDisplay
-import com.ccfraser.muirwik.components.mSlider
-import com.ccfraser.muirwik.components.mTypography
 import it.krzeminski.fsynth.types.SynthesisParameters
-import react.RBuilder
-import react.RComponent
-import react.RHandler
-import react.RProps
-import react.RState
+import mui.material.Slider
+import mui.material.Typography
+import mui.system.SxProps
+import mui.system.Theme
+import react.FC
+import react.Props
 import kotlin.math.log
 import kotlin.math.pow
-import styled.StyleSheet
-import kotlinx.css.margin
-import kotlinx.css.marginLeft
-import kotlinx.css.px
-import styled.css
 
-class PlaybackCustomization(props: PlaybackCustomizationProps) : RComponent<PlaybackCustomizationProps, RState>(props) {
-    override fun RBuilder.render() {
-        bitsPerSampleDowncasting()
-        tempoChange()
-        synthesisSamplesPerSecondMultiplier()
-        playbackSamplesPerSecondMultiplier()
+val PlaybackCustomization: FC<PlaybackCustomizationProps> = FC { props ->
+    Typography {
+        sx = js("({ marginLeft: '10px' })").unsafeCast<SxProps<Theme>>()
+        +"Bits per sample (downcasting)"
+    }
+    Slider {
+        min = 1.0
+        max = 32.0
+        value = (props.synthesisParameters.downcastToBitsPerSample ?: 32).toDouble()
+        marks = js("""([{ value: 1, label: '1 bit' }, { value: 8, label: '8 bits' }, { value: 16, label: '16 bits' }, { value: 24, label: '24 bits' }, { value: 32, label: 'original' }])""")
+        valueLabelDisplay = "auto"
+        onChange = { _, values, _ ->
+            val v = values[0].toInt()
+            props.onSynthesisParametersChange(props.synthesisParameters.copy(
+                    downcastToBitsPerSample = if (v != 32) v else null))
+        }
+        sx = js("({ marginLeft: '35px' })").unsafeCast<SxProps<Theme>>()
     }
 
-    private object Styles : StyleSheet("PlaybackCustomization", isStatic = true) {
-        val sectionHeader by css {
-            margin(10.px)
+    Typography {
+        sx = js("({ marginLeft: '10px' })").unsafeCast<SxProps<Theme>>()
+        +"Tempo change (beats-per-second offset)"
+    }
+    Slider {
+        min = -100.0
+        max = 100.0
+        value = props.synthesisParameters.tempoOffset.toDouble()
+        marks = js("""([{ value: -100, label: '-100' }, { value: -50, label: '-50' }, { value: 0, label: 'original' }, { value: 50, label: '+50' }, { value: 100, label: '+100' }])""")
+        valueLabelDisplay = "auto"
+        onChange = { _, values, _ ->
+            props.onSynthesisParametersChange(props.synthesisParameters.copy(
+                    tempoOffset = values[0].toInt()))
         }
-        val slider by css {
-            marginLeft = 35.px
-        }
+        sx = js("({ marginLeft: '35px' })").unsafeCast<SxProps<Theme>>()
     }
 
-    private fun RBuilder.bitsPerSampleDowncasting() {
-        mTypography("Bits per sample (downcasting)") {
-            css(Styles.sectionHeader)
+    Typography {
+        sx = js("({ marginLeft: '10px' })").unsafeCast<SxProps<Theme>>()
+        +"Synthesis samples-per-second multiplier"
+    }
+    Slider {
+        min = -2.0
+        max = 2.0
+        value = fromMultiplierToLogarithmicSliderValue(props.synthesisParameters.synthesisSamplesPerSecondMultiplier).toDouble()
+        marks = js("""([{ value: -2, label: '0.25x' }, { value: -1, label: '0.5x' }, { value: 0, label: 'original' }, { value: 1, label: '2x' }, { value: 2, label: '4x' }])""")
+        valueLabelDisplay = "auto"
+        onChange = { _, values, _ ->
+            props.onSynthesisParametersChange(props.synthesisParameters.copy(
+                    synthesisSamplesPerSecondMultiplier =
+                    fromLogarithmicSliderValueToMultiplier(values[0].toInt())))
         }
-        mSlider(
-                min = 1,
-                max = 32,
-                value = props.synthesisParameters.downcastToBitsPerSample ?: 32,
-                showMarks = true,
-                marks = listOf(
-                        MSliderMark(1, "1 bit"),
-                        MSliderMark(8, "8 bits"),
-                        MSliderMark(16, "16 bits"),
-                        MSliderMark(24, "24 bits"),
-                        MSliderMark(32, "original")),
-                valueLabelDisplay = MSliderValueLabelDisplay.auto,
-                onChange = { _, newValue ->
-                    props.onSynthesisParametersChange(props.synthesisParameters.copy(
-                            downcastToBitsPerSample = newValue.toInt().let { if (it != 32) it else null }))
-                }) {
-            css(Styles.slider)
-        }
+        sx = js("({ marginLeft: '35px' })").unsafeCast<SxProps<Theme>>()
     }
 
-    private fun RBuilder.tempoChange() {
-        mTypography("Tempo change (beats-per-second offset)") {
-            css(Styles.sectionHeader)
-        }
-        mSlider(
-                min = -100,
-                max = 100,
-                value = props.synthesisParameters.tempoOffset,
-                showMarks = true,
-                marks = listOf(
-                        MSliderMark(-100, "-100"),
-                        MSliderMark(-50, "-50"),
-                        MSliderMark(0, "original"),
-                        MSliderMark(50, "+50"),
-                        MSliderMark(100, "+100")),
-                valueLabelDisplay = MSliderValueLabelDisplay.auto,
-                onChange = { _, newValue ->
-                    props.onSynthesisParametersChange(props.synthesisParameters.copy(
-                            tempoOffset = newValue.toInt()))
-                }) {
-            css(Styles.slider)
-        }
+    Typography {
+        sx = js("({ marginLeft: '10px' })").unsafeCast<SxProps<Theme>>()
+        +"Playback samples-per-second multiplier"
     }
-
-    private fun RBuilder.synthesisSamplesPerSecondMultiplier() {
-        mTypography("Synthesis samples-per-second multiplier") {
-            css(Styles.sectionHeader)
+    Slider {
+        min = -2.0
+        max = 2.0
+        value = fromMultiplierToLogarithmicSliderValue(props.synthesisParameters.playbackSamplesPerSecondMultiplier).toDouble()
+        marks = js("""([{ value: -2, label: '0.25x' }, { value: -1, label: '0.5x' }, { value: 0, label: 'original' }, { value: 1, label: '2x' }, { value: 2, label: '4x' }])""")
+        valueLabelDisplay = "auto"
+        onChange = { _, values, _ ->
+            props.onSynthesisParametersChange(props.synthesisParameters.copy(
+                    playbackSamplesPerSecondMultiplier =
+                    fromLogarithmicSliderValueToMultiplier(values[0].toInt())))
         }
-        mSlider(
-                min = -2,
-                max = 2,
-                value = fromMultiplierToLogarithmicSliderValue(
-                        props.synthesisParameters.synthesisSamplesPerSecondMultiplier),
-                showMarks = true,
-                marks = listOf(
-                        MSliderMark(-2, "0.25x"),
-                        MSliderMark(-1, "0.5x"),
-                        MSliderMark(0, "original"),
-                        MSliderMark(1, "2x"),
-                        MSliderMark(2, "4x")),
-                valueLabelDisplay = MSliderValueLabelDisplay.auto,
-                valueLabelFormat = { value, _ -> "${fromLogarithmicSliderValueToMultiplier(value.toInt())}x" },
-                onChange = { _, newValue ->
-                    props.onSynthesisParametersChange(props.synthesisParameters.copy(
-                            synthesisSamplesPerSecondMultiplier =
-                            fromLogarithmicSliderValueToMultiplier(newValue.toInt())))
-                }) {
-            css(Styles.slider)
-        }
+        sx = js("({ marginLeft: '35px' })").unsafeCast<SxProps<Theme>>()
     }
-
-    private fun RBuilder.playbackSamplesPerSecondMultiplier() {
-        mTypography("Playback samples-per-second multiplier") {
-            css(Styles.sectionHeader)
-        }
-        mSlider(
-                min = -2,
-                max = 2,
-                value = fromMultiplierToLogarithmicSliderValue(
-                        props.synthesisParameters.playbackSamplesPerSecondMultiplier),
-                showMarks = true,
-                marks = listOf(
-                        MSliderMark(-2, "0.25x"),
-                        MSliderMark(-1, "0.5x"),
-                        MSliderMark(0, "original"),
-                        MSliderMark(1, "2x"),
-                        MSliderMark(2, "4x")),
-                valueLabelDisplay = MSliderValueLabelDisplay.auto,
-                valueLabelFormat = { value, _ -> "${fromLogarithmicSliderValueToMultiplier(value.toInt())}x" },
-                onChange = { _, newValue ->
-                    props.onSynthesisParametersChange(props.synthesisParameters.copy(
-                            playbackSamplesPerSecondMultiplier =
-                            fromLogarithmicSliderValueToMultiplier(newValue.toInt())))
-                }) {
-            css(Styles.slider)
-        }
-    }
-
-    private fun fromMultiplierToLogarithmicSliderValue(multiplier: Float) =
-            log(multiplier, 2.0f)
-
-    private fun fromLogarithmicSliderValueToMultiplier(sliderValue: Int) =
-            2.0f.pow(sliderValue.toFloat())
 }
 
-external interface PlaybackCustomizationProps : RProps {
+private fun fromMultiplierToLogarithmicSliderValue(multiplier: Float) =
+        log(multiplier, 2.0f)
+
+private fun fromLogarithmicSliderValueToMultiplier(sliderValue: Int) =
+        2.0f.pow(sliderValue.toFloat())
+
+external interface PlaybackCustomizationProps : Props {
     var synthesisParameters: SynthesisParameters
     var onSynthesisParametersChange: (SynthesisParameters) -> Unit
 }
-
-fun RBuilder.playbackCustomization(handler: RHandler<PlaybackCustomizationProps>) =
-        child(PlaybackCustomization::class) {
-            handler()
-        }

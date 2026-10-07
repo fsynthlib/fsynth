@@ -1,67 +1,73 @@
-import com.android.build.gradle.internal.tasks.factory.dependsOn
-
 plugins {
-    kotlin("js")
+    kotlin("multiplatform")
 }
 
 repositories {
     mavenCentral()
 }
 
-// The below versions cannot be freely changed independently. Only certain combinations are valid and map to the actual
-// existing versions in the repositories.
-val kotlinVersion: String by rootProject.extra
-val reactVersion = "17.0.2"
-val jsWrappersVersion = "pre.206"
+val reactVersion = "19.2.5"
 
 kotlin {
-    target {
+    js {
+        binaries.executable()
         useCommonJs()
         browser {
             webpackTask {
-                runTask {
-                }
+            }
+            distribution {
+                outputDirectory = file("$projectDir/build/distributions")
             }
         }
     }
 
     sourceSets {
-        val main by getting {
-            kotlin.srcDirs("src/jsMain/kotlin")
-            resources.srcDirs("src/jsMain/resources")
+        val jsMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlin:kotlin-stdlib-js:$kotlinVersion")
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-react:$reactVersion-$jsWrappersVersion-kotlin-$kotlinVersion")
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom:$reactVersion-$jsWrappersVersion-kotlin-$kotlinVersion")
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-styled:5.3.0-$jsWrappersVersion-kotlin-$kotlinVersion")
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-css-js:1.0.0-$jsWrappersVersion-kotlin-$kotlinVersion")
-                implementation("com.ccfraser.muirwik:muirwik-components:0.7.0")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-react:2026.4.14-19.2.5")
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom:2026.4.14-19.2.5")
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-mui-material:2026.5.1-5.18.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0")
                 implementation(project(":core"))
                 implementation(npm("react", reactVersion))
                 implementation(npm("react-dom", reactVersion))
-                implementation(npm("@material-ui/core", "4.11.0"))
+                implementation(npm("@mui/material", "5.18.0"))
+                implementation(npm("@emotion/react", "11.13.5"))
+                implementation(npm("@emotion/styled", "11.13.5"))
                 implementation(npm("audiobuffer-to-wav", "1.0.0"))
-                implementation(npm("wavesurfer.js", "3.3.3"))
+                implementation(npm("wavesurfer.js", "7.12.7"))
+                implementation(devNpm("html-webpack-plugin", "5.6.3"))
             }
         }
-        val test by getting {
+        val jsTest by getting {
             dependencies {
-                implementation("org.jetbrains.kotlin:kotlin-test-js")
+                implementation(kotlin("test-js"))
             }
         }
     }
 }
 
-val copyWorkerDistributionFiles = tasks.register("copyWorkerDistributionFiles", Copy::class) {
-    from("worker/build/distributions")
-    into("$buildDir/distributions")
-}.dependsOn(":web:worker:build")
+val copyWorkerDistributionFiles = tasks.register<Copy>("copyWorkerDistributionFiles") {
+    from(File(project(":web:worker").buildDir, "distributions"))
+    into(File(project.buildDir, "distributions"))
+    dependsOn(":web:worker:build")
+    mustRunAfter("jsBrowserDistribution")
+}
 
-val copyServiceWorkerDistributionFiles = tasks.register("copyServiceWorkerDistributionFiles", Copy::class) {
-    from("serviceworker/build/distributions")
-    into("$buildDir/distributions")
-}.dependsOn(":web:serviceworker:build")
+val copyServiceWorkerDistributionFiles = tasks.register<Copy>("copyServiceWorkerDistributionFiles") {
+    from(File(project(":web:serviceworker").buildDir, "distributions"))
+    into(File(project.buildDir, "distributions"))
+    dependsOn(":web:serviceworker:build")
+    mustRunAfter("jsBrowserDistribution")
+}
 
-tasks.named("assemble").dependsOn(copyWorkerDistributionFiles)
-tasks.named("assemble").dependsOn(copyServiceWorkerDistributionFiles)
+tasks.named<Sync>("jsBrowserDistribution") {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+
+tasks.named("assemble") {
+    dependsOn(copyWorkerDistributionFiles)
+    dependsOn(copyServiceWorkerDistributionFiles)
+}
+
+

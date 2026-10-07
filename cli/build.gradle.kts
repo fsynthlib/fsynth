@@ -9,7 +9,7 @@ val kotlinVersion: String by rootProject.extra
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
-    implementation("com.github.ajalt:clikt:1.7.0")
+    implementation("com.github.ajalt.clikt:clikt:5.1.0")
     implementation(project(":core"))
 
     testImplementation("junit:junit:4.13.2")
@@ -18,21 +18,28 @@ dependencies {
 }
 
 application {
-    mainClassName = "it.krzeminski.fsynth.ConsoleEntryPointKt"
+    mainClass = "it.krzeminski.fsynth.ConsoleEntryPointKt"
     applicationName = "fsynth"
 }
 
-val compileKotlin: org.jetbrains.kotlin.gradle.tasks.KotlinCompile by tasks
-compileKotlin.kotlinOptions.jvmTarget = "1.8"
+kotlin {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+    }
+}
+
+java {
+    targetCompatibility = JavaVersion.VERSION_17
+}
 
 jacoco {
-    toolVersion = "0.8.3"
+    toolVersion = "0.8.14"
 }
 
 val jacocoTestReport = tasks.getByName<JacocoReport>("jacocoTestReport") {
     reports {
-        xml.isEnabled = true
-        html.isEnabled = true
+        xml.required.set(true)
+        html.required.set(true)
     }
 
     afterEvaluate {
@@ -51,3 +58,7 @@ val jacocoTestReport = tasks.getByName<JacocoReport>("jacocoTestReport") {
 }
 
 tasks.getByName("check").dependsOn(jacocoTestReport)
+
+tasks.withType<Test>().configureEach {
+    failOnNoDiscoveredTests = false
+}

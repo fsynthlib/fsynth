@@ -34,9 +34,9 @@ workflow(
     ) {
         uses(name = "Check out", action = Checkout())
         uses(
-            name = "Set up JDK 8",
+            name = "Set up JDK 17",
             action = SetupJava(
-                javaVersion = "8",
+                javaVersion = "17",
                 distribution = SetupJava.Distribution.Temurin,
             ),
         )
@@ -59,13 +59,6 @@ workflow(
             name = "Set up Android SDK",
             action = SetupAndroid_Untyped(),
         )
-        uses(
-            name = "Set up JDK 8",
-            action = SetupJava(
-                javaVersion = "8",
-                distribution = SetupJava.Distribution.Temurin,
-            ),
-        )
         run(name = "Build android", command = "./gradlew :android:build")
     }
 
@@ -75,9 +68,9 @@ workflow(
     ) {
         uses(name = "Check out", action = Checkout())
         uses(
-            name = "Set up JDK 8",
+            name = "Set up JDK 17",
             action = SetupJava(
-                javaVersion = "8",
+                javaVersion = "17",
                 distribution = SetupJava.Distribution.Temurin,
             ),
         )
@@ -110,9 +103,9 @@ workflow(
     ) {
         uses(name = "Check out", action = Checkout())
         uses(
-            name = "Set up JDK 8",
+            name = "Set up JDK 17",
             action = SetupJava(
-                javaVersion = "8",
+                javaVersion = "17",
                 distribution = SetupJava.Distribution.Temurin,
             ),
         )
